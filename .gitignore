@@ -1,0 +1,27 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/make-my-jobs/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/make-my-jobs/coverage
+
+# production
+/make-my-jobs/build
+
+# misc
+/make-my-jobs/.DS_Store
+/make-my-jobs/.env.local
+/make-my-jobs/.env.development.local
+/make-my-jobs/.env.test.local
+/make-my-jobs/.env.production.local
+
+/make-my-jobs/npm-debug.log*
+/make-my-jobs/yarn-debug.log*
+/make-my-jobs/yarn-error.log*
+
+/MakeMyJobsAPI/.vs
+/MakeMyJobsAPI/MakeMyJobsAPI/bin
+/MakeMyJobsAPI/MakeMyJobsAPI/obj
