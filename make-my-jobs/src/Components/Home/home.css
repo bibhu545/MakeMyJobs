@@ -1,0 +1,50 @@
+.hero-section{
+    height: 75vh;
+    background: url('../../Assets/Images/hero.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+.section-overlay{
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+.hero-content{
+    padding-top: 150px;
+    color: white;
+}
+.hero-search{
+    margin: 20px 75px;
+}
+.hero-search > input{
+    border-radius: 20px 0px 0px 20px;
+}
+.hearo-search-btn{
+    border-radius: 20px;
+}
+.faq-section{
+    padding: 30px;
+}
+.faq-left{
+    padding: 30px;
+}
+.faq-right{
+    padding: 30px;
+}
+.about-content-left, .about-content-right{
+    height: 100%;
+    padding: 35px;
+    padding-bottom: 40px;
+}
+.about-content-left{
+    padding: 45px;
+}
+.img-about{
+    height: 100%;
+    width: 100%;
+    border: 1px solid royalblue;
+    border-radius: 20px;
+}
+.fa-check{
+    margin-right: 10px;
+    color: royalblue;
+}

@@ -1,0 +1,17 @@
+.footer-section{
+    background-color: darkslategrey;
+    color: white;
+    min-height: 100px;
+    height: 100%;
+    line-height: 100px;
+}
+.fab{
+    padding: 0px 5px;
+    color: white;
+}
+.fab:hover{
+    color: thistle;
+}
+/* .footer-icon-section{
+    text-align: right;
+} */
