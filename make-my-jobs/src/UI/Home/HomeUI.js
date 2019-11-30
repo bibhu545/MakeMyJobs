@@ -2,19 +2,7 @@ import React, { Component } from 'react'
 import './home.css'
 import AboutImage from '../../Assets/Images/1.jpg'
 
-export class Home extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-
-        }
-    }
-
-    onContactFormSubmit = (e) => {
-        e.preventDefault();
-    }
-
+export class HomeUI extends Component {
     render() {
         return (
             <React.Fragment>
@@ -361,5 +349,4 @@ export class Home extends Component {
     }
 }
 
-export default Home
-
+export default HomeUI

@@ -7,21 +7,21 @@ export class Footer extends Component {
             <React.Fragment>
                 <div className='footer-section'>
                     <div className='container'>
-                        <div className='row'>
+                        <div className='row center-content'>
                             <div className='col-md-6 col-xs-12'>
                                 &copy; Copyright MakeMyJobs@2020. All Rights Reserved.
-                        </div>
+                            </div>
                             <div className='col-md-6 col-xs-12 footer-icon-section'>
-                                <a target='_blank' href='www.facebook.com'>
+                                <a target='_blank' rel='noopener noreferrer' href='https://www.facebook.com'>
                                     <i className="fab fa-2x fa-facebook-square"></i>
                                 </a>
-                                <a target='_blank' href='www.instagram.com'>
+                                <a target='_blank' rel='noopener noreferrer' href='https://www.instagram.com'>
                                     <i className="fab fa-2x fa-instagram"></i>
                                 </a>
-                                <a target='_blank' href='www.twitter.com'>
+                                <a target='_blank' rel='noopener noreferrer' href='https://www.twitter.com'>
                                     <i className="fab fa-2x fa-twitter"></i>
                                 </a>
-                                <a target='_blank' href='www.youtube.com'>
+                                <a target='_blank' rel='noopener noreferrer' href='https://www.youtube.com'>
                                     <i className="fab fa-2x fa-youtube"></i>
                                 </a>
                             </div>

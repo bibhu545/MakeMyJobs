@@ -6,7 +6,15 @@ body{
   padding-top: 50px;
   min-height: 80vh;
 }
-
+.red-text{
+  color: red;
+}
 .center-content{
   text-align: center;
+}
+.right-content{
+  text-align: right;
+}
+.left-content{
+  text-align: left;
 }

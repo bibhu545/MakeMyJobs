@@ -1,0 +1,29 @@
+.img-logo{
+    max-height: 100%;
+    max-width: 100%;
+}
+.intern-desc{
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin: 10px 15px;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+.intern-desc:hover{
+    border: 1px solid royalblue;
+    transform: scale(1.02);
+}
+.fas{
+    color: royalblue;
+}
+i{
+    min-width: 20px;
+}
+hr{
+    border-top: 1px solid grey;
+}
+.pager li>a, .pager li>span{
+    margin: 10px;
+    border: 1px solid grey;
+}
+

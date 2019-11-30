@@ -16,10 +16,10 @@
     margin: 20px 75px;
 }
 .hero-search > input{
-    border-radius: 20px 0px 0px 20px;
+    border-radius: 15px 0px 0px 15px;
 }
 .hearo-search-btn{
-    border-radius: 20px;
+    border-radius: 15px;
 }
 .faq-section{
     padding: 30px;
@@ -47,4 +47,56 @@
 .fa-check{
     margin-right: 10px;
     color: royalblue;
+}
+
+.far, .fas, .fab{
+    /* color: royalblue; */
+    margin-right: 10px;
+}
+.contact-address{
+    margin-left: 25px;
+}
+
+.contact-section{
+    min-height: 50vh;
+    height: 100%;
+    background: url('../../Assets/Images/contact.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+}
+.contact-section-overlay{
+    min-height: 50vh;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+.contact-wrapper{
+    padding: 30px;
+}
+.contact-wrapper > .col-md-6{
+    padding: 0px 40px;
+}
+textarea{
+    resize: vertical;
+}
+.featured-content{
+    background: linear-gradient(to right,lightgrey, white, white, lightgrey);
+    padding: 10px;
+    padding-bottom: 20px;
+}
+.short-jobs, .short-internships{
+    margin: 20px;
+    min-height: 40vh;
+    height: 100%;
+}
+.small-job-content{
+    height: 40vh;
+    width: 100%;
+    padding: 30px 65px;
+}
+.carousel-indicators > li{
+    background-color: grey;
+}
+.carousel-indicators > .active{
+    background-color: black;
 }

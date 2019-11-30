@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import CommonFunctions, { Utils } from '../../Utils/Utils'
 
 export class Navbar extends Component {
     render() {
@@ -11,7 +12,9 @@ export class Navbar extends Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="/">WebSiteName</a>
+                        <a className="navbar-brand" href="/">
+                            <span dangerouslySetInnerHTML={{ __html: new Utils().siteName }}></span>
+                        </a>
                     </div>
                     <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className="nav navbar-nav">
@@ -24,13 +27,21 @@ export class Navbar extends Component {
                                     <li><a href="/">Page 1-3</a></li>
                                 </ul>
                             </li> */}
-                            <li><a href="/blog">Jobs</a></li>
-                            <li><a href="/blog">Internships</a></li>
+                            <li><a href="/jobs">Jobs</a></li>
+                            <li><a href="/internships">Internships</a></li>
                         </ul>
-                        <ul className="nav navbar-nav navbar-right">
-                            <li><a href="/signup"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                            <li><a href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        </ul>
+                        {
+                            new CommonFunctions().isLoggedIn() ?
+                                <ul className="nav navbar-nav navbar-right">
+                                    <li><a href="/profile">My Profile</a></li>
+                                    <li><a href="/logout">Logout</a></li>
+                                </ul>
+                                :
+                                <ul className="nav navbar-nav navbar-right">
+                                    <li><a href="/signup"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                                    <li><a href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
+                                </ul>
+                        }
                     </div>
                 </div>
             </nav>
