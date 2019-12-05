@@ -12,19 +12,16 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Country
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public Country()
         {
             this.Students = new HashSet<Student>();
         }
     
-        public int UserId { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public int UserType { get; set; }
-        public int IsActive { get; set; }
+        public int CountryId { get; set; }
+        public string CountryName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Students { get; set; }

@@ -1,0 +1,53 @@
+import React, { Component } from 'react'
+import StudentSideBar from './StudentSideBar'
+import Utils from '../../../Utils/Utils';
+import { UserModel } from '../../../Utils/Models';
+import axios from 'axios'
+import '../users.css'
+
+export class StudentEditProfile extends Component {
+    constructor(props) {
+        super(props)
+        this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
+        this.state = {
+            userType: new Utils().getUserTypeFromCookies(),
+            user: new UserModel()
+        }
+    }
+
+    componentDidMount() {
+        axios.get('http://makemyjobs.me/Student/GetStudentInfo?id=' + this.userInfoFromCookies.userId).then(
+            response => {
+                if (response.data.results == null) {
+                    window.location = '/login';
+                }
+                else {
+                    this.setState({
+                        user: response.data.results[0]
+                    })
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+    }
+    render() {
+        return (
+            <React.Fragment>
+                <div className='container gradient-container'>
+                    <div className='row student-home-wrapper'>
+                        <div className='col-md-8 col-xs-12'>
+                            <h3 className='center-content'>- My DashBoard -</h3>
+                            <div className='center-content'>
+                                <h4>You have not applied to any internships yet.</h4>
+                                <p>Please complete your profile <a href='/edit-profile'>here</a> to get more personalized internships.</p>
+                            </div>
+                        </div>
+                        <StudentSideBar user={this.state.user}></StudentSideBar>
+                    </div>
+                </div>
+            </React.Fragment>
+        )
+    }
+}
+
+export default StudentEditProfile

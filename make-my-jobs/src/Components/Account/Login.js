@@ -1,23 +1,63 @@
 import React, { Component } from 'react'
+import { SuccessMessage } from '../Common/Messages';
+import { ErrorMessage } from '../Common/Messages';
+import { LoginModel, LoginResponseModel } from '../../Utils/Models';
+import Axios from 'axios';
+import Utils from '../../Utils/Utils';
 
 export class Login extends Component {
 
     constructor(props) {
         super(props)
-
+        this.user = new LoginModel();
+        this.loginResponse = new LoginResponseModel();
         this.state = {
-
+            successMessage: '',
+            errorMessage: ''
         }
     }
 
 
-    onLoginFormSubmitHandler() {
-
+    onLoginFormSubmitHandler = (e) => {
+        e.preventDefault();
+        this.user.email = e.target.email.value;
+        this.user.password = e.target.password.value;
+        Axios.post('http://makemyjobs.me/Account/Login', this.user).then(response => {
+            this.loginResponse = response.data.results[0];
+            if (this.loginResponse.loggedIn === 0) {
+                this.setState({
+                    errorMessage: 'Invalid username or password.'
+                });
+            }
+            else {
+                new Utils().saveLoginDataInCookies(this.loginResponse);
+                window.location = "/user-home";
+            }
+        }).catch(error => {
+            this.setState({
+                errorMessage: 'Some error occured. Please try again.'
+            });
+        });
     }
 
     render() {
+        var successMessage = this.props.location.state !== undefined ? this.props.location.state.successMessage ?
+            <SuccessMessage message={this.props.location.state.successMessage}></SuccessMessage> : null : null;
+        var errorMessage = this.props.location.state !== undefined ? this.props.location.state.errorMessage ?
+            <ErrorMessage message={this.props.location.state.errorMessage}></ErrorMessage> : null : null;
+        if (this.state.errorMessage) {
+            errorMessage = <ErrorMessage message={this.state.errorMessage}></ErrorMessage>;
+        }
         return (
             <div className="container">
+                <div className='row'>
+                    <div className='col-sm-4'></div>
+                    <div className='col-sm-4'>
+                        {successMessage}
+                        {errorMessage}
+                    </div>
+                    <div className='col-sm-4'></div>
+                </div>
                 <div className="content-wrapper">
                     <div className="form-conrainer">
                         <div className="form-overlay">

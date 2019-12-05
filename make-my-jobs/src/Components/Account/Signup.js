@@ -1,38 +1,62 @@
 import React, { Component } from 'react'
 import './account.css'
-import { Snackbar } from '../../Utils/snackbar/Snackbar'
-// import axios from 'axios'
+import { SignpModel } from '../../Utils/Models'
+import axios from 'axios'
+import { withRouter, Redirect } from 'react-router-dom'
 
 export class Signup extends Component {
     constructor(props) {
         super(props)
-        this.user = {
-            email: '',
-            password: '',
-            userType: 0
+        this.user = new SignpModel();
+        this.state = {
+            signedUp: false
         }
-        this.snackbarRef = React.createRef();
-    }
-
-    _showSnackbarHandler = (message) => {
-        this.snackbarRef.current.openSnackBar(message);
     }
 
     onSignupFormSubmitHandler = (e) => {
         e.preventDefault();
-        this.user = {
-            email: e.target.email.value,
-            password: e.target.password.value
-        }
-        console.log(this.user);
-        this._showSnackbarHandler('bibhu');
-        //axios.post('http://makemyjobs.me/Account/Signup', this.user);
+
+        this.user.firstName = e.target.firstName.value;
+        this.user.lastName = e.target.lastName.value;
+        this.user.email = e.target.email.value;
+        this.user.password = e.target.password.value;
+        this.user.userType = e.target.userType.value;
+
+        axios.post('http://makemyjobs.me/Account/Signup', this.user).then(response => {
+            console.log(response);
+            if(response.data.results[0] === -1){
+                //handle duplicate email
+            }
+            else if (response.data.results[0] > 0) {
+                this.setState({
+                    signedUp: true
+                });
+            }
+            else {
+                console.log(response.data.errorMessage);
+            }
+            //this.props.history.push('/login');
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     render() {
+        
+        if (this.state.signedUp) {
+            return (
+                <Redirect to={
+                    {
+                        pathname: '/login',
+                        state: { successMessage: 'Please login to continue' }
+                    }
+                }
+                />
+            )
+        }
+
         return (
             <div className="container">
-                <Snackbar ref={this.snackbarRef} />
                 <div className="signup-content-wrapper">
                     <div className="signup-form-container">
                         <div className="form-overlay">
@@ -70,7 +94,7 @@ export class Signup extends Component {
                                             </div>
                                             <div className='form-group'>
                                                 <label htmlFor="role">Join as:</label>
-                                                <select className="form-control" id="role">
+                                                <select className="form-control" id="role" name='userType'>
                                                     <option value='1'>Student</option>
                                                     <option value='2'>Professional</option>
                                                     <option value='3'>Corporate</option>
@@ -90,5 +114,5 @@ export class Signup extends Component {
     }
 }
 
-export default Signup
+export default withRouter(Signup)
 

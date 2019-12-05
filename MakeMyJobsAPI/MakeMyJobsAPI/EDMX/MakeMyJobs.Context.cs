@@ -26,5 +26,8 @@ namespace MakeMyJobsAPI.EDMX
         }
     
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<State> States { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
     }
 }

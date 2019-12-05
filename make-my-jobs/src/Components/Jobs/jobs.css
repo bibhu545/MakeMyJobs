@@ -16,12 +16,3 @@
 .fas{
     color: royalblue;
 }
-i{
-    min-width: 20px;
-}
-hr{
-    border-top: 1px solid grey;
-}
-.gradient-container{
-    background: linear-gradient(45deg, lightgrey, white, white,lightgrey);
-}

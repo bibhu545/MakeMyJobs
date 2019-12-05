@@ -6,6 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7db072b5903f49ed8dace76f85be4192" Name="Diagram1">
         <EntityTypeShape EntityType="MakeMyJobsModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.Country" Width="1.5" PointX="0.75" PointY="3.25" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.State" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.Student" Width="1.5" PointX="3" PointY="1.75" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Student_Country" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Student_State" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Student_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -18,7 +18,6 @@ export class Snackbar extends PureComponent {
 
   render() {
     const { isActive } = this.state;
-    console.log(Styles)
     return (
       <div className = {isActive ? [Styles.snackbar, Styles.show].join(" ") : Styles.snackbar}>
         {this.message}

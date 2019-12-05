@@ -1,8 +1,24 @@
 import React, { Component } from 'react'
-import CommonFunctions, { Utils } from '../../Utils/Utils'
+import { Utils } from '../../Utils/Utils'
 
 export class Navbar extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+
+        }
+    }
+
+    onLogOut = (e) => {
+        e.preventDefault();
+        new Utils().clearLoginDataFromCookies();
+        window.location = "/";
+    }
+
     render() {
+        var isLoggedIn = new Utils().isLoggedIn();
         return (
             <nav className="navbar navbar-fixed-top navbar-inverse">
                 <div className="container">
@@ -31,10 +47,10 @@ export class Navbar extends Component {
                             <li><a href="/internships">Internships</a></li>
                         </ul>
                         {
-                            new CommonFunctions().isLoggedIn() ?
+                            isLoggedIn ?
                                 <ul className="nav navbar-nav navbar-right">
-                                    <li><a href="/profile">My Profile</a></li>
-                                    <li><a href="/logout">Logout</a></li>
+                                    <li><a href="/my-profile">My Profile</a></li>
+                                    <li><a onClick={this.onLogOut} href='##'>Logout</a></li>
                                 </ul>
                                 :
                                 <ul className="nav navbar-nav navbar-right">

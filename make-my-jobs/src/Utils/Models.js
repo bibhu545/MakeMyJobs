@@ -3,15 +3,35 @@ export class SignpModel {
         this.email = '';
         this.password = '';
         this.userType = 0;
+        this.firstName = '';
+        this.lastName = '';
     }
 }
 
-export class JobModel{
-    constructor(){
+export class LoginModel {
+    constructor() {
+        this.email = '';
+        this.password = '';
+    }
+}
+
+export class LoginResponseModel {
+    constructor() {
+        this.loggedIn = 0;
+        this.userId = 0;
+        this.email = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.userType = 0;
+    }
+}
+
+export class JobModel {
+    constructor() {
         this.jobId = 0;
         this.title = '';
         this.description = '';
-        this.company =  '';
+        this.company = '';
         this.image = 0;
         this.experience = '';
         this.location = '';
@@ -25,12 +45,12 @@ export class JobModel{
     }
 }
 
-export class InternshipModel{
-    constructor(){
+export class InternshipModel {
+    constructor() {
         this.internshipId = 0;
         this.title = '';
         this.description = '';
-        this.company =  '';
+        this.company = '';
         this.image = 0;
         this.skillsRequired = '';
         this.internshipType = 0;
@@ -44,5 +64,33 @@ export class InternshipModel{
         this.startDate = '';
         this.expiryDate = '';
         this.postedOn = '';
+    }
+}
+
+export class UserCookieInfoModel {
+    constructor() {
+        this.userId = 0;
+        this.email = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.userType = 0;
+    }
+}
+
+export class UserModel {
+    constructor() {
+        this.userId = 0;
+        this.studentId = 0;
+        this.email = '';
+        this.address = '';
+        this.contactNumber = '';
+        this.state = '';
+        this.country = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.resume = '';
+        this.collegeName = '';
+        this.dateJoined = '';
+        this.dateOfBirth = '';
     }
 }

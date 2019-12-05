@@ -13,6 +13,9 @@ import AddJob from '../Components/Jobs/AddJob';
 import AddInternship from '../Components/Internships/AddInternship';
 import JobDescription from '../Components/Jobs/JobDescription';
 import InternshipDescription from '../Components/Internships/InternshipDescription';
+import UserHome from '../Components/Users/UserHome';
+import UserProfile from '../Components/Users/UserProfile';
+import UserEditProfile from '../Components/Users/UserEditProfile';
 
 function RouterModule() {
     return (
@@ -28,6 +31,9 @@ function RouterModule() {
                     <Route path="/internship-description" component={InternshipDescription}></Route>
                     <Route path="/signup" component={Signup}></Route>
                     <Route path="/login" component={Login}></Route>
+                    <Route path="/user-home" component={UserHome}></Route>
+                    <Route path="/my-profile" component={UserProfile}></Route>
+                    <Route path="/edit-profile" component={UserEditProfile}></Route>
                     <Route exact path="/" component={Home}></Route>
                     <Route component={PageNotFound}></Route>
                 </Switch>

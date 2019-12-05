@@ -25,6 +25,19 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+        public JsonResult Login(LoginModel model)
+        {
+            try
+            {
+                var result = AccountBusiness.Login(model);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
         public string test()
         {
             return "hello world";

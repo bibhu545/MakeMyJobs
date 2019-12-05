@@ -4,6 +4,7 @@
     min-height: 100px;
     height: 100%;
     line-height: 100px;
+    /* margin-top: 20px; */
 }
 .fab{
     padding: 0px 5px;
@@ -12,6 +13,23 @@
 .fab:hover{
     color: thistle;
 }
+.alert{
+    position: absolute;
+    top: -10px;
+    z-index: 9999;
+}
 /* .footer-icon-section{
     text-align: right;
 } */
+
+
+i{
+    min-width: 20px;
+}
+hr{
+    border-top: 1px solid grey;
+}
+.gradient-container{
+    background: linear-gradient(45deg, lightgrey, white, white,lightgrey);
+    min-height: 80vh;
+}

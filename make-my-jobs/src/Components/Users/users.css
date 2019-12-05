@@ -1,0 +1,27 @@
+.student-home-wrapper{
+    padding-top: 20px;
+}
+.img-profile-pic{
+    height: 100px;
+    width: 100px;
+    border: 1px solid black;
+    padding: 10px;
+    margin: auto;
+    margin-top: 50px;
+}
+.student-home-side-content{
+    padding: 0px 50px;
+}
+.change-password-container{
+    margin: 20px 40px;
+    background-color: red;
+}
+.light-text{
+    color: grey;
+}
+strong{
+    margin-right: 5px;
+}
+.short-hr{
+    margin: 10px 50px;
+}
