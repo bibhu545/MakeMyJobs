@@ -168,17 +168,20 @@
     <Compile Include="EDMX\Country.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
-    <Compile Include="EDMX\MakeMyJobs.Context.cs" />
-    <Compile Include="EDMX\MakeMyJobs.cs" />
-    <Compile Include="EDMX\MakeMyJobs.Designer.cs">
-      <DependentUpon>MakeMyJobs.cs</DependentUpon>
+    <Compile Include="EDMX\Lookup.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
-    <Compile Include="EDMX\MakeMyJobs1.cs">
+    <Compile Include="EDMX\MakeMyJobs.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MakeMyJobs.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\MakeMyJobs.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
-    <Compile Include="EDMX\MakeMyJobs1.Designer.cs">
+    <Compile Include="EDMX\MakeMyJobs.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MakeMyJobs.edmx</DependentUpon>
@@ -187,6 +190,9 @@
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Student.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\StudentDocument.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\User.cs">
@@ -206,9 +212,15 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="EDMX\MakeMyJobs.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MakeMyJobs.edmx</DependentUpon>
+      <LastGenOutput>MakeMyJobs.Context.cs</LastGenOutput>
+    </Content>
     <Content Include="EDMX\MakeMyJobs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MakeMyJobs1.cs</LastGenOutput>
+      <DependentUpon>MakeMyJobs.edmx</DependentUpon>
+      <LastGenOutput>MakeMyJobs.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -221,7 +233,7 @@
     </Content>
     <EntityDeploy Include="EDMX\MakeMyJobs.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MakeMyJobs1.Designer.cs</LastGenOutput>
+      <LastGenOutput>MakeMyJobs.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="EDMX\MakeMyJobs.edmx.diagram">
       <DependentUpon>MakeMyJobs.edmx</DependentUpon>

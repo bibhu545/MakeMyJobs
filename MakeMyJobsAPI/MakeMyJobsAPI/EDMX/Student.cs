@@ -14,6 +14,12 @@ namespace MakeMyJobsAPI.EDMX
     
     public partial class Student
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Student()
+        {
+            this.StudentDocuments = new HashSet<StudentDocument>();
+        }
+    
         public int StudentId { get; set; }
         public int UserId { get; set; }
         public string FirstName { get; set; }
@@ -24,11 +30,14 @@ namespace MakeMyJobsAPI.EDMX
         public string Resume { get; set; }
         public System.DateTime DateJoined { get; set; }
         public string Address { get; set; }
+        public string ZipCode { get; set; }
         public int State { get; set; }
         public int Country { get; set; }
     
         public virtual Country Country1 { get; set; }
         public virtual State State1 { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentDocument> StudentDocuments { get; set; }
     }
 }

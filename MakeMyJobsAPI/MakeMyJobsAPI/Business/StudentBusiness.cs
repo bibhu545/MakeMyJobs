@@ -39,5 +39,24 @@ namespace MakeMyJobsAPI.Business
                 }
             }
         }
+        public static int SaveStudentDocument(int studentId, String fileName, String fileNameOnDisk, long fileSize)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                var previousResume = context.StudentDocuments.FirstOrDefault(x => x.StudentId == studentId && x.DosumentType == 1);
+                if (previousResume != null)
+                {
+                    context.Entry(previousResume).State = System.Data.Entity.EntityState.Deleted;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    context.StudentDocuments.Add(new StudentDocument() {
+                        
+                    });
+                }
+                return 1;
+            }
+        }
     }
 }

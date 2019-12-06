@@ -92,5 +92,6 @@ export class UserModel {
         this.collegeName = '';
         this.dateJoined = '';
         this.dateOfBirth = '';
+        this.pinCode = '';
     }
 }

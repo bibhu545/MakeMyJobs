@@ -45,65 +45,130 @@ export class StudentProfile extends Component {
                                 <div className='col-md-2'></div>
                                 <div className='col-md-8'>
                                     <div className='row'>
-                                        <div className='col-md-6'>
+                                        <div className='col-sm-3'>
                                             <p>
-                                                <strong>First name:</strong>
-                                                {this.state.user.firstName}
+                                                <strong>Name:</strong>
                                             </p>
                                         </div>
-                                        <div className='col-md-6'>
+                                        <div className='col-sm-9'>
                                             <p>
-                                                <strong>Last name:</strong>
-                                                {this.state.user.lastName}
+                                                {this.state.user.firstName} {this.state.user.lastName}
                                             </p>
                                         </div>
                                     </div>
-                                    <p>
-                                        <strong>Email:</strong>
-                                        {this.state.user.email}
-                                    </p>
-                                    <p>
-                                        <strong>Phone:</strong>
-                                        {
-                                            this.state.user.contactNumber == null ?
-                                                <span className='light-text'><i>Please update your contact number.</i></span>
-                                                : this.state.user.contactNumber
-                                        }
-                                    </p>
-                                    <p>
-                                        <strong>Date of birth:</strong>
-                                        {
-                                            this.state.user.dateOfBirth == null ?
-                                                <span className='light-text'><i>Please update your Date of birth.</i></span>
-                                                : this.state.user.dateOfBirth
-                                        }
-                                    </p>
-                                    <p>
-                                        <strong>College:</strong>
-                                        {
-                                            this.state.user.collegeName == null ?
-                                                <span className='light-text'><i>Please update your college.</i></span>
-                                                : this.state.user.collegeName
-                                        }
-                                    </p>
-                                    <p>
-                                        <strong>Address:</strong>
-                                        {
-                                            this.state.user.address == null ?
-                                                <span className='light-text'><i>Please update your address.</i></span>
-                                                : this.state.user.address
-                                        }
-                                    </p>
-                                    <p>
-                                        <strong>Resume:</strong>
-                                        {
-                                            this.state.user.resume == null ?
-                                                <span className='light-text'><i>Please add your resume.</i></span>
-                                                : this.state.user.resume
-                                        }
-                                    </p>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>Email:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {this.state.user.email}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>Phone:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {
+                                                    this.state.user.contactNumber == null ?
+                                                        <span className='light-text'><i>Please update your contact number.</i></span>
+                                                        : this.state.user.contactNumber
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>Date of birth:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {
+                                                    this.state.user.dateOfBirth == null ?
+                                                        <span className='light-text'><i>Please update your Date of birth.</i></span>
+                                                        : this.state.user.dateOfBirth
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>College:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {
+                                                    this.state.user.collegeName == null ?
+                                                        <span className='light-text'><i>Please update your college.</i></span>
+                                                        : this.state.user.collegeName
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>Address:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {
+                                                    this.state.user.address == null ?
+                                                        <span className='light-text'><i>Please update your address.</i></span>
+                                                        : this.state.user.address
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>Pin Code:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {
+                                                    this.state.user.pinCode == null ?
+                                                        <span className='light-text'><i>Please update your pin.</i></span>
+                                                        : this.state.user.pinCode
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-3'>
+                                            <p>
+                                                <strong>Resume:</strong>
+                                            </p>
+                                        </div>
+                                        <div className='col-sm-9'>
+                                            <p>
+                                                {
+                                                    this.state.user.resume == null ?
+                                                        <span className='light-text'><i>Please add your resume.</i></span>
+                                                        : this.state.user.resume
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className='col-md-2'></div>
+                            </div>
+                            <div className='center-content'>
+                                <a href='edit-profile' className='btn btn-primary'>Update Now</a>
                             </div>
                         </div>
                         <StudentSideBar user={this.state.user}></StudentSideBar>

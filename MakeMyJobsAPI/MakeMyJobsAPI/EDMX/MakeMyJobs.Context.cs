@@ -25,9 +25,11 @@ namespace MakeMyJobsAPI.EDMX
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Lookup> Lookups { get; set; }
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<StudentDocument> StudentDocuments { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

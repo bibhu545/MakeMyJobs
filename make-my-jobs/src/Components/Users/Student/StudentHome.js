@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import axios from 'axios';
-import '../users.css'
+import '../users.css';
 import Utils from '../../../Utils/Utils';
 import { UserModel } from '../../../Utils/Models';
 import StudentSideBar from './StudentSideBar';
