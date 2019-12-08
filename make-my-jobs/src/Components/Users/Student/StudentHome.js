@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import HttpService from '../../../Utils/HttpServices';
 import '../users.css';
 import Utils from '../../../Utils/Utils';
 import { UserModel } from '../../../Utils/Models';
@@ -7,7 +7,8 @@ import StudentSideBar from './StudentSideBar';
 
 export class StudentHome extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.http = new HttpService();
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
@@ -16,7 +17,7 @@ export class StudentHome extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://makemyjobs.me/Student/GetStudentInfo?id=' + this.userInfoFromCookies.userId).then(
+        this.http.postData('http://makemyjobs.me/Student/GetStudentInfo?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results == null) {
                     window.location = '/login';

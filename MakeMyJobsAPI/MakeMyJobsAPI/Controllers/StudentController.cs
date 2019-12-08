@@ -27,6 +27,32 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+        public JsonResult GetStudentInfoForEdit(int id)
+        {
+            try
+            {
+                var result = StudentBusiness.GetStudentInfoForEdit(id);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+        public JsonResult UpdateStudentInfo(StudentInfoModel model)
+        {
+            try
+            {
+                var result = StudentBusiness.UpdateStudentInfo(model);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
         public JsonResult UploadStudentResume()
         {
             try

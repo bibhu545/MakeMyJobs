@@ -32,4 +32,5 @@ hr{
 .gradient-container{
     background: linear-gradient(45deg, lightgrey, white, white,lightgrey);
     min-height: 80vh;
+    /* padding-top: 50px; */
 }

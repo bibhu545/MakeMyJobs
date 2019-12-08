@@ -27,4 +27,10 @@ namespace MakeMyJobsAPI.Models
         public String lastName { get; set; }
         public int userType { get; set; }
     }
+    public class ChangePasswordModel
+    {
+        public int userId { get; set; }
+        public String currentPassword { get; set; }
+        public String updatedPassword { get; set; }
+    }
 }

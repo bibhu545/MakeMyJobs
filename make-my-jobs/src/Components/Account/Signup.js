@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import './account.css'
 import { SignpModel } from '../../Utils/Models'
-import axios from 'axios'
+import HttpService from '../../Utils/HttpServices'
 import { withRouter, Redirect } from 'react-router-dom'
+import Utils from '../../Utils/Utils'
 
 export class Signup extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.http = new HttpService();
         this.user = new SignpModel();
         this.state = {
             signedUp: false
@@ -22,10 +24,10 @@ export class Signup extends Component {
         this.user.password = e.target.password.value;
         this.user.userType = e.target.userType.value;
 
-        axios.post('http://makemyjobs.me/Account/Signup', this.user).then(response => {
+        this.http.postData('http://makemyjobs.me/Account/Signup', this.user).then(response => {
             console.log(response);
             if(response.data.results[0] === -1){
-                //handle duplicate email
+                new Utils().showErrorMessage("Email already registered.");
             }
             else if (response.data.results[0] > 0) {
                 this.setState({
@@ -35,7 +37,6 @@ export class Signup extends Component {
             else {
                 console.log(response.data.errorMessage);
             }
-            //this.props.history.push('/login');
         }).catch(error => {
             console.log(error);
         });

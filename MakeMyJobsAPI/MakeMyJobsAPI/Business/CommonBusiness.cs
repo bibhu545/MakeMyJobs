@@ -1,4 +1,5 @@
-﻿using MakeMyJobsAPI.Models;
+﻿using MakeMyJobsAPI.EDMX;
+using MakeMyJobsAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,27 @@ namespace MakeMyJobsAPI.Business
                     errorMessage = errorMessage
                 }
             };
+        }
+        public static List<DropdownModel> GetStates()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.States.Select(x => new DropdownModel() {
+                    value = x.StateId,
+                    text = x.StateName
+                }).ToList();
+            }
+        }
+        public static List<DropdownModel> GetCountries()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.Countries.Select(x => new DropdownModel()
+                {
+                    value = x.CountryId,
+                    text = x.CountryName
+                }).ToList();
+            }
         }
     }
 }

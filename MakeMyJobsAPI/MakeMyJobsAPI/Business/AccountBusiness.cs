@@ -89,5 +89,29 @@ namespace MakeMyJobsAPI.Business
                 return loginResponse;
             }
         }
+        public static int ChangePassword(ChangePasswordModel model)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                var user = context.Users.FirstOrDefault(x => x.UserId == model.userId && x.IsActive == 1 && x.Password == model.currentPassword);
+                if(user == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    user.Password = model.updatedPassword;
+                    int updated = context.SaveChanges();
+                    if(updated > 0)
+                    {
+                        return updated;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+        }
     }
 }

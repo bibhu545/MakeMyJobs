@@ -1,29 +1,43 @@
 import React, { Component } from 'react'
 import StudentSideBar from './StudentSideBar'
 import Utils from '../../../Utils/Utils';
-import { UserModel } from '../../../Utils/Models';
-import axios from 'axios'
+import { UserModel, LoginResponseModel } from '../../../Utils/Models';
+import HttpService from '../../../Utils/HttpServices';
 import '../users.css'
 
 export class StudentEditProfile extends Component {
     constructor(props) {
         super(props)
+        this.http = new HttpService();
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
-            user: new UserModel()
+            user: new UserModel(),
+            states: [],
+            countries: []
         }
     }
 
     componentDidMount() {
-        axios.get('http://makemyjobs.me/Student/GetStudentInfo?id=' + this.userInfoFromCookies.userId).then(
+        this.http.getData('http://makemyjobs.me/Common/GetStateAndCountries').then(response => {
+            if (response.data.results.length > 0) {
+                this.setState({
+                    states: response.data.results[0],
+                    countries: response.data.results[1]
+                })
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+        this.http.getData('http://makemyjobs.me/Student/GetStudentInfoForEdit?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results == null) {
                     window.location = '/login';
                 }
                 else {
+                    var tempUser = response.data.results[0];
                     this.setState({
-                        user: response.data.results[0]
+                        user: tempUser
                     })
                 }
             }).catch(error => {
@@ -41,7 +55,30 @@ export class StudentEditProfile extends Component {
 
     onEditFormSubmitted = (e) => {
         e.preventDefault();
-        console.log(this.state.user);
+        this.http.postData('http://makemyjobs.me/Student/UpdateStudentInfo', this.state.user).then(response => {
+            if (response.data.results[0] == null) {
+                console.log('Error occured in updating data.');
+            }
+            else {
+                var updatedUserInCookies = new LoginResponseModel();
+                var updatedUser = response.data.results[0];
+                if (new Utils().isLoggedIn()) {
+                    updatedUserInCookies.loggedIn = 1;
+                    updatedUserInCookies.userId = updatedUser.userId;
+                    updatedUserInCookies.email = updatedUser.email;
+                    updatedUserInCookies.firstName = updatedUser.firstName;
+                    updatedUserInCookies.lastName = updatedUser.lastName;
+                    updatedUserInCookies.userType = new Utils().getUserTypeFromCookies();
+                    new Utils().saveLoginDataInCookies(updatedUserInCookies);
+                    window.location = '/my-profile';
+                }
+                else {
+                    window.location = '/login';
+                }
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     render() {
@@ -58,19 +95,19 @@ export class StudentEditProfile extends Component {
                                 <div className='col-md-8'>
                                     <form className="form-horizontal" onSubmit={this.onEditFormSubmitted}>
                                         <div className="form-group">
-                                            <label className="control-label col-sm-4" htmlFor="firstName">First name:</label>
+                                            <label className="control-label col-sm-4" htmlFor="firstName">First name*:</label>
                                             <div className="col-sm-8">
                                                 <input type="text" className="form-control" id="firstName" placeholder="E.g. John" name="firstName" value={this.state.user.firstName} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
                                         <div className="form-group">
-                                            <label className="control-label col-sm-4" htmlFor="lastName">Last name:</label>
+                                            <label className="control-label col-sm-4" htmlFor="lastName">Last name*:</label>
                                             <div className="col-sm-8">
                                                 <input type="text" className="form-control" id="lastName" placeholder="E.g. Doe" name="lastName" value={this.state.user.lastName} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
                                         <div className="form-group">
-                                            <label className="control-label col-sm-4" htmlFor="email">First name:</label>
+                                            <label className="control-label col-sm-4" htmlFor="email">Email*:</label>
                                             <div className="col-sm-8">
                                                 <input type="email" className="form-control" id="email" placeholder="John@gmail.com" name="email" value={this.state.user.email} onChange={this.handleEditFormChange} />
                                             </div>
@@ -99,10 +136,38 @@ export class StudentEditProfile extends Component {
                                                 <input type="text" className="form-control" id="address" placeholder="Enter complete address" name="address" value={this.state.user.address == null ? "" : this.state.user.address} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
-                                        <div className="form-group">
-                                            <label className="control-label col-sm-4" htmlFor="pinCode">Pin Code:</label>
+                                        <div className='form-group'>
+                                            <label className="control-label col-sm-4" htmlFor="state">State:</label>
                                             <div className="col-sm-8">
-                                                <input type="text" className="form-control" id="pinCode" placeholder="Enter Pincode" name="pinCode" value={this.state.user.pinCode == null ? "" : this.state.user.pinCode} onChange={this.handleEditFormChange} />
+                                                <select className="form-control" id="state" name='state' onChange={this.handleEditFormChange} value={this.state.user.state}>
+                                                    {
+                                                        this.state.states.map(item =>
+                                                            <React.Fragment key={item.value}>
+                                                                <option value={item.value}>{item.text}</option>
+                                                            </React.Fragment>
+                                                        )
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className='form-group'>
+                                            <label className="control-label col-sm-4" htmlFor="country">Country:</label>
+                                            <div className="col-sm-8">
+                                                <select className="form-control" id="country" name='country' onChange={this.handleEditFormChange} value={this.state.user.country}>
+                                                    {
+                                                        this.state.countries.map(item =>
+                                                            <React.Fragment key={item.value}>
+                                                                <option value={item.value}>{item.text}</option>
+                                                            </React.Fragment>
+                                                        )
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="control-label col-sm-4" htmlFor="zipCode">Pin Code:</label>
+                                            <div className="col-sm-8">
+                                                <input type="text" className="form-control" id="zipCode" placeholder="Enter Pincode" name="zipCode" value={this.state.user.zipCode == null ? "" : this.state.user.zipCode} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
                                         {/* <div className="form-group">
@@ -113,6 +178,7 @@ export class StudentEditProfile extends Component {
                                         </div> */}
                                         <div className='center-content'>
                                             <button type='submit' className='btn btn-primary'>Update Now</button>
+                                            <a href='/my-profile' className='btn btn-default'>Cancel</a>
                                         </div>
                                         <br />
                                     </form>

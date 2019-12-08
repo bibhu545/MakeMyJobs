@@ -1,5 +1,7 @@
 import cookie from 'react-cookies';
 import { UserCookieInfoModel } from './Models';
+import Swal from 'sweetalert2'
+
 
 export class Utils {
     siteName = '<span class="red-text">M</span>ake<span class="red-text">M</span>yJobs';
@@ -46,6 +48,35 @@ export class Utils {
 
     clearLoginDataFromCookies = () => {
         cookie.remove('loggedUser');
+    }
+    GetDateFromServer = (dateString) => {
+        var extractedDate = dateString.substring(6, dateString.length - 2);
+        return new Date(parseInt(extractedDate)).toLocaleDateString();
+    }
+    
+    showDefaultMessage = (message) => {
+        Swal.fire({
+            title: message,
+            showClass: {
+                popup: 'animated fadeInDown faster'
+            },
+            hideClass: {
+                popup: 'animated fadeOutUp faster'
+            }
+        })
+    }
+
+    showErrorMessage = (message) => {
+        Swal.fire({
+            icon: 'error',
+            title: message,
+            showClass: {
+                popup: 'animated fadeInDown faster'
+            },
+            hideClass: {
+                popup: 'animated fadeOutUp faster'
+            }
+        })
     }
 }
 

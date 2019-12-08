@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Utils from '../../../Utils/Utils';
 import { UserModel } from '../../../Utils/Models';
-import axios from 'axios'
+import HttpService from '../../../Utils/HttpServices';
 import StudentSideBar from './StudentSideBar';
 import '../users.css'
 
@@ -9,6 +9,7 @@ export class StudentProfile extends Component {
     constructor(props) {
         super(props)
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
+        this.http = new HttpService();
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new UserModel()
@@ -16,7 +17,7 @@ export class StudentProfile extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://makemyjobs.me/Student/GetStudentInfo?id=' + this.userInfoFromCookies.userId).then(
+        this.http.getData('http://makemyjobs.me/Student/GetStudentInfo?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results == null) {
                     window.location = '/login';
@@ -31,6 +32,7 @@ export class StudentProfile extends Component {
             });
     }
     render() {
+        console.log(this.state);
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -95,7 +97,7 @@ export class StudentProfile extends Component {
                                                 {
                                                     this.state.user.dateOfBirth == null ?
                                                         <span className='light-text'><i>Please update your Date of birth.</i></span>
-                                                        : this.state.user.dateOfBirth
+                                                        : new Utils().GetDateFromServer(this.state.user.dateOfBirth)
                                                 }
                                             </p>
                                         </div>
@@ -141,9 +143,9 @@ export class StudentProfile extends Component {
                                         <div className='col-sm-9'>
                                             <p>
                                                 {
-                                                    this.state.user.pinCode == null ?
+                                                    this.state.user.zipCode == null ?
                                                         <span className='light-text'><i>Please update your pin.</i></span>
-                                                        : this.state.user.pinCode
+                                                        : this.state.user.zipCode
                                                 }
                                             </p>
                                         </div>

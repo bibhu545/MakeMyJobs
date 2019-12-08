@@ -19,6 +19,7 @@ namespace MakeMyJobsAPI.Models
         public String address { get; set; }
         public int state { get; set; }
         public int country { get; set; }
+        public String zipCode { get; set; }
         public String email { get; set; }
     }
 }

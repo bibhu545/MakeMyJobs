@@ -26,6 +26,14 @@ export class LoginResponseModel {
     }
 }
 
+export class ChangePasswordModel {
+    constructor() {
+        this.userId = 0;
+        this.currentPassword = "";
+        this.updatedPassword = "";
+    }
+}
+
 export class JobModel {
     constructor() {
         this.jobId = 0;
@@ -92,6 +100,13 @@ export class UserModel {
         this.collegeName = '';
         this.dateJoined = '';
         this.dateOfBirth = '';
-        this.pinCode = '';
+        this.zipCode = '';
+    }
+}
+
+export class DropDownModel {
+    constructor() {
+        this.value = 0;
+        this.text = "";
     }
 }

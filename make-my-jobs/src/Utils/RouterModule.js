@@ -16,6 +16,7 @@ import InternshipDescription from '../Components/Internships/InternshipDescripti
 import UserHome from '../Components/Users/UserHome';
 import UserProfile from '../Components/Users/UserProfile';
 import UserEditProfile from '../Components/Users/UserEditProfile';
+import ChangePassword from '../Components/Users/ChangePassword';
 
 function RouterModule() {
     return (
@@ -34,6 +35,7 @@ function RouterModule() {
                     <Route path="/user-home" component={UserHome}></Route>
                     <Route path="/my-profile" component={UserProfile}></Route>
                     <Route path="/edit-profile" component={UserEditProfile}></Route>
+                    <Route path="/change-password" component={ChangePassword}></Route>
                     <Route exact path="/" component={Home}></Route>
                     <Route component={PageNotFound}></Route>
                 </Switch>

@@ -13,4 +13,9 @@ namespace MakeMyJobsAPI.Models
         public string message { get; set; }
         public ArrayList results { get; set; }
     }
+    public class DropdownModel
+    {
+        public int value { get; set; }
+        public String text { get; set; }
+    }
 }
