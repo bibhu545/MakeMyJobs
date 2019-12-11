@@ -10,6 +10,7 @@ export class ProffesionalEditProfile extends Component {
         super(props)
         this.http = new HttpService();
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
+        this.utils = new Utils();
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new ProffessionalModel(),
@@ -32,6 +33,7 @@ export class ProffesionalEditProfile extends Component {
         this.http.getData('http://makemyjobs.me/Employee/GetEmployeeInfoForEdit?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results[0] == null) {
+                    this.utils.clearLoginDataFromCookies();
                     window.location = '/login';
                 }
                 else {

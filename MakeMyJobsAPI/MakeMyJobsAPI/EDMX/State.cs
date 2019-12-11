@@ -19,6 +19,7 @@ namespace MakeMyJobsAPI.EDMX
         {
             this.Students = new HashSet<Student>();
             this.Employees = new HashSet<Employee>();
+            this.Corporates = new HashSet<Corporate>();
         }
     
         public int StateId { get; set; }
@@ -28,5 +29,7 @@ namespace MakeMyJobsAPI.EDMX
         public virtual ICollection<Student> Students { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employees { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Corporate> Corporates { get; set; }
     }
 }

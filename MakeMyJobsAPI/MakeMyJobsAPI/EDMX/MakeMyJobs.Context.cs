@@ -34,5 +34,6 @@ namespace MakeMyJobsAPI.EDMX
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeExperience> EmployeeExperiences { get; set; }
         public virtual DbSet<EmployeeEducation> EmployeeEducations { get; set; }
+        public virtual DbSet<Corporate> Corporates { get; set; }
     }
 }

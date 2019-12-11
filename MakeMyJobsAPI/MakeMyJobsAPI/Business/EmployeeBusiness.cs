@@ -112,7 +112,6 @@ namespace MakeMyJobsAPI.Business
         {
             using (var context = new MakeMyJobsEntities())
             {
-                StudentInfoModel studentInfo = new StudentInfoModel();
                 int updated = 0;
                 var user = context.Users.FirstOrDefault(x => x.UserId == model.userId && x.IsActive == 1);
                 var employee = context.Employees.FirstOrDefault(x => x.EmployeeId == model.employeeId);

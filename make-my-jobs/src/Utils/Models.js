@@ -132,6 +132,29 @@ export class ProffessionalModel {
     }
 }
 
+export class CorporateModel {
+    constructor() {
+        this.userId = 0;
+        this.corporateId = 0;
+        this.email = '';
+        this.city = '';
+        this.address = '';
+        this.zipCode = '';
+        this.contactNumber = '';
+        this.state = '';
+        this.country = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.companyName = '';
+        this.companyInfo = '';
+        this.logo = '';
+        this.dateJoined = '';
+        this.dateOfBirth = '';
+        this.corporateJobs = [];
+        this.corporateInternships = [];
+    }
+}
+
 export class EmployeeEducationModel {
     constructor() {
         this.empEducationId = 0;

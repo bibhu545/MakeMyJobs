@@ -40,3 +40,6 @@ hr{
 small{
     color: grey;
 }
+.float-right{
+    float: right;
+}

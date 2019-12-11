@@ -36,11 +36,30 @@ namespace MakeMyJobsAPI.Business
                 }
                 else
                 {
-
+                    created += AccountBusiness.CreateCorporate(model, user.UserId);
                 }
                 return created;
             }
         }
+
+        public static int CreateCorporate(SignupModel model, int userId)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                context.Corporates.Add(new Corporate()
+                {
+                    FirstName = model.firstName,
+                    LastName = model.lastName,
+                    UserId = userId,
+                    State = 0,
+                    Country = 0,
+                    DateJoined = DateTime.Now,
+                    IsActive = 1
+                });
+                return context.SaveChanges();
+            }
+        }
+
         public static int CreateEmployee(SignupModel model, int userId)
         {
             using (var context = new MakeMyJobsEntities())
@@ -57,6 +76,7 @@ namespace MakeMyJobsAPI.Business
                 return context.SaveChanges();
             }
         }
+
         public static int CreateStudent(SignupModel model, int userId)
         {
             using (var context = new MakeMyJobsEntities())
@@ -73,6 +93,7 @@ namespace MakeMyJobsAPI.Business
                 return context.SaveChanges();
             }
         }
+
         public static LoginResponseModel Login(LoginModel model)
         {
             using (var context = new MakeMyJobsEntities())
@@ -102,7 +123,12 @@ namespace MakeMyJobsAPI.Business
                     }
                     else
                     {
-
+                        Corporate corporate = context.Corporates.FirstOrDefault(x => x.UserId == user.UserId);
+                        loginResponse.firstName = corporate.FirstName;
+                        loginResponse.lastName = corporate.LastName;
+                        loginResponse.userId = corporate.UserId;
+                        loginResponse.email = user.Email;
+                        loginResponse.userType = user.UserType;
                     }
                 }
                 else
@@ -112,6 +138,7 @@ namespace MakeMyJobsAPI.Business
                 return loginResponse;
             }
         }
+
         public static int ChangePassword(ChangePasswordModel model)
         {
             using (var context = new MakeMyJobsEntities())

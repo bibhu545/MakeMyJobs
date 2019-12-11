@@ -1,24 +1,24 @@
-﻿using System;
+﻿using MakeMyJobsAPI.Business;
+using MakeMyJobsAPI.Models;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MakeMyJobsAPI.Models;
-using MakeMyJobsAPI.Business;
 using static MakeMyJobsAPI.Utils.Constants;
-using System.Collections;
 
 namespace MakeMyJobsAPI.Controllers
 {
-    public class AccountController : Controller
+    public class CorporateController : Controller
     {
-        public JsonResult Signup(SignupModel model)
+        public JsonResult GetCorporateInfo(int id)
         {
             try
             {
-                var result = AccountBusiness.CreateUser(model);
+                var result = CorporateBusiness.GetCorporateInfo(id);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
-                return new JsonResult { Data = response };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch (Exception ex)
             {
@@ -26,13 +26,13 @@ namespace MakeMyJobsAPI.Controllers
             }
         }
 
-        public JsonResult Login(LoginModel model)
+        public JsonResult GetCorporateInfoForEdit(int id)
         {
             try
             {
-                var result = AccountBusiness.Login(model);
+                var result = CorporateBusiness.GetCorporateInfoForEdit(id);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
-                return new JsonResult { Data = response };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch (Exception ex)
             {
@@ -40,11 +40,11 @@ namespace MakeMyJobsAPI.Controllers
             }
         }
 
-        public JsonResult ChangePassword(ChangePasswordModel model)
+        public JsonResult UpdateCorporateBasicInfo(CorporateInfoModel model)
         {
             try
             {
-                var result = AccountBusiness.ChangePassword(model);
+                var result = CorporateBusiness.UpdateCorporateBasicInfo(model);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response };
             }
@@ -52,11 +52,6 @@ namespace MakeMyJobsAPI.Controllers
             {
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
-        }
-
-        public string test()
-        {
-            return "hello world";
         }
     }
 }

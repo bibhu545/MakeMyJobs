@@ -23,6 +23,10 @@
         <AssociationConnector Association="MakeMyJobsModel.FK_EmployeeExperience_Employee" />
         <EntityTypeShape EntityType="MakeMyJobsModel.EmployeeEducation" Width="1.5" PointX="5.25" PointY="17.25" />
         <AssociationConnector Association="MakeMyJobsModel.FK_EmployeeEducation_Employee" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.Corporate" Width="1.5" PointX="8" PointY="2.5" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Corporate_Country" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Corporate_State" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Corporate_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
