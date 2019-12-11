@@ -20,6 +20,41 @@ export class Navbar extends Component {
     render() {
         var isLoggedIn = new Utils().isLoggedIn();
         return (
+            // <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+            //     <div className="container">
+            //         <a class="navbar-brand" href="/">
+            //             <span dangerouslySetInnerHTML={{ __html: new Utils().siteName }}></span>
+            //         </a>
+            //         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            //             <span class="navbar-toggler-icon"></span>
+            //         </button>
+            //         <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            //             <ul class="navbar-nav">
+            //                 <li class="nav-item">
+            //                     <a class="nav-link" href="/user-home">Home</a>
+            //                 </li>
+            //                 <li class="nav-item">
+            //                     <a class="nav-link" href="/jobs">Jobs</a>
+            //                 </li>
+            //                 <li class="nav-item">
+            //                     <a class="nav-link" href="/internships">internships</a>
+            //                 </li>
+            //             </ul>
+            //             {
+            //                 isLoggedIn ?
+            //                     <ul className="nav navbar-nav ml-auto">
+            //                         <li class="nav-item"><a class="nav-link" href="/my-profile">My Profile</a></li>
+            //                         <li class="nav-item"><a class="nav-link" onClick={this.onLogOut} href='##'>Logout</a></li>
+            //                     </ul>
+            //                     :
+            //                     <ul className="nav navbar-nav ml-auto">
+            //                         <li class="nav-item"><a class="nav-link" href="/signup"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            //                         <li class="nav-item"><a class="nav-link" href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
+            //                     </ul>
+            //             }
+            //         </div>
+            //     </div>
+            // </nav>
             <nav className="navbar navbar-fixed-top navbar-inverse">
                 <div className="container">
                     <div className="navbar-header">

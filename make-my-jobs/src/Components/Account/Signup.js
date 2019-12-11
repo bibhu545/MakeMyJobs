@@ -25,7 +25,6 @@ export class Signup extends Component {
         this.user.userType = e.target.userType.value;
 
         this.http.postData('http://makemyjobs.me/Account/Signup', this.user).then(response => {
-            console.log(response);
             if(response.data.results[0] === -1){
                 new Utils().showErrorMessage("Email already registered.");
             }
@@ -35,7 +34,7 @@ export class Signup extends Component {
                 });
             }
             else {
-                console.log(response.data.errorMessage);
+                new Utils().showErrorMessage(response.data.errorMessage);
             }
         }).catch(error => {
             console.log(error);
@@ -49,7 +48,7 @@ export class Signup extends Component {
                 <Redirect to={
                     {
                         pathname: '/login',
-                        state: { successMessage: 'Please login to continue' }
+                        state: { successStatus: 1 }
                     }
                 }
                 />

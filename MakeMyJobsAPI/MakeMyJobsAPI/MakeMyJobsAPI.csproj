@@ -161,12 +161,23 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business\AccountBusiness.cs" />
     <Compile Include="Business\CommonBusiness.cs" />
+    <Compile Include="Business\EmployeeBusiness.cs" />
     <Compile Include="Business\StudentBusiness.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="EDMX\Country.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\Employee.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\EmployeeEducation.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\EmployeeExperience.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Lookup.cs">
@@ -204,6 +215,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CommonModels.cs" />
+    <Compile Include="Models\EmployeeModels.cs" />
     <Compile Include="Models\StudentModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -269,6 +281,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Common\" />
+    <Folder Include="Views\Employee\" />
     <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>

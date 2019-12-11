@@ -12,33 +12,36 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class Student
+    public partial class Employee
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Student()
+        public Employee()
         {
-            this.StudentDocuments = new HashSet<StudentDocument>();
+            this.EmployeeExperiences = new HashSet<EmployeeExperience>();
+            this.EmployeeEducations = new HashSet<EmployeeEducation>();
         }
     
-        public int StudentId { get; set; }
+        public int EmployeeId { get; set; }
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string CollegeName { get; set; }
-        public string ContactNumber { get; set; }
-        public Nullable<System.DateTime> DateOfBirth { get; set; }
-        public string Resume { get; set; }
-        public System.DateTime DateJoined { get; set; }
+        public string City { get; set; }
         public string Address { get; set; }
-        public string ZipCode { get; set; }
         public int State { get; set; }
         public int Country { get; set; }
+        public string ZipCode { get; set; }
+        public string ContactNumber { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public System.DateTime DateJoined { get; set; }
+        public string Resume { get; set; }
         public int IsActive { get; set; }
     
         public virtual Country Country1 { get; set; }
         public virtual State State1 { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StudentDocument> StudentDocuments { get; set; }
+        public virtual ICollection<EmployeeExperience> EmployeeExperiences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeEducation> EmployeeEducations { get; set; }
     }
 }

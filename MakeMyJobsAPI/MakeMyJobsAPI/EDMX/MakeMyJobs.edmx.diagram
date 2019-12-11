@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6b24a9e11f645cd81fbaa9dcb42e5c1" Name="Diagram1">
+      <Diagram DiagramId="b6b24a9e11f645cd81fbaa9dcb42e5c1" Name="Diagram1" ZoomLevel="84">
         <EntityTypeShape EntityType="MakeMyJobsModel.Country" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MakeMyJobsModel.Lookup" Width="1.5" PointX="5.75" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MakeMyJobsModel.State" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
@@ -15,6 +15,14 @@
         <AssociationConnector Association="MakeMyJobsModel.FK_Student_State" ManuallyRouted="false" />
         <AssociationConnector Association="MakeMyJobsModel.FK_Student_User" ManuallyRouted="false" />
         <AssociationConnector Association="MakeMyJobsModel.FK_StudentDocument_Student" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.Employee" Width="1.5" PointX="3" PointY="7.25" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Employee_Country" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Employee_State" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Employee_User" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.EmployeeExperience" Width="1.5" PointX="5.25" PointY="13.375" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_EmployeeExperience_Employee" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.EmployeeEducation" Width="1.5" PointX="5.25" PointY="17.25" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_EmployeeEducation_Employee" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

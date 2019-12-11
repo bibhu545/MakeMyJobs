@@ -21,3 +21,19 @@ strong{
 .short-hr{
     margin: 10px 50px;
 }
+.experience-wrapper{
+    background: linear-gradient(90deg, white, white, white, lightgrey);
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    transition: transform 0.2s;
+}
+.experience-wrapper:hover{
+    border: 1px solid royalblue;
+    transform: scale(1.01);
+}
+.experience-actions{
+    float: right;
+}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using MakeMyJobsAPI.Models;
 using MakeMyJobsAPI.EDMX;
+using static MakeMyJobsAPI.Utils.Constants;
 
 namespace MakeMyJobsAPI.Business
 {
@@ -25,19 +26,35 @@ namespace MakeMyJobsAPI.Business
                 user.IsActive = 1;
                 context.Users.Add(user);
                 created += context.SaveChanges();
-                if(model.userType == 1)
+                if(model.userType == UserTypes.Student)
                 {
                     created += AccountBusiness.CreateStudent(model, user.UserId);
                 }
-                else if(model.userType == 2)
+                else if(model.userType == UserTypes.Employee)
                 {
-
+                    created += AccountBusiness.CreateEmployee(model, user.UserId);
                 }
                 else
                 {
 
                 }
                 return created;
+            }
+        }
+        public static int CreateEmployee(SignupModel model, int userId)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                context.Employees.Add(new Employee() {
+                    FirstName = model.firstName,
+                    LastName = model.lastName,
+                    UserId = userId,
+                    State = 0,
+                    Country = 0,
+                    DateJoined = DateTime.Now,
+                    IsActive = 1
+                });
+                return context.SaveChanges();
             }
         }
         public static int CreateStudent(SignupModel model, int userId)
@@ -50,7 +67,8 @@ namespace MakeMyJobsAPI.Business
                     UserId = userId,
                     State = 0,
                     Country = 0,
-                    DateJoined = DateTime.Now
+                    DateJoined = DateTime.Now,
+                    IsActive = 1
                 });
                 return context.SaveChanges();
             }
@@ -64,7 +82,7 @@ namespace MakeMyJobsAPI.Business
                 if(user != null)
                 {
                     loginResponse.loggedIn = 1;
-                    if(user.UserType == 1)
+                    if(user.UserType == UserTypes.Student)
                     {
                         Student student = context.Students.FirstOrDefault(x => x.UserId == user.UserId);
                         loginResponse.firstName = student.FirstName;
@@ -73,9 +91,14 @@ namespace MakeMyJobsAPI.Business
                         loginResponse.email = user.Email;
                         loginResponse.userType = user.UserType;
                     }
-                    else if(user.UserType == 2)
+                    else if(user.UserType == UserTypes.Employee)
                     {
-
+                        Employee employee = context.Employees.FirstOrDefault(x => x.UserId == user.UserId);
+                        loginResponse.firstName = employee.FirstName;
+                        loginResponse.lastName = employee.LastName;
+                        loginResponse.userId = employee.UserId;
+                        loginResponse.email = user.Email;
+                        loginResponse.userType = user.UserType;
                     }
                     else
                     {

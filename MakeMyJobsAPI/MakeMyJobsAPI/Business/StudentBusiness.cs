@@ -49,6 +49,7 @@ namespace MakeMyJobsAPI.Business
                 }
             }
         }
+
         public static StudentInfoModel GetStudentInfoForEdit(int id)
         {
             using (var context = new MakeMyJobsEntities())
@@ -153,7 +154,7 @@ namespace MakeMyJobsAPI.Business
         {
             using (var context = new MakeMyJobsEntities())
             {
-                var previousResume = context.StudentDocuments.FirstOrDefault(x => x.StudentId == studentId && x.DosumentType == 1);
+                var previousResume = context.StudentDocuments.FirstOrDefault(x => x.StudentId == studentId && x.DocumentType == 1);
                 if (previousResume != null)
                 {
                     context.Entry(previousResume).State = System.Data.Entity.EntityState.Deleted;

@@ -11,14 +11,18 @@ export class Login extends Component {
         this.user = new LoginModel();
         this.loginResponse = new LoginResponseModel();
         this.state = {
-            successMessage: '',
             errorMessage: ''
         }
     }
 
     componentDidMount() {
-        if (this.state.successMessage !== "") {
-            new Utils().showDefaultMessage("Successfully signed up. Please login to continue.");
+        if (this.props.location.state !== undefined) {
+            if (this.props.location.state.successStatus === 1) {
+                new Utils().showDefaultMessage("Successfully signed up. Please login to continue.");
+                this.setState({
+                    successStatus: 0
+                })
+            }
         }
     }
 

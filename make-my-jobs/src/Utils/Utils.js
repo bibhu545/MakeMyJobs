@@ -53,7 +53,7 @@ export class Utils {
         var extractedDate = dateString.substring(6, dateString.length - 2);
         return new Date(parseInt(extractedDate)).toLocaleDateString();
     }
-    
+
     showDefaultMessage = (message) => {
         Swal.fire({
             title: message,
@@ -77,6 +77,39 @@ export class Utils {
                 popup: 'animated fadeOutUp faster'
             }
         })
+    }
+
+    showInlineDefaultMessage = (message) => {
+        Swal.fire(
+            'Deleted!',
+            message,
+            'success'
+        )
+    }
+
+    showInlineErrorMessage = (message, error = null) => {
+        Swal.fire(
+            'Deleted!',
+            message + error,
+            'error'
+        )
+    }
+    getInstituteTypeName = (id) => {
+        var typeName = "Institute name";
+        switch (id) {
+            case 1:
+                typeName = "School";
+                break;
+            case 2:
+                typeName = "College";
+                break;
+            case 3:
+                typeName = "Post Graduate";
+                break;
+            default:
+                break;
+        }
+        return typeName;
     }
 }
 

@@ -12,17 +12,17 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class StudentDocument
+    public partial class EmployeeEducation
     {
-        public int DocumentId { get; set; }
-        public int StudentId { get; set; }
-        public string DocumentName { get; set; }
-        public string DocumentNameOnDisk { get; set; }
-        public long DocumentSize { get; set; }
-        public System.DateTime LastUpdatedOn { get; set; }
-        public int DocumentType { get; set; }
+        public int EmpEducationId { get; set; }
+        public int EmployeeId { get; set; }
+        public string InstituteName { get; set; }
+        public int InstituteType { get; set; }
+        public decimal Percentage { get; set; }
+        public System.DateTime JoinedOn { get; set; }
+        public System.DateTime PassedOn { get; set; }
         public int IsActive { get; set; }
     
-        public virtual Student Student { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

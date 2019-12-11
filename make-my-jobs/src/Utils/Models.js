@@ -85,6 +85,13 @@ export class UserCookieInfoModel {
     }
 }
 
+export class DropDownModel {
+    constructor() {
+        this.value = 0;
+        this.text = "";
+    }
+}
+
 export class UserModel {
     constructor() {
         this.userId = 0;
@@ -104,9 +111,48 @@ export class UserModel {
     }
 }
 
-export class DropDownModel {
+export class ProffessionalModel {
     constructor() {
-        this.value = 0;
-        this.text = "";
+        this.userId = 0;
+        this.ProffesionalId = 0;
+        this.email = '';
+        this.city = '';
+        this.address = '';
+        this.zipCode = '';
+        this.contactNumber = '';
+        this.state = '';
+        this.country = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.resume = '';
+        this.dateJoined = '';
+        this.dateOfBirth = '';
+        this.employeeEducation = [];
+        this.employeeExperience = [];
+    }
+}
+
+export class EmployeeEducationModel {
+    constructor() {
+        this.empEducationId = 0;
+        this.employeeId = 0;
+        this.instituteName = "";
+        this.instituteType = 0;
+        this.percentage = 0.0;
+        this.joinedOn = '';
+        this.passedOn = '';
+        this.isActive = 0;
+    }
+}
+
+export class EmployeeExperienceModel {
+    constructor() {
+        this.empExperienceId = 0;
+        this.employeeId = 0;
+        this.companyName = "";
+        this.position = 0;
+        this.joinedOn = '';
+        this.leftOn = '';
+        this.isActive = 0;
     }
 }

@@ -4,13 +4,57 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MakeMyJobsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MakeMyJobsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="CountryId" />
           </Key>
           <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="100" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="Country" Type="int" Nullable="false" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="50" />
+          <Property Name="ContactNumber" Type="varchar" MaxLength="50" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="DateJoined" Type="datetime" Nullable="false" />
+          <Property Name="Resume" Type="varchar" MaxLength="500" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeEducation">
+          <Key>
+            <PropertyRef Name="EmpEducationId" />
+          </Key>
+          <Property Name="EmpEducationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="InstituteName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="InstituteType" Type="int" Nullable="false" />
+          <Property Name="Percentage" Type="decimal" Precision="10" Scale="4" Nullable="false" />
+          <Property Name="JoinedOn" Type="datetime" Nullable="false" />
+          <Property Name="PassedOn" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeExperience">
+          <Key>
+            <PropertyRef Name="EmpExperienceId" />
+          </Key>
+          <Property Name="EmpExperienceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="JoinedOn" Type="datetime" Nullable="false" />
+          <Property Name="LeftOn" Type="datetime" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Lookup">
           <Key>
@@ -46,6 +90,7 @@
           <Property Name="ZipCode" Type="varchar" MaxLength="50" />
           <Property Name="State" Type="int" Nullable="false" />
           <Property Name="Country" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="StudentDocument">
           <Key>
@@ -57,8 +102,8 @@
           <Property Name="DocumentNameOnDisk" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="DocumentSize" Type="bigint" Nullable="false" />
           <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
-          <Property Name="ActiveStatus" Type="int" Nullable="false" />
-          <Property Name="DosumentType" Type="int" Nullable="false" />
+          <Property Name="DocumentType" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -70,6 +115,66 @@
           <Property Name="UserType" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Employee_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_State">
+          <End Role="State" Type="Self.State" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeEducation_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeEducation" Type="Self.EmployeeEducation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeEducation">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeExperience_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeExperience" Type="Self.EmployeeExperience" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeExperience">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
@@ -120,11 +225,34 @@
         </Association>
         <EntityContainer Name="MakeMyJobsModelStoreContainer">
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeEducation" EntityType="Self.EmployeeEducation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeExperience" EntityType="Self.EmployeeExperience" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lookup" EntityType="Self.Lookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentDocument" EntityType="Self.StudentDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employee_Country" Association="Self.FK_Employee_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_State" Association="Self.FK_Employee_State">
+            <End Role="State" EntitySet="State" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_User" Association="Self.FK_Employee_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeEducation_Employee" Association="Self.FK_EmployeeEducation_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeEducation" EntitySet="EmployeeEducation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeExperience_Employee" Association="Self.FK_EmployeeExperience_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeExperience" EntitySet="EmployeeExperience" />
+          </AssociationSet>
           <AssociationSet Name="FK_Student_Country" Association="Self.FK_Student_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="Student" EntitySet="Student" />
@@ -142,8 +270,7 @@
             <End Role="StudentDocument" EntitySet="StudentDocument" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MakeMyJobsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -154,6 +281,7 @@
           <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Student_Country" FromRole="Country" ToRole="Student" />
+          <NavigationProperty Name="Employees" Relationship="MakeMyJobsModel.FK_Employee_Country" FromRole="Country" ToRole="Employee" />
         </EntityType>
         <EntityType Name="Lookup">
           <Key>
@@ -172,6 +300,7 @@
           <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Student_State" FromRole="State" ToRole="Student" />
+          <NavigationProperty Name="Employees" Relationship="MakeMyJobsModel.FK_Employee_State" FromRole="State" ToRole="Employee" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -194,6 +323,7 @@
           <NavigationProperty Name="State1" Relationship="Self.FK_Student_State" FromRole="Student" ToRole="State" />
           <NavigationProperty Name="User" Relationship="Self.FK_Student_User" FromRole="Student" ToRole="User" />
           <NavigationProperty Name="StudentDocuments" Relationship="Self.FK_StudentDocument_Student" FromRole="Student" ToRole="StudentDocument" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="StudentDocument">
           <Key>
@@ -205,9 +335,9 @@
           <Property Name="DocumentNameOnDisk" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DocumentSize" Type="Int64" Nullable="false" />
           <Property Name="LastUpdatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ActiveStatus" Type="Int32" Nullable="false" />
-          <Property Name="DosumentType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Student" Relationship="Self.FK_StudentDocument_Student" FromRole="StudentDocument" ToRole="Student" />
+          <Property Name="DocumentType" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -219,6 +349,7 @@
           <Property Name="UserType" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Student_User" FromRole="User" ToRole="Student" />
+          <NavigationProperty Name="Employees" Relationship="MakeMyJobsModel.FK_Employee_User" FromRole="User" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_Student_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="1" />
@@ -291,7 +422,141 @@
             <End Role="Student" EntitySet="Students" />
             <End Role="StudentDocument" EntitySet="StudentDocuments" />
           </AssociationSet>
+          <EntitySet Name="Employees" EntityType="MakeMyJobsModel.Employee" />
+          <AssociationSet Name="FK_Employee_Country" Association="MakeMyJobsModel.FK_Employee_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_State" Association="MakeMyJobsModel.FK_Employee_State">
+            <End Role="State" EntitySet="States" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_User" Association="MakeMyJobsModel.FK_Employee_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <EntitySet Name="EmployeeExperiences" EntityType="MakeMyJobsModel.EmployeeExperience" />
+          <AssociationSet Name="FK_EmployeeExperience_Employee" Association="MakeMyJobsModel.FK_EmployeeExperience_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeExperience" EntitySet="EmployeeExperiences" />
+          </AssociationSet>
+          <EntitySet Name="EmployeeEducations" EntityType="MakeMyJobsModel.EmployeeEducation" />
+          <AssociationSet Name="FK_EmployeeEducation_Employee" Association="MakeMyJobsModel.FK_EmployeeEducation_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeEducation" EntitySet="EmployeeEducations" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="Country" Type="Int32" Nullable="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="DateJoined" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="Resume" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Country1" Relationship="MakeMyJobsModel.FK_Employee_Country" FromRole="Employee" ToRole="Country" />
+          <NavigationProperty Name="State1" Relationship="MakeMyJobsModel.FK_Employee_State" FromRole="Employee" ToRole="State" />
+          <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_Employee_User" FromRole="Employee" ToRole="User" />
+          <NavigationProperty Name="EmployeeExperiences" Relationship="MakeMyJobsModel.FK_EmployeeExperience_Employee" FromRole="Employee" ToRole="EmployeeExperience" />
+          <NavigationProperty Name="EmployeeEducations" Relationship="MakeMyJobsModel.FK_EmployeeEducation_Employee" FromRole="Employee" ToRole="EmployeeEducation" />
+        </EntityType>
+        <Association Name="FK_Employee_Country">
+          <End Type="MakeMyJobsModel.Country" Role="Country" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.Employee" Role="Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_State">
+          <End Type="MakeMyJobsModel.State" Role="State" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.Employee" Role="Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_User">
+          <End Type="MakeMyJobsModel.User" Role="User" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.Employee" Role="Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmployeeExperience">
+          <Key>
+            <PropertyRef Name="EmpExperienceId" />
+          </Key>
+          <Property Name="EmpExperienceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JoinedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LeftOn" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="MakeMyJobsModel.FK_EmployeeExperience_Employee" FromRole="EmployeeExperience" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_EmployeeExperience_Employee">
+          <End Type="MakeMyJobsModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.EmployeeExperience" Role="EmployeeExperience" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeExperience">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmployeeEducation">
+          <Key>
+            <PropertyRef Name="EmpEducationId" />
+          </Key>
+          <Property Name="EmpEducationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="InstituteName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="InstituteType" Type="Int32" Nullable="false" />
+          <Property Name="Percentage" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="JoinedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PassedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="MakeMyJobsModel.FK_EmployeeEducation_Employee" FromRole="EmployeeEducation" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_EmployeeEducation_Employee">
+          <End Type="MakeMyJobsModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.EmployeeEducation" Role="EmployeeEducation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeEducation">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -328,6 +593,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="MakeMyJobsModel.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -347,15 +613,15 @@
           <EntitySetMapping Name="StudentDocuments">
             <EntityTypeMapping TypeName="MakeMyJobsModel.StudentDocument">
               <MappingFragment StoreEntitySet="StudentDocument">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
                 <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
                 <ScalarProperty Name="DocumentNameOnDisk" ColumnName="DocumentNameOnDisk" />
                 <ScalarProperty Name="DocumentSize" ColumnName="DocumentSize" />
                 <ScalarProperty Name="LastUpdatedOn" ColumnName="LastUpdatedOn" />
-                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
-                <ScalarProperty Name="DosumentType" ColumnName="DosumentType" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
@@ -366,6 +632,53 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Resume" ColumnName="Resume" />
+                <ScalarProperty Name="DateJoined" ColumnName="DateJoined" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeExperiences">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.EmployeeExperience">
+              <MappingFragment StoreEntitySet="EmployeeExperience">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LeftOn" ColumnName="LeftOn" />
+                <ScalarProperty Name="JoinedOn" ColumnName="JoinedOn" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmpExperienceId" ColumnName="EmpExperienceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeEducations">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.EmployeeEducation">
+              <MappingFragment StoreEntitySet="EmployeeEducation">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PassedOn" ColumnName="PassedOn" />
+                <ScalarProperty Name="JoinedOn" ColumnName="JoinedOn" />
+                <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+                <ScalarProperty Name="InstituteType" ColumnName="InstituteType" />
+                <ScalarProperty Name="InstituteName" ColumnName="InstituteName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmpEducationId" ColumnName="EmpEducationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

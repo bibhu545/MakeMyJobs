@@ -34,3 +34,9 @@ hr{
     min-height: 80vh;
     /* padding-top: 50px; */
 }
+.glyphicon{
+    top: 5px;
+}
+small{
+    color: grey;
+}
