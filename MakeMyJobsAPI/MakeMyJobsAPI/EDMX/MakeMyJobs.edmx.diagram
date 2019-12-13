@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6b24a9e11f645cd81fbaa9dcb42e5c1" Name="Diagram1" ZoomLevel="84">
+      <Diagram DiagramId="b6b24a9e11f645cd81fbaa9dcb42e5c1" Name="Diagram1" ZoomLevel="70">
         <EntityTypeShape EntityType="MakeMyJobsModel.Country" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MakeMyJobsModel.Lookup" Width="1.5" PointX="5.75" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MakeMyJobsModel.State" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
@@ -27,7 +27,22 @@
         <AssociationConnector Association="MakeMyJobsModel.FK_Corporate_Country" />
         <AssociationConnector Association="MakeMyJobsModel.FK_Corporate_State" />
         <AssociationConnector Association="MakeMyJobsModel.FK_Corporate_User" />
-      </Diagram>
+        <EntityTypeShape EntityType="MakeMyJobsModel.City" Width="1.5" PointX="8.125" PointY="8.75" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.JobCity" Width="1.5" PointX="10.625" PointY="8.75" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobCity_City" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.Job" Width="1.5" PointX="3" PointY="12.875" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobCity_Jobs" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Jobs_User" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.JobQuestion" Width="1.5" PointX="5.25" PointY="10.5" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobQuestions_Jobs" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.InternshipCity" Width="1.5" PointX="8.625" PointY="12.625" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.InternshipQuestion" Width="1.5" PointX="5.25" PointY="20.375" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.Internship" Width="1.5" PointX="1.75" PointY="17.875" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipCity_City" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipCity_Internships" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipQuestions_Internships" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_Internships_User" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

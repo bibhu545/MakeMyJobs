@@ -27,5 +27,20 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+
+        [HttpGet]
+        public JsonResult GetCities()
+        {
+            try
+            {
+                var cities = CommonBusiness.GetCities();
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { cities } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
     }
 }

@@ -42,5 +42,16 @@ namespace MakeMyJobsAPI.Business
                 }).ToList();
             }
         }
+        public static List<DropdownModel> GetCities()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.Cities.Select(x => new DropdownModel()
+                {
+                    value = x.CityId,
+                    text = x.CityName
+                }).ToList();
+            }
+        }
     }
 }

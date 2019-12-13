@@ -20,6 +20,8 @@ namespace MakeMyJobsAPI.EDMX
             this.Students = new HashSet<Student>();
             this.Employees = new HashSet<Employee>();
             this.Corporates = new HashSet<Corporate>();
+            this.Jobs = new HashSet<Job>();
+            this.Internships = new HashSet<Internship>();
         }
     
         public int UserId { get; set; }
@@ -34,5 +36,9 @@ namespace MakeMyJobsAPI.EDMX
         public virtual ICollection<Employee> Employees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Corporate> Corporates { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Job> Jobs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Internship> Internships { get; set; }
     }
 }

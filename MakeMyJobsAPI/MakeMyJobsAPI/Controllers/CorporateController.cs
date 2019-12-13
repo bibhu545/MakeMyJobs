@@ -53,5 +53,33 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+
+        public JsonResult CreateJob(JobModel model)
+        {
+            try
+            {
+                var result = CorporateBusiness.CreateJob(model);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public JsonResult CreateInternship(InternshipModel model)
+        {
+            try
+            {
+                var result = CorporateBusiness.CreateInternship(model);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
     }
 }

@@ -39,4 +39,12 @@ strong{
 }
 .left-content{
     padding: 0px 50px;
+    padding-bottom: 50px;
+}
+.job-desc-user{
+    background: lightgrey;
+    border-bottom: 1px solid grey;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
 }

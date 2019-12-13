@@ -1,6 +1,99 @@
 import React, { Component } from 'react'
+import Select from 'react-select';
+import HttpService from '../../Utils/HttpServices';
+import Utils from '../../Utils/Utils';
+import { InternshipModel } from '../../Utils/Models';
 
 export class AddInternship extends Component {
+    constructor(props) {
+        super(props)
+        this.http = new HttpService();
+        this.user = new Utils().getUserInfoFromCookies();
+        this.utils = new Utils();
+        this.state = {
+            selectedCity: [],
+            cityOpyions: [],
+            questions: [],
+            internship: new InternshipModel()
+        }
+    }
+
+    componentDidMount() {
+        this.http.getData('http://makemyjobs.me/Common/GetCities').then(response => {
+            if (response.data.results.length > 0) {
+                var citiesFromServer = response.data.results[0];
+                var tempCities = [];
+                citiesFromServer.forEach(element => {
+                    tempCities.push({ value: element.value, label: element.text });
+                });
+                this.setState({
+                    cityOpyions: tempCities
+                })
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    handleInternshipFormChange = (e) => {
+        let inputName = e.target.name;
+        let inputValue = e.target.value;
+        let statusCopy = Object.assign({}, this.state);
+        statusCopy.internship[inputName] = inputValue;
+        this.setState(statusCopy);
+    }
+
+    onInternshipCreated = (e) => {
+        e.preventDefault();
+        var tempInternship = this.state.internship;
+        tempInternship.isWFHAvailable = e.target.isWFHAvailable.checked;
+        tempInternship.isPartTimeAvailable = e.target.isPartTimeAvailable.checked;
+        tempInternship.jobOffer = e.target.jobOffer.checked;
+        tempInternship.userId = this.user.userId;
+
+        var cities = [];
+        this.state.selectedCity.forEach(element => {
+            cities.push({ value: element.value, text: element.label });
+        });
+        tempInternship.locations = cities;
+        
+        var validationMessage = this.validateInternshipForm(tempInternship);
+        if (validationMessage !== "") {
+            this.utils.showErrorMessage(validationMessage);
+        }
+        else {
+            this.http.postData('http://makemyjobs.me/Corporate/CreateInternship', tempInternship).then(response => {
+                if (response.data.results != null) {
+                    if (response.data.results[0] > 1) {
+                        window.location = '/user-home';
+                    }
+                    else {
+                        this.utils.showErrorMessage("Some error occured. Please try again.");
+                    }
+                }
+                else {
+                    this.utils.showErrorMessage("Some error occured. Please try again.");
+                }
+            }).catch(error => {
+                console.log(error);
+                this.utils.showErrorMessage("Internal server error.");
+            });
+        }
+    }
+
+    handleCityChange = selectedCity => {
+        this.setState({
+            selectedCity
+        })
+    };
+
+    validateInternshipForm = (tempInternship) => {
+        var errorMessage = "";
+        if (tempInternship.locations.length === 0) {
+            errorMessage = "Please select at least one location.";
+        }
+        return errorMessage;
+    }
     render() {
         return (
             <React.Fragment>
@@ -9,31 +102,41 @@ export class AddInternship extends Component {
                         <h3 className='center-content'>- Post a New Internship -</h3>
                         <div className='col-md-2 col-xs-12'></div>
                         <div className='col-md-8 col-xs-12'>
-                            <form onSubmit={this.onJobsCreated}>
+                            <form onSubmit={this.onInternshipCreated}>
                                 <div className='form-group'>
-                                    <label htmlFor='internshipTitle'>Internship title*:</label>
-                                    <input type='text' className='form-control' name='internshipTitle' id='internshipTitle' placeholder='E.g. React Web developer' />
+                                    <label htmlFor='title'>Internship title*:</label>
+                                    <input type='text' className='form-control' name='title' id='title' placeholder='E.g. React Web developer' onChange={this.handleInternshipFormChange} />
                                 </div>
                                 <div className='form-group'>
-                                    <label htmlFor='internshipDescrption'>Internship description*:</label>
-                                    <textarea rows='5' className='form-control' name='internshipDescrption' id='internshipDescrption' placeholder='Some key points about this internship' ></textarea>
+                                    <label htmlFor='description'>Internship description*:</label>
+                                    <textarea rows='5' className='form-control' name='description' id='description' placeholder='Some key points about this internship' onChange={this.handleInternshipFormChange} ></textarea>
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='locations'>Locations*:</label>
-                                    <input type='text' className='form-control' name='locations' id='locations' placeholder='Select at least one location' />
+                                    {/* <input type='text' className='form-control' name='locations' id='locations' placeholder='Select at least one location' /> */}
+                                    <Select
+                                        value={this.state.selectedCity}
+                                        isMulti
+                                        name='locations'
+                                        onChange={this.handleCityChange}
+                                        options={this.state.cityOpyions}
+                                        className="basic-multi-select"
+                                        classNamePrefix="select"
+                                        id='locations'
+                                    />
                                 </div>
 
                                 <div className='row'>
                                     <div className='col-md-6 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='startDate'>Start date*:</label>
-                                            <input type='date' className='form-control' name='startDate' id='startDate' />
+                                            <input type='date' className='form-control' name='startDate' id='startDate' onChange={this.handleInternshipFormChange} />
                                         </div>
                                     </div>
                                     <div className='col-md-6 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='expiryDate'>Expires on*:</label>
-                                            <input type='date' className='form-control' name='expiryDate' id='expiryDate' />
+                                            <input type='date' className='form-control' name='expiryDate' id='expiryDate' onChange={this.handleInternshipFormChange} />
                                         </div>
                                     </div>
                                 </div>
@@ -42,41 +145,41 @@ export class AddInternship extends Component {
                                     <div className='col-md-4 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='minStipend'>Min stipend*:</label>
-                                            <input type='number' className='form-control' name='minStipend' id='minStipend' placeholder='In INR Only' />
+                                            <input type='number' className='form-control' name='minStipend' id='minStipend' placeholder='In INR Only' onChange={this.handleInternshipFormChange} />
                                         </div>
                                     </div>
                                     <div className='col-md-4 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='maxStipend'>Max stipend:</label>
-                                            <input type='number' className='form-control' name='maxStipend' id='maxStipend' placeholder='Leave blank if subject dependant' />
+                                            <input type='number' className='form-control' name='maxStipend' id='maxStipend' placeholder='Leave blank if subject dependant' onChange={this.handleInternshipFormChange} />
                                         </div>
                                     </div>
                                     <div className='col-md-4 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='postsAvailable'>Posts available:</label>
-                                            <input type='number' className='form-control' name='postsAvailable' id='postsAvailable' placeholder='E.g. 5' />
+                                            <input type='number' className='form-control' name='postsAvailable' id='postsAvailable' placeholder='E.g. 5' onChange={this.handleInternshipFormChange} />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className='row'>
                                     <div className='col-md-4 col-xs-12'>
-                                        <div class="checkbox">
-                                            <label><input type="checkbox" value="" />Work from home available</label>
+                                        <div className="checkbox">
+                                            <label><input type="checkbox" name='isWFHAvailable' />Work from home available</label>
                                         </div>
                                     </div>
                                     <div className='col-md-4 col-xs-12'>
-                                        <div class="checkbox">
-                                            <label><input type="checkbox" value="" />Part time available</label>
+                                        <div className="checkbox">
+                                            <label><input type="checkbox" name="isPartTimeAvailable" />Part time available</label>
                                         </div>
                                     </div>
                                     <div className='col-md-4 col-xs-12'>
-                                        <div class="checkbox">
-                                            <label><input type="checkbox" value="" />Job offer on completion</label>
+                                        <div className="checkbox">
+                                            <label><input type="checkbox" name="jobOffer" />Job offer on completion</label>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <hr />
                                 <div className='center-content'>
                                     <h4>Optional Content</h4>
@@ -85,19 +188,19 @@ export class AddInternship extends Component {
                                 <hr />
                                 <div className='form-group'>
                                     <label htmlFor='questionOne'>Question 1:</label>
-                                    <textarea rows='3' className='form-control' name='questionOne' id='questionOne' placeholder='E.g. Please provide Links or demos of works.' />
+                                    <textarea rows='3' className='form-control' name='questionOne' id='questionOne' placeholder='E.g. Please provide Links or demos of works.' onChange={this.handleInternshipFormChange} />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='questionTwo'>Question 2:</label>
-                                    <textarea rows='3' className='form-control' name='questionTwo' id='questionTwo' placeholder='E.g. Some questions related to this internship.' />
+                                    <textarea rows='3' className='form-control' name='questionTwo' id='questionTwo' placeholder='E.g. Some questions related to this internship.' onChange={this.handleInternshipFormChange} />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='questionThree'>Question 3:</label>
-                                    <textarea rows='3' className='form-control' name='questionThree' id='questionThree' placeholder='E.g. Some other basic questions.' />
+                                    <textarea rows='3' className='form-control' name='questionThree' id='questionThree' placeholder='E.g. Some other basic questions.' onChange={this.handleInternshipFormChange} />
                                 </div>
-                                <div class='center-content'>
+                                <div className='center-content'>
                                     <button type='submit' className='btn btn-primary'>Post Now</button>
-                                    <a href='/jobs' className='btn btn-default'>Cancel</a>
+                                    <a href='/user-home' className='btn btn-default'>Cancel</a>
                                 </div>
                             </form>
                             <br />

@@ -1,17 +1,95 @@
 import React, { Component } from 'react'
+import Select from 'react-select';
+import HttpService from '../../Utils/HttpServices';
+import { JobModel } from '../../Utils/Models';
+import Utils from '../../Utils/Utils';
+
 
 export class AddJob extends Component {
 
     constructor(props) {
         super(props)
-
+        this.http = new HttpService();
+        this.user = new Utils().getUserInfoFromCookies();
+        this.utils = new Utils();
         this.state = {
-
+            selectedCity: [],
+            cityOpyions: [],
+            questions: [],
+            job: new JobModel()
         }
     }
 
+    componentDidMount() {
+        this.http.getData('http://makemyjobs.me/Common/GetCities').then(response => {
+            if (response.data.results.length > 0) {
+                var citiesFromServer = response.data.results[0];
+                var tempCities = [];
+                citiesFromServer.forEach(element => {
+                    tempCities.push({ value: element.value, label: element.text });
+                });
+                this.setState({
+                    cityOpyions: tempCities
+                })
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    handleJobFormChange = (e) => {
+        let inputName = e.target.name;
+        let inputValue = e.target.value;
+        let statusCopy = Object.assign({}, this.state);
+        statusCopy.job[inputName] = inputValue;
+        this.setState(statusCopy);
+    }
+
+    handleCityChange = selectedCity => {
+        this.setState({
+            selectedCity
+        })
+    };
+
     onJobsCreated = (e) => {
         e.preventDefault();
+        var tempJob = this.state.job;
+        tempJob.userId = this.user.userId;
+        var cities = [];
+        this.state.selectedCity.forEach(element => {
+            cities.push({ value: element.value, text: element.label });
+        });
+        tempJob.locations = cities;
+        var validationMessage = this.validateJobForm(tempJob);
+        if (validationMessage !== "") {
+            this.utils.showErrorMessage(validationMessage);
+        }
+        else {
+            this.http.postData('http://makemyjobs.me/Corporate/CreateJob', tempJob).then(response => {
+                if (response.data.results != null) {
+                    if (response.data.results[0] > 1) {
+                        window.location = '/user-home';
+                    }
+                    else {
+                        this.utils.showErrorMessage("Some error occured. Please try again.");
+                    }
+                }
+                else {
+                    this.utils.showErrorMessage("Some error occured. Please try again.");
+                }
+            }).catch(error => {
+                console.log(error);
+                this.utils.showErrorMessage("Internal server error.");
+            });
+        }
+    }
+
+    validateJobForm = (tempJob) => {
+        var errorMessage = "";
+        if (tempJob.locations.length === 0) {
+            errorMessage = "Please select at least one location.";
+        }
+        return errorMessage;
     }
 
     render() {
@@ -25,27 +103,37 @@ export class AddJob extends Component {
                             <form onSubmit={this.onJobsCreated}>
                                 <div className='form-group'>
                                     <label htmlFor='jobTitle'>Job title*:</label>
-                                    <input type='text' className='form-control' name='jobTitle' id='jobTitle' placeholder='E.g. Senior Software Engineer' />
+                                    <input type='text' className='form-control' name='jobTitle' id='jobTitle' placeholder='E.g. Senior Software Engineer' onChange={this.handleJobFormChange} />
                                 </div>
                                 <div className='form-group'>
-                                    <label htmlFor='jobDescrption'>Job description*:</label>
-                                    <textarea rows='5' className='form-control' name='jobDescrption' id='jobDescrption' placeholder='Some key points about this job' ></textarea>
+                                    <label htmlFor='descrption'>Job description*:</label>
+                                    <textarea rows='5' className='form-control' name='description' id='descrption' placeholder='Some key points about this job' onChange={this.handleJobFormChange}></textarea>
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='locations'>Locations*:</label>
-                                    <input type='text' className='form-control' name='locations' id='locations' placeholder='Select at least one location' />
+                                    {/* <input type='text' className='form-control' name='locations' id='locations' placeholder='Select at least one location' /> */}
+                                    <Select
+                                        value={this.state.selectedCity}
+                                        isMulti
+                                        name='locations'
+                                        onChange={this.handleCityChange}
+                                        options={this.state.cityOpyions}
+                                        className="basic-multi-select"
+                                        classNamePrefix="select"
+                                        id='locations'
+                                    />
                                 </div>
                                 <div className='row'>
                                     <div className='col-md-6 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='experience'>Minimum Experience*:</label>
-                                            <input type='number' className='form-control' name='experience' id='experience' placeholder='E.g. 4(in years only)' />
+                                            <input type='number' className='form-control' name='experience' id='experience' placeholder='E.g. 4(in years only)' onChange={this.handleJobFormChange} />
                                         </div>
                                     </div>
                                     <div className='col-md-6 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='expiryDate'>Expires on*:</label>
-                                            <input type='date' className='form-control' name='expiryDate' id='expiryDate' />
+                                            <input type='date' className='form-control' name='expiryDate' id='expiryDate' onChange={this.handleJobFormChange} />
                                         </div>
                                     </div>
                                 </div>
@@ -53,19 +141,19 @@ export class AddJob extends Component {
                                     <div className='col-md-4 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='minSalary'>Min salary*:</label>
-                                            <input type='number' className='form-control' name='minSalary' id='minSalary' placeholder='In INR Only' />
+                                            <input type='number' className='form-control' name='minSalary' id='minSalary' placeholder='In INR Only' onChange={this.handleJobFormChange} />
                                         </div>
                                     </div>
                                     <div className='col-md-4 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='maxSalary'>Max salary:</label>
-                                            <input type='number' className='form-control' name='maxSalary' id='maxSalary' placeholder='Leave blank if subject dependant' />
+                                            <input type='number' className='form-control' name='maxSalary' id='maxSalary' placeholder='Leave blank if subject dependant' onChange={this.handleJobFormChange} />
                                         </div>
                                     </div>
                                     <div className='col-md-4 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='postsAvailable'>Posts available:</label>
-                                            <input type='number' className='form-control' name='postsAvailable' id='postsAvailable' placeholder='E.g. 5' />
+                                            <input type='number' className='form-control' name='postsAvailable' id='postsAvailable' placeholder='E.g. 5' onChange={this.handleJobFormChange} />
                                         </div>
                                     </div>
                                 </div>
@@ -77,19 +165,19 @@ export class AddJob extends Component {
                                 <hr />
                                 <div className='form-group'>
                                     <label htmlFor='questionOne'>Question 1:</label>
-                                    <textarea rows='3' className='form-control' name='questionOne' id='questionOne' placeholder='E.g. Please provide Links or demos of works.' />
+                                    <textarea rows='3' className='form-control' name='questionOne' id='questionOne' placeholder='E.g. Please provide Links or demos of works.' onChange={this.handleJobFormChange} />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='questionTwo'>Question 2:</label>
-                                    <textarea rows='3' className='form-control' name='questionTwo' id='questionTwo' placeholder='E.g. Some questions related to this job.' />
+                                    <textarea rows='3' className='form-control' name='questionTwo' id='questionTwo' placeholder='E.g. Some questions related to this job.' onChange={this.handleJobFormChange} />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='questionThree'>Question 3:</label>
-                                    <textarea rows='3' className='form-control' name='questionThree' id='questionThree' placeholder='E.g. Some other basic questions.' />
+                                    <textarea rows='3' className='form-control' name='questionThree' id='questionThree' placeholder='E.g. Some other basic questions.' onChange={this.handleJobFormChange} />
                                 </div>
-                                <div class='center-content'>
+                                <div className='center-content'>
                                     <button type='submit' className='btn btn-primary'>Post Now</button>
-                                    <a href='/jobs' className='btn btn-default'>Cancel</a>
+                                    <a href='/user-home' className='btn btn-default'>Cancel</a>
                                 </div>
                             </form>
                             <br />

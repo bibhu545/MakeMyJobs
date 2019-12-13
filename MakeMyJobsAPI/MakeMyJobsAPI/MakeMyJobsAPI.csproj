@@ -170,6 +170,9 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="EDMX\City.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDMX\Corporate.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
@@ -183,6 +186,24 @@
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\EmployeeExperience.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\Internship.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\InternshipCity.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\InternshipQuestion.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\Job.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\JobCity.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\JobQuestion.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Lookup.cs">

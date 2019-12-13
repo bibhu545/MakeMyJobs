@@ -34,47 +34,6 @@ export class ChangePasswordModel {
     }
 }
 
-export class JobModel {
-    constructor() {
-        this.jobId = 0;
-        this.title = '';
-        this.description = '';
-        this.company = '';
-        this.image = 0;
-        this.experience = '';
-        this.location = '';
-        this.postsAvailable = 0;
-        this.tags = '';
-        this.salary = '';
-        this.postedBy = '';
-        this.additionalInfo = '';
-        this.expiryDate = '';
-        this.postedOn = '';
-    }
-}
-
-export class InternshipModel {
-    constructor() {
-        this.internshipId = 0;
-        this.title = '';
-        this.description = '';
-        this.company = '';
-        this.image = 0;
-        this.skillsRequired = '';
-        this.internshipType = 0;
-        this.postsAvailable = 0;
-        this.location = '';
-        this.duration = 0;
-        this.tags = '';
-        this.stipend = '';
-        this.postedBy = '';
-        this.additionalInfo = '';
-        this.startDate = '';
-        this.expiryDate = '';
-        this.postedOn = '';
-    }
-}
-
 export class UserCookieInfoModel {
     constructor() {
         this.userId = 0;
@@ -177,5 +136,47 @@ export class EmployeeExperienceModel {
         this.joinedOn = '';
         this.leftOn = '';
         this.isActive = 0;
+    }
+}
+
+export class JobModel {
+    constructor() {
+        this.jobId = 0;
+        this.userId = 0;
+        this.jobTitle = '';
+        this.description = '';
+        this.locations = [];
+        this.experience = 0;
+        this.expiryDate = '';
+        this.minSalary = 0;
+        this.maxSalary = 0;
+        this.postsAvailable = 0;
+        this.questionOne = '';
+        this.questionTwo = '';
+        this.questionThree = '';
+    }
+}
+
+export class InternshipModel {
+    constructor() {
+        this.internshipId = 0;
+        this.userId = 0;
+        this.title = '';
+        this.description = '';
+        this.locations = [];
+        this.startDate = '';
+        this.expiryDate = '';
+        this.postedOn = '';
+        this.lastUpdatedOn = '';
+        this.minStipend = 0;
+        this.maxStipend = 0;
+        this.postsAvailable = 0;
+        this.isWFHAvailable = false;
+        this.isPartTimeAvailable = false;
+        this.jobOffer = false;
+        this.isActicve = 0;
+        this.questionOne = '';
+        this.questionTwo = '';
+        this.questionThree = '';
     }
 }
