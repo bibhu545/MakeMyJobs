@@ -158,16 +158,21 @@ namespace MakeMyJobsAPI.Business
                 if (previousResume != null)
                 {
                     context.Entry(previousResume).State = System.Data.Entity.EntityState.Deleted;
-                    context.SaveChanges();
                 }
                 else
                 {
                     context.StudentDocuments.Add(new StudentDocument()
                     {
-
+                        DocumentName = fileName,
+                        DocumentNameOnDisk = fileNameOnDisk,
+                        DocumentSize = fileSize,
+                        DocumentType = 1,
+                        IsActive = 1,
+                        LastUpdatedOn = DateTime.Now,
+                        StudentId = studentId
                     });
                 }
-                return 1;
+                return context.SaveChanges();
             }
         }
     }

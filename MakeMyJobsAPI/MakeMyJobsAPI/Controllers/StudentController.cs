@@ -40,11 +40,20 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+
+        [HttpPost]
         public JsonResult UpdateStudentInfo(StudentInfoModel model)
         {
             try
             {
                 var result = StudentBusiness.UpdateStudentInfo(model);
+                if (result != null)
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        UploadStudentResume(result.studentId);
+                    }
+                }
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
@@ -53,43 +62,31 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
-        public JsonResult UploadStudentResume()
+        public bool UploadStudentResume(int studentId)
         {
-            try
+            var folderPath = CommonFunctions.GetConfigValue("studentFilePath");
+            List<string> documentExtensions = new List<string>() { ".pdf", ".doc", ".docx" };
+            for (int i = 0; i < Request.Files.Count; i++)
             {
-                int studentId = 0;
-                if (!int.TryParse(Request.Params["staffId"], out studentId))
+                var fileName = Path.GetFileName(Request.Files[i].FileName);
+                var fileExtension = Path.GetExtension(Request.Files[i].FileName);
+                var fileNameOnDisk = string.Empty;
+                if (documentExtensions.IndexOf(fileExtension) < 0)
                 {
-                    return CommonBusiness.GetErrorResponse();
+                    return false;
                 }
-                var folderPath = CommonFunctions.GetConfigValue("studentFilePath");
-                List<string> documentExtensions = new List<string>() { ".pdf", ".doc", ".docx" };
-                for (int i = 0; i < Request.Files.Count; i++)
+                fileNameOnDisk = fileNameOnDisk = "STP-" + studentId + "-" + Guid.NewGuid().ToString().Replace("-", "") + fileExtension;
+                Request.Files[i].SaveAs(folderPath + fileNameOnDisk);
+                if (StudentBusiness.SaveStudentDocument(studentId, fileName, fileNameOnDisk, Request.Files[i].ContentLength) > 0)
                 {
-                    var fileName = Path.GetFileName(Request.Files[i].FileName);
-                    var fileExtension = Path.GetExtension(Request.Files[i].FileName);
-                    var fileNameOnDisk = string.Empty;
-                    if(documentExtensions.IndexOf(fileExtension) < 0)
-                    {
-                        return Json(false);
-                    }
-                    fileNameOnDisk = fileNameOnDisk = "STP-" + studentId + "-" + Guid.NewGuid().ToString().Replace("-", "") + documentExtensions;
-                    Request.Files[i].SaveAs(folderPath + fileNameOnDisk);
-                    if (StudentBusiness.SaveStudentDocument(studentId, fileName, fileNameOnDisk, Request.Files[i].ContentLength) > 0)
-                    {
-                        return Json(true);
-                    }
-                    else
-                    {
-                        return Json(false);
-                    }
+                    return true;
                 }
-                return Json(true);
+                else
+                {
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                return CommonBusiness.GetErrorResponse(ex.Message);
-            }
+            return true;
         }
     }
 }

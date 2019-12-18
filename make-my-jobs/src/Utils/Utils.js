@@ -54,6 +54,12 @@ export class Utils {
         return new Date(parseInt(extractedDate)).toLocaleDateString();
     }
 
+    getQueryStringValue = (query) => {
+        let search = window.location.search;
+        let params = new URLSearchParams(search);
+        return params.get(query);
+    }
+
     showDefaultMessage = (message) => {
         Swal.fire({
             title: message,
@@ -89,7 +95,7 @@ export class Utils {
 
     showInlineErrorMessage = (message, error = null) => {
         Swal.fire(
-            'Deleted!',
+            'Error!',
             message + error,
             'error'
         )
@@ -110,6 +116,11 @@ export class Utils {
                 break;
         }
         return typeName;
+    }
+
+    validateResume = (name) => {
+        var supportedList = ["pdf", "doc", "docx"];
+        return supportedList.indexOf(name.split(".")[name.split(".").length - 1]) >= 0;
     }
 }
 

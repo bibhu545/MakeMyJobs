@@ -10,6 +10,7 @@ export class StudentEditProfile extends Component {
         super(props)
         this.http = new HttpService();
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
+        this.utils = new Utils()
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new UserModel(),
@@ -55,31 +56,59 @@ export class StudentEditProfile extends Component {
 
     onEditFormSubmitted = (e) => {
         e.preventDefault();
-        this.http.postData('http://makemyjobs.me/Student/UpdateStudentInfo', this.state.user).then(response => {
-            if (response.data.results[0] == null) {
-                console.log('Error occured in updating data.');
-            }
-            else {
-                var updatedUserInCookies = new LoginResponseModel();
-                var updatedUser = response.data.results[0];
-                if (new Utils().isLoggedIn()) {
-                    updatedUserInCookies.loggedIn = 1;
-                    updatedUserInCookies.userId = updatedUser.userId;
-                    updatedUserInCookies.email = updatedUser.email;
-                    updatedUserInCookies.firstName = updatedUser.firstName;
-                    updatedUserInCookies.lastName = updatedUser.lastName;
-                    updatedUserInCookies.userType = new Utils().getUserTypeFromCookies();
-                    new Utils().saveLoginDataInCookies(updatedUserInCookies);
-                    window.location = '/my-profile';
+
+        const requestData = new FormData();
+        requestData.append('firstName', this.state.user.firstName);
+        requestData.append('lastName', this.state.user.lastName);
+        requestData.append('email', this.state.user.email);
+        requestData.append('collegeName', this.state.user.collegeName);
+        requestData.append('contactNumber', this.state.user.contactNumber);
+        requestData.append('address', this.state.user.address);
+        requestData.append('country', this.state.user.country);
+        requestData.append('dateOfBirth', this.state.user.dateOfBirth);
+        requestData.append('state', this.state.user.state);
+        requestData.append('zipCode', this.state.user.zipCode);
+        requestData.append('resume', this.state.user.resume);
+        requestData.append('userId', this.state.user.userId);
+        requestData.append('studentId', this.state.user.studentId);
+        requestData.append('dateJoined', this.state.user.dateJoined);
+
+        if (this.state.user.resume != null && !this.utils.validateResume(this.state.user.resume.name)) {
+            this.utils.showErrorMessage("Invalid file type.");
+        }
+        else {
+            this.http.postData('http://makemyjobs.me/Student/UpdateStudentInfo', requestData).then(response => {
+                if (response.data.results[0] == null) {
+                    console.log('Error occured in updating data.');
                 }
                 else {
-                    window.location = '/login';
+                    var updatedUserInCookies = new LoginResponseModel();
+                    var updatedUser = response.data.results[0];
+                    if (new Utils().isLoggedIn()) {
+                        updatedUserInCookies.loggedIn = 1;
+                        updatedUserInCookies.userId = updatedUser.userId;
+                        updatedUserInCookies.email = updatedUser.email;
+                        updatedUserInCookies.firstName = updatedUser.firstName;
+                        updatedUserInCookies.lastName = updatedUser.lastName;
+                        updatedUserInCookies.userType = new Utils().getUserTypeFromCookies();
+                        new Utils().saveLoginDataInCookies(updatedUserInCookies);
+                        window.location = '/my-profile';
+                    }
+                    else {
+                        window.location = '/login';
+                    }
                 }
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     }
+
+    fileChangedHandler = (e) => {
+        let user = { ...this.state.user };
+        user['resume'] = e.target.files[0];
+        this.setState({ user });
+    };
 
     render() {
         return (
@@ -93,7 +122,7 @@ export class StudentEditProfile extends Component {
                             <div className='row'>
                                 <div className='col-md-2'></div>
                                 <div className='col-md-8'>
-                                    <form className="form-horizontal" onSubmit={this.onEditFormSubmitted}>
+                                    <form encType="multipart/form-data" className="form-horizontal" onSubmit={this.onEditFormSubmitted}>
                                         <div className="form-group">
                                             <label className="control-label col-sm-4" htmlFor="firstName">First name*:</label>
                                             <div className="col-sm-8">
@@ -170,12 +199,12 @@ export class StudentEditProfile extends Component {
                                                 <input type="text" className="form-control" id="zipCode" placeholder="Enter Pincode" name="zipCode" value={this.state.user.zipCode == null ? "" : this.state.user.zipCode} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
-                                        {/* <div className="form-group">
+                                        <div className="form-group">
                                             <label className="control-label col-sm-4" htmlFor="resume">Resume:</label>
                                             <div className="col-sm-8">
-                                                <input type="file" className="form-control" id="resume" name="resume" value={this.state.user.resume == null ? "" : this.state.user.resume} onChange={this.handleEditFormChange} />
+                                                <input type="file" accept="application/pdf" className="form-control" id="resume" name="resume" onChange={this.fileChangedHandler} />
                                             </div>
-                                        </div> */}
+                                        </div>
                                         <div className='center-content'>
                                             <button type='submit' className='btn btn-primary'>Update Now</button>
                                             <a href='/my-profile' className='btn btn-default'>Cancel</a>

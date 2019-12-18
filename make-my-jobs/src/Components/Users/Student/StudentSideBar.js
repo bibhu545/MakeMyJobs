@@ -8,6 +8,12 @@ export class StudentSideBar extends Component {
             <React.Fragment>
                 <div className='col-md-4 col-xs-12 student-home-side-content'>
                     <img src={NoProfilePic} alt='profile pic' className='img img-responsive img-circle img-profile-pic' />
+                    <div className='center-content'>
+                        <label htmlFor="updateProfilePicture" className='lbl-update-profile-picture'>
+                            <span className="glyphicon glyphicon-cloud-upload"></span>
+                        </label>
+                        <input type='file' accept="image/*" id='updateProfilePicture' name='updateProfilePicture' />
+                    </div>
                     <h4 className='center-content'>
                         Hello {this.props.user.firstName}
                     </h4>

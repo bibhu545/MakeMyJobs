@@ -154,6 +154,9 @@ export class JobModel {
         this.questionOne = '';
         this.questionTwo = '';
         this.questionThree = '';
+        this.locationNames = '';
+        this.postedOn = '';
+        this.lastUpdatedOn = '';
     }
 }
 
