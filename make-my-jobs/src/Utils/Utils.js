@@ -12,6 +12,15 @@ export class Utils {
         return false;
     }
 
+    isCorporate = () => {
+        if (cookie.load('loggedUser') != null) {
+            if (this.getUserTypeFromCookies() === 3) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     saveLoginDataInCookies = (userData) => {
         // cookie.save('loggedUser', userData.email);
         var dataToSave = userData.userId + "random" + userData.email + "random" + userData.firstName + "random" + userData.lastName + "random" + userData.userType;
@@ -49,15 +58,28 @@ export class Utils {
     clearLoginDataFromCookies = () => {
         cookie.remove('loggedUser');
     }
+
     GetDateFromServer = (dateString) => {
         var extractedDate = dateString.substring(6, dateString.length - 2);
         return new Date(parseInt(extractedDate)).toLocaleDateString();
     }
 
+    formatDateToBind = (dateString) => {
+        var date = this.GetDateFromServer(dateString);
+        var constraints = date.split('/');
+        if (constraints[0].length === 1) {
+            constraints[0] = '0' + constraints[0];
+        }
+        if (constraints[1].length === 1) {
+            constraints[1] = '0' + constraints[1];
+        }
+        return constraints[2] + "-" + constraints[0] + "-" + constraints[1];
+    }
+
     getQueryStringValue = (query) => {
         let search = window.location.search;
         let params = new URLSearchParams(search);
-        return params.get(query);
+        return params.get(query)
     }
 
     showDefaultMessage = (message) => {

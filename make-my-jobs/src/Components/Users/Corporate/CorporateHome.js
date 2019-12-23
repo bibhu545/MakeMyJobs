@@ -4,11 +4,8 @@ import { CorporateModel, JobModel, InternshipModel } from '../../../Utils/Models
 import Utils from '../../../Utils/Utils';
 import StudentSideBar from '../Student/StudentSideBar';
 import JobDescription from './JobDescription';
-import JobDescriptionEdit from './JobDescriptionEdit';
-import $ from 'jquery';
 import Swal from 'sweetalert2'
 import InternshipDescription from './InternshipDescription';
-import InternshipDescriptionEdit from './InternshipDescriptionEdit';
 
 export class CorporateHome extends Component {
     constructor(props) {
@@ -19,12 +16,12 @@ export class CorporateHome extends Component {
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new CorporateModel(),
-            jobEditOpened: 0,
             jobViewOpened: 0,
             job: new JobModel(),
-            internshipEditOpened: 0,
             internshipViewOpened: 0,
-            internship: new InternshipModel()
+            internship: new InternshipModel(),
+            selectedCity: [],
+            cityOpyions: []
         }
     }
 
@@ -36,7 +33,8 @@ export class CorporateHome extends Component {
         this.http.postData('http://makemyjobs.me/Corporate/GetCorporateInfo?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results == null) {
-                    window.location = '/login';
+                    // window.location = '/login';
+                    this.utils.showErrorMessage("Some error occured. Please refresh the page.");
                 }
                 else {
                     this.setState({
@@ -92,40 +90,8 @@ export class CorporateHome extends Component {
         })
     }
 
-
     //Methods for child
     //for job section
-
-    handleEditJobFormChange = (e) => {
-        let inputName = e.target.name;
-        let inputValue = e.target.value;
-        let statusCopy = Object.assign({}, this.state);
-        statusCopy.job[inputName] = inputValue;
-        this.setState(statusCopy);
-    }
-
-    updateJobDetails = (e) => {
-        e.preventDefault();
-        console.log(this.state.job);
-        this.http.postData('http://makemyjobs.me/Corporate/UpdateJob', this.state.job).then(response => {
-            if (response.data != null) {
-                this.utils.showDefaultMessage("Data updated.");
-                this.renderEmployeeData();
-                if (response.data.results[0] > 0) {
-                    $('#jobDetailsModal .close').click();
-                }
-                else {
-                    this.utils.showErrorMessage("Some error occured.");
-                }
-            }
-            else {
-                this.utils.showErrorMessage("Some error occured.");
-            }
-        }).catch(error => {
-            console.log(error);
-            this.utils.showErrorMessage("Some error occured.");
-        });
-    }
 
     renderJobData = (jobId, forEdit = false) => {
         this.http.getData('http://makemyjobs.me/Corporate/GetJobInfo?id=' + jobId).then(response => {
@@ -133,10 +99,8 @@ export class CorporateHome extends Component {
                 if (response.data.results[0] != null) {
                     this.setState({
                         job: response.data.results[0],
-                        jobEditOpened: forEdit ? 1 : 0,
                         jobViewOpened: forEdit ? 0 : 1,
                         internshipViewOpened: 0,
-                        internshipEditOpened: 0
                     })
                 }
                 else {
@@ -160,9 +124,7 @@ export class CorporateHome extends Component {
                 if (response.data.results[0] != null) {
                     this.setState({
                         internship: response.data.results[0],
-                        internshipEditOpened: forEdit ? 1 : 0,
                         internshipViewOpened: forEdit ? 0 : 1,
-                        jobEditOpened: 0,
                         jobViewOpened: 0
                     })
                 }
@@ -276,7 +238,7 @@ export class CorporateHome extends Component {
                                                                 </a>
 
                                                                 &nbsp;
-                                                                <a href="##" onClick={(e) => this.onOpenJobDeacriptionEditClicked(e, item.jobId)} data-toggle="modal" data-target="#jobDetailsModal">
+                                                                <a href={"edit-job?id=" + item.jobId}>
                                                                     <span className="glyphicon glyphicon-pencil"></span>
                                                                 </a>
 
@@ -348,7 +310,7 @@ export class CorporateHome extends Component {
                                                                 </a>
 
                                                                 &nbsp;
-                                                                <a href="##" onClick={(e) => this.onOpenInternshipDeacriptionEditClicked(e, item.internshipId)} data-toggle="modal" data-target="#jobDetailsModal">
+                                                                <a href={"edit-internship?id=" + item.internshipId}>
                                                                     <span className="glyphicon glyphicon-pencil"></span>
                                                                 </a>
 
@@ -425,16 +387,8 @@ export class CorporateHome extends Component {
                                             <span>View Job Deatils</span> : null
                                     }
                                     {
-                                        this.state.jobEditOpened === 1 ?
-                                            <span>Edit Job Deatils</span> : null
-                                    }
-                                    {
                                         this.state.internshipViewOpened === 1 ?
                                             <span>View Internship Deatils</span> : null
-                                    }
-                                    {
-                                        this.state.internshipEditOpened === 1 ?
-                                            <span>Edit Internship Deatils</span> : null
                                     }
                                 </h4>
                             </div>
@@ -443,18 +397,18 @@ export class CorporateHome extends Component {
                                     this.state.jobViewOpened === 0 ? null :
                                         <JobDescription job={this.state.job} />
                                 }
-                                {
+                                {/* {
                                     this.state.jobEditOpened === 0 ? null :
-                                        <JobDescriptionEdit onEditJobSubmit={this.updateJobDetails} handleEditJobFormChange={this.handleEditJobFormChange} job={this.state.job} />
-                                }
+                                        <JobDescriptionEdit onEditJobSubmit={this.updateJobDetails} handleEditJobFormChange={this.handleEditJobFormChange} job={this.state.job} handleCityChange={this.handleCityChange} selectedCity={this.state.selectedCity} cityOpyions={this.state.cityOpyions} />
+                                } */}
                                 {
                                     this.state.internshipViewOpened === 0 ? null :
                                         <InternshipDescription internship={this.state.internship} />
                                 }
-                                {
+                                {/* {
                                     this.state.internshipEditOpened === 0 ? null :
                                         <InternshipDescriptionEdit internship={this.state.internship} onEditInternshipSubmit={this.updateInternshipDetails} handleInternshipFormChange={this.handleEditJobFormChange} />
-                                }
+                                } */}
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>

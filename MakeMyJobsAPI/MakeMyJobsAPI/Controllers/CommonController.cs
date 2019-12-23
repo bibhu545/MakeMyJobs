@@ -42,5 +42,22 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+
+        [HttpGet]
+        public JsonResult GetCommonDataForNewPost()
+        {
+            try
+            {
+                var cities = CommonBusiness.GetCities();
+                var skills = CommonBusiness.GetSkills();
+                var tags = CommonBusiness.GetTags();
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { cities, skills, tags } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
     }
 }

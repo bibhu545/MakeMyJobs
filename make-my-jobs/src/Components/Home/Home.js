@@ -1,14 +1,29 @@
 import React, { Component } from 'react'
 import './home.css'
 import AboutImage from '../../Assets/Images/1.jpg'
+import HttpService from '../../Utils/HttpServices'
+import Utils from '../../Utils/Utils'
 
 export class Home extends Component {
     constructor(props) {
         super(props)
-
+        this.http = new HttpService();
+        this.utils = new Utils()
         this.state = {
-
+            jobs: []
         }
+    }
+
+    componentDidMount() {
+        this.http.getData('http://makemyjobs.me/Corporate/GetJobs').then(response => {
+            this.setState({
+                jobs: response.data.results[0].filter((item, index) => index < 3)
+            })
+            console.log(this.state.jobs)
+        }).catch(error => {
+            console.log(error);
+            this.util.showErrorMessage("Some error occured.");
+        })
     }
 
     onContactFormSubmit = (e) => {
@@ -16,6 +31,7 @@ export class Home extends Component {
     }
 
     render() {
+        const { jobs } = this.state
         return (
             <React.Fragment>
                 <div className='hero-section'>
@@ -57,45 +73,129 @@ export class Home extends Component {
                                             <div className="item active">
                                                 <div className="small-job-content">
                                                     <h4>
-                                                        <a href='/jobs'>
-                                                            Financial Analyst @DST SS&C Mumbai
-                                                        </a>
+                                                        {
+                                                            jobs.length === 0 ? null :
+                                                                <a href={'/job-description?id=' + jobs[0].jobId}>
+                                                                    {jobs[0].jobTitle}
+                                                                </a>
+                                                        }
                                                     </h4>
-                                                    <p>Hyderabad, Mumbai</p>
-                                                    <p>Experience: 2-6 yrs</p>
-                                                    <p>INR 10 - 15 LPA</p>
-                                                    <p>Posted on: 15th Nov, 2019</p>
-                                                    <p><a href='/jobs'>Apply now</a></p>
+                                                    <p>
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[0].locationNames
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        Experience: &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[0].experience
+                                                        } yrs
+                                                    </p>
+                                                    <p>
+                                                        INR &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[0].minSalary
+                                                        }
+                                                    </p>
+                                                    <p>Posted on: &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[0].postedOn)
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        {
+                                                            jobs.length === 0 ? null :
+                                                                <a href={'/job-description?id=' + jobs[0].jobId}>
+                                                                    Apply Now
+                                                                </a>
+                                                        }
+                                                    </p>
                                                 </div>
                                             </div>
 
                                             <div className="item">
                                                 <div className="small-job-content">
                                                     <h4>
-                                                        <a href='/jobs'>
-                                                            Derivative Analyst (retail Desk)
-                                                        </a>
+                                                        {
+                                                            jobs.length === 0 ? null :
+                                                                <a href={'/job-description?id=' + jobs[1].jobId}>
+                                                                    {jobs[1].jobTitle}
+                                                                </a>
+                                                        }
                                                     </h4>
-                                                    <p>Hyderabad, Bengaluru</p>
-                                                    <p>Experience: 2-6 yrs</p>
-                                                    <p>INR 10 - 15 LPA</p>
-                                                    <p>Posted on: 15th Nov, 2019</p>
-                                                    <p><a href='/jobs'>Apply now</a></p>
+                                                    <p>
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[1].locationNames
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        Experience: &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[1].experience
+                                                        } yrs
+                                                    </p>
+                                                    <p>
+                                                        INR &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[1].minSalary
+                                                        }
+                                                    </p>
+                                                    <p>Posted on: &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[1].postedOn)
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        {
+                                                            jobs.length === 0 ? null :
+                                                                <a href={'/job-description?id=' + jobs[1].jobId}>
+                                                                    Apply Now
+                                                                </a>
+                                                        }
+                                                    </p>
                                                 </div>
                                             </div>
 
                                             <div className="item">
                                                 <div className="small-job-content">
                                                     <h4>
-                                                        <a href='/jobs'>
-                                                            Project Manager Civil - Real Estate
-                                                        </a>
+                                                        {
+                                                            jobs.length === 0 ? null :
+                                                                <a href={'/job-description?id=' + jobs[2].jobId}>
+                                                                    {jobs[2].jobTitle}
+                                                                </a>
+                                                        }
                                                     </h4>
-                                                    <p>Hyderabad, Bengaluru</p>
-                                                    <p>Experience: 2-6 yrs</p>
-                                                    <p>INR 10 - 15 LPA</p>
-                                                    <p>Posted on: 15th Nov, 2019</p>
-                                                    <p><a href='/jobs'>Apply now</a></p>
+                                                    <p>
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[2].locationNames
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        Experience: &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[2].experience
+                                                        } yrs
+                                                    </p>
+                                                    <p>
+                                                        INR &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : jobs[2].minSalary
+                                                        }
+                                                    </p>
+                                                    <p>Posted on: &nbsp;
+                                                        {
+                                                            jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[2].postedOn)
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        {
+                                                            jobs.length === 0 ? null :
+                                                                <a href={'/job-description?id=' + jobs[2].jobId}>
+                                                                    Apply Now
+                                                                </a>
+                                                        }
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>

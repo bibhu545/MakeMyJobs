@@ -146,6 +146,8 @@ export class JobModel {
         this.jobTitle = '';
         this.description = '';
         this.locations = [];
+        this.tags = [];
+        this.skills = [];
         this.experience = 0;
         this.expiryDate = '';
         this.minSalary = 0;
@@ -155,6 +157,8 @@ export class JobModel {
         this.questionTwo = '';
         this.questionThree = '';
         this.locationNames = '';
+        this.tagNames = '';
+        this.skillNames = '';
         this.postedOn = '';
         this.lastUpdatedOn = '';
     }
@@ -167,10 +171,15 @@ export class InternshipModel {
         this.title = '';
         this.description = '';
         this.locations = [];
+        this.tags = [];
+        this.skills = [];
         this.startDate = '';
         this.expiryDate = '';
         this.postedOn = '';
         this.lastUpdatedOn = '';
+        this.locationNames = '';
+        this.tagNames = '';
+        this.skillNames = '';
         this.minStipend = 0;
         this.maxStipend = 0;
         this.postsAvailable = 0;

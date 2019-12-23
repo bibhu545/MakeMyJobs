@@ -12,6 +12,34 @@ namespace MakeMyJobsAPI.Controllers
 {
     public class CorporateController : Controller
     {
+        public JsonResult GetJobs()
+        {
+            try
+            {
+                var result = CorporateBusiness.GetJobs();
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public JsonResult GetInternships()
+        {
+            try
+            {
+                var result = CorporateBusiness.GetInternships();
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
         public JsonResult GetCorporateInfo(int id)
         {
             try
@@ -115,6 +143,20 @@ namespace MakeMyJobsAPI.Controllers
             try
             {
                 var result = CorporateBusiness.UpdateJob(model);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public JsonResult UpdateInternship(InternshipModel model)
+        {
+            try
+            {
+                var result = CorporateBusiness.UpdateInternship(model);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response };
             }

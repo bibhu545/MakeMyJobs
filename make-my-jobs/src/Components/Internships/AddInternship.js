@@ -12,22 +12,42 @@ export class AddInternship extends Component {
         this.utils = new Utils();
         this.state = {
             selectedCity: [],
-            cityOpyions: [],
+            cityOptions: [],
+            selectedTag: [],
+            tagOptions: [],
+            selectedSkill: [],
+            skillOptions: [],
             questions: [],
             internship: new InternshipModel()
         }
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetCities').then(response => {
+        this.http.getData('http://makemyjobs.me/Common/GetCommonDataForNewPost').then(response => {
             if (response.data.results.length > 0) {
                 var citiesFromServer = response.data.results[0];
+                var tagsFromServer = response.data.results[2];
+                var skillsFromServer = response.data.results[1];
+
                 var tempCities = [];
                 citiesFromServer.forEach(element => {
                     tempCities.push({ value: element.value, label: element.text });
                 });
+
+                var tempTags = [];
+                tagsFromServer.forEach(element => {
+                    tempTags.push({ value: element.value, label: element.text });
+                });
+
+                var tempSkills = [];
+                skillsFromServer.forEach(element => {
+                    tempSkills.push({ value: element.value, label: element.text });
+                });
+
                 this.setState({
-                    cityOpyions: tempCities
+                    cityOptions: tempCities,
+                    tagOptions: tempTags,
+                    skillOptions: tempSkills
                 })
             }
         }).catch(error => {
@@ -55,8 +75,20 @@ export class AddInternship extends Component {
         this.state.selectedCity.forEach(element => {
             cities.push({ value: element.value, text: element.label });
         });
+
+        var tempTags = [];
+        this.state.selectedTag.forEach(element => {
+            tempTags.push({ value: element.value, text: element.label });
+        });
+        var tempSkills = [];
+        this.state.selectedSkill.forEach(element => {
+            tempSkills.push({ value: element.value, text: element.label });
+        });
+
         tempInternship.locations = cities;
-        
+        tempInternship.skills = tempSkills;
+        tempInternship.tags = tempTags;
+
         var validationMessage = this.validateInternshipForm(tempInternship);
         if (validationMessage !== "") {
             this.utils.showErrorMessage(validationMessage);
@@ -86,6 +118,18 @@ export class AddInternship extends Component {
             selectedCity
         })
     };
+
+    handleTagChange = selectedTag => {
+        this.setState({
+            selectedTag
+        })
+    }
+
+    handleSkillChange = selectedSkill => {
+        this.setState({
+            selectedSkill
+        })
+    }
 
     validateInternshipForm = (tempInternship) => {
         var errorMessage = "";
@@ -137,6 +181,41 @@ export class AddInternship extends Component {
                                         <div className='form-group'>
                                             <label htmlFor='expiryDate'>Expires on*:</label>
                                             <input type='date' className='form-control' name='expiryDate' id='expiryDate' onChange={this.handleInternshipFormChange} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='col-md-6 col-xs-12'>
+                                        <div className='form-group'>
+                                            <label htmlFor='tags'>Tags*:</label>
+                                            {/* <input type='text' className='form-control' name='tags' id='tags' placeholder='Select at least one location' /> */}
+                                            <Select
+                                                value={this.state.selectedTag}
+                                                isMulti
+                                                name='tags'
+                                                onChange={this.handleTagChange}
+                                                options={this.state.tagOptions}
+                                                className="basic-multi-select"
+                                                classNamePrefix="select"
+                                                id='tags'
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='col-md-6 col-xs-12'>
+                                        <div className='form-group'>
+                                            <label htmlFor='skills'>Skills Required*:</label>
+                                            {/* <input type='text' className='form-control' name='skills' id='skills' placeholder='Select at least one location' /> */}
+                                            <Select
+                                                value={this.state.selectedSkill}
+                                                isMulti
+                                                name='skills'
+                                                onChange={this.handleSkillChange}
+                                                options={this.state.skillOptions}
+                                                className="basic-multi-select"
+                                                classNamePrefix="select"
+                                                id='skills'
+                                            />
                                         </div>
                                     </div>
                                 </div>

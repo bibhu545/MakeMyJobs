@@ -53,5 +53,27 @@ namespace MakeMyJobsAPI.Business
                 }).ToList();
             }
         }
+        public static List<DropdownModel> GetSkills()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.Skills.Select(x => new DropdownModel()
+                {
+                    value = x.SkillId,
+                    text = x.SkillName
+                }).ToList();
+            }
+        }
+        public static List<DropdownModel> GetTags()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.Tags.Select(x => new DropdownModel()
+                {
+                    value = x.TagId,
+                    text = x.TagName
+                }).ToList();
+            }
+        }
     }
 }

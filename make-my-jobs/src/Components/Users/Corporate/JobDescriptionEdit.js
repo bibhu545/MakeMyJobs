@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Select from 'react-select';
 import HttpService from '../../../Utils/HttpServices';
 import Utils from '../../../Utils/Utils';
 import { JobModel } from '../../../Utils/Models';
@@ -9,9 +10,9 @@ export class JobDescriptionEdit extends Component {
         this.http = new HttpService();
         this.utils = new Utils();
         this.tempJob = new JobModel()
-        this.state = {}
+        this.state = {
+        }
     }
-
     render() {
         return (
             <React.Fragment>
@@ -38,6 +39,20 @@ export class JobDescriptionEdit extends Component {
                                     <input type='number' id="maxSalary" name='maxSalary' className='form-control' value={this.props.job.maxSalary} onChange={this.props.handleEditJobFormChange} />
                                 </div>
                             </div>
+                        </div>
+                        <div className='form-group'>
+                            <label htmlFor='locations'>Locations*:</label>
+                            {/* <input type='text' className='form-control' name='locations' id='locations' placeholder='Select at least one location' /> */}
+                            <Select
+                                value={this.props.selectedCity}
+                                isMulti
+                                name='locations'
+                                onChange={this.props.handleCityChange}
+                                options={this.props.cityOpyions}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                id='locations'
+                            />
                         </div>
                         <div className='row'>
                             <div className='col-md-6'>

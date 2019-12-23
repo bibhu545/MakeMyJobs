@@ -43,3 +43,6 @@ small{
 .float-right{
     float: right;
 }
+.justify{
+    text-align: justify;
+}

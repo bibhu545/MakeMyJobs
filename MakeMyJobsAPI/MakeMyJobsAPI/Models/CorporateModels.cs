@@ -38,6 +38,8 @@ namespace MakeMyJobsAPI.Models
         public int? maxSalary { get; set; }
         public int? postsAvailable { get; set; }
         public List<DropdownModel> locations { get; set; }
+        public List<DropdownModel> tags { get; set; }
+        public List<DropdownModel> skills { get; set; }
         public String questionOne { get; set; }
         public String questionTwo { get; set; }
         public String questionThree { get; set; }
@@ -58,6 +60,8 @@ namespace MakeMyJobsAPI.Models
         public int? maxSalary { get; set; }
         public int? postsAvailable { get; set; }
         public List<DropdownModel> locations { get; set; }
+        public List<DropdownModel> tags { get; set; }
+        public List<DropdownModel> skills { get; set; }
         public String questionOne { get; set; }
         public String questionTwo { get; set; }
         public String questionThree { get; set; }
@@ -66,6 +70,8 @@ namespace MakeMyJobsAPI.Models
         public DateTime postedOn { get; set; }
         public DateTime LastUpdatedOn { get; set; }
         public string locationNames { get; set; }
+        public string tagNames { get; set; }
+        public string skillNames { get; set; }
     }
 
     public class InternshipModel
@@ -85,6 +91,8 @@ namespace MakeMyJobsAPI.Models
         public bool isPartTimeAvailable { get; set; }
         public bool jobOffer { get; set; }
         public List<DropdownModel> locations { get; set; }
+        public List<DropdownModel> tags { get; set; }
+        public List<DropdownModel> skills { get; set; }
         public String questionOne { get; set; }
         public String questionTwo { get; set; }
         public String questionThree { get; set; }
@@ -108,10 +116,14 @@ namespace MakeMyJobsAPI.Models
         public int isPartTimeAvailable { get; set; }
         public int jobOffer { get; set; }
         public List<DropdownModel> locations { get; set; }
+        public List<DropdownModel> tags { get; set; }
+        public List<DropdownModel> skills { get; set; }
         public String questionOne { get; set; }
         public String questionTwo { get; set; }
         public String questionThree { get; set; }
         public int isActicve { get; set; }
         public string locationNames { get; set; }
+        public string tagNames { get; set; }
+        public string skillNames { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace MakeMyJobsAPI.EDMX
         {
             this.InternshipCities = new HashSet<InternshipCity>();
             this.InternshipQuestions = new HashSet<InternshipQuestion>();
+            this.InternshipSkills = new HashSet<InternshipSkill>();
+            this.InternshipTags = new HashSet<InternshipTag>();
         }
     
         public int InternshipId { get; set; }
@@ -42,5 +44,9 @@ namespace MakeMyJobsAPI.EDMX
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InternshipQuestion> InternshipQuestions { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InternshipSkill> InternshipSkills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InternshipTag> InternshipTags { get; set; }
     }
 }

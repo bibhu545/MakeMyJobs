@@ -9,6 +9,231 @@ namespace MakeMyJobsAPI.Business
 {
     public class CorporateBusiness
     {
+        public static List<JobResponseModel> GetJobs(int page = 0)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                List<JobResponseModel> jobs = context.Jobs.Where(x => x.IsActive == 1).Select(x => new JobResponseModel()
+                {
+                    jobId = x.JobId,
+                    jobTitle = x.JobTitle,
+                    description = x.Description,
+                    experience = x.MinExperience,
+                    IsActive = x.IsActive,
+                    minSalary = x.MinSalary,
+                    maxSalary = x.MaxSalary,
+                    postsAvailable = x.NumberOfPosts,
+                    userId = x.userId,
+                    expiryDate = x.ExpiaryDate,
+                    LastUpdatedOn = x.LastUpdatedOn,
+                    postedOn = x.PostedOn
+                }).ToList();
+
+                jobs = jobs.Skip(page * 4).ToList();
+
+                foreach (var item in jobs)
+                {
+                    item.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
+                    {
+                        cityId = jc.CityId,
+                        cityName = c.CityName,
+                        jobId = jc.JobId
+                    }).Where(x => x.jobId == item.jobId).Select(x => new DropdownModel()
+                    {
+                        value = x.cityId,
+                        text = x.cityName
+                    }).ToList();
+
+                    foreach (var city in item.locations)
+                    {
+                        item.locationNames += city.text + ", ";
+                    }
+                    if (item.locationNames != null)
+                    {
+                        item.locationNames = item.locationNames.Substring(0, item.locationNames.Length - 2);
+                    }
+
+                    item.tags = context.JobTags.Join(context.Tags, jt => jt.TagId, t => t.TagId, (jt, t) => new
+                    {
+                        tagId = jt.TagId,
+                        tagName = t.TagName,
+                        jobId = jt.JobId
+                    }).Where(x => x.jobId == item.jobId).Select(x => new DropdownModel()
+                    {
+                        value = x.tagId,
+                        text = x.tagName
+                    }).ToList();
+
+                    foreach (var tag in item.tags)
+                    {
+                        item.tagNames += tag.text + ", ";
+                    }
+                    if (item.tagNames != null)
+                    {
+                        item.tagNames = item.tagNames.Substring(0, item.tagNames.Length - 2);
+                    }
+
+                    item.skills = context.JobSkills.Join(context.Skills, js => js.SkillId, s => s.SkillId, (jt, t) => new
+                    {
+                        skillId = jt.SkillId,
+                        skillName = t.SkillName,
+                        jobId = jt.JobId
+                    }).Where(x => x.jobId == item.jobId).Select(x => new DropdownModel()
+                    {
+                        value = x.skillId,
+                        text = x.skillName
+                    }).ToList();
+
+                    foreach (var skill in item.skills)
+                    {
+                        item.skillNames += skill.text + ", ";
+                    }
+                    if (item.skillNames != null)
+                    {
+                        item.skillNames = item.skillNames.Substring(0, item.skillNames.Length - 2);
+                    }
+
+                    List<String> questions = context.JobQuestions.Join(context.Jobs, jq => jq.JobId, j => j.JobId, (jq, j) => new
+                    {
+                        jobId = j.JobId,
+                        question = jq.Question
+                    }).Where(x => x.jobId == item.jobId).Select(x => x.question).ToList();
+                    if (questions != null)
+                    {
+                        if (questions.Count == 1)
+                        {
+                            item.questionOne = questions[0];
+                        }
+                        if (questions.Count == 2)
+                        {
+                            item.questionOne = questions[0];
+                            item.questionTwo = questions[1];
+                        }
+                        if (questions.Count == 3)
+                        {
+                            item.questionOne = questions[0];
+                            item.questionTwo = questions[1];
+                            item.questionThree = questions[2];
+                        }
+                    }
+                }
+                return jobs;
+            }
+        }
+
+        public static List<InternshipResponseModel> GetInternships(int page = 0)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                List<InternshipResponseModel> internships = context.Internships.Where(x => x.IsActicve == 1).Select(x => new InternshipResponseModel()
+                {
+                    internshipId = x.InternshipId,
+                    userId = x.UserId,
+                    title = x.Title,
+                    description = x.Description,
+                    isActicve = x.IsActicve,
+                    expiryDate = x.ExpiryDate,
+                    isPartTimeAvailable = x.IsPartTimeAvailable,
+                    isWFHAvailable = x.IsWFHAvailable,
+                    jobOffer = x.JobOffer,
+                    minStipend = x.MinStipend,
+                    maxStipend = x.MaxStipend,
+                    postedOn = x.PostedOn,
+                    lastUpdatedOn = x.LastUpdatedOn,
+                    postsAvailable = x.PostsAvailable,
+                    startDate = x.StartDate
+                }).ToList();
+
+                foreach (var item in internships)
+                {
+                    item.locations = context.InternshipCities.Join(context.Cities, ic => ic.CityId, c => c.CityId, (ic, c) => new
+                    {
+                        cityId = ic.CityId,
+                        cityName = c.CityName,
+                        internshipId = ic.InternshipId
+                    }).Where(x => x.internshipId == item.internshipId).Select(x => new DropdownModel()
+                    {
+                        value = x.cityId,
+                        text = x.cityName
+                    }).ToList();
+
+                    foreach (var city in item.locations)
+                    {
+                        item.locationNames += city.text + ", ";
+                    }
+                    if (item.locationNames != null)
+                    {
+                        item.locationNames = item.locationNames.Substring(0, item.locationNames.Length - 2);
+                    }
+
+                    item.skills = context.InternshipSkills.Join(context.Skills, ic => ic.SkillId, s => s.SkillId, (ic, s) => new
+                    {
+                        skillId = ic.SkillId,
+                        skillName = s.SkillName,
+                        internshipId = ic.InternshipId
+                    }).Where(x => x.internshipId == item.internshipId).Select(x => new DropdownModel()
+                    {
+                        value = x.skillId,
+                        text = x.skillName
+                    }).ToList();
+
+                    foreach (var skill in item.skills)
+                    {
+                        item.skillNames += skill.text + ", ";
+                    }
+                    if (item.skillNames != null)
+                    {
+                        item.skillNames = item.skillNames.Substring(0, item.skillNames.Length - 2);
+                    }
+
+                    item.tags = context.InternshipTags.Join(context.Tags, it => it.TagId, t => t.TagId, (it, t) => new
+                    {
+                        tagId = it.TagId,
+                        tagName = t.TagName,
+                        internshipId = it.InternshipId
+                    }).Where(x => x.internshipId == item.internshipId).Select(x => new DropdownModel()
+                    {
+                        value = x.tagId,
+                        text = x.tagName
+                    }).ToList();
+
+                    foreach (var city in item.tags)
+                    {
+                        item.tagNames += city.text + ", ";
+                    }
+                    if (item.tagNames != null)
+                    {
+                        item.tagNames = item.tagNames.Substring(0, item.tagNames.Length - 2);
+                    }
+
+                    List<String> questions = context.InternshipQuestions.Join(context.Internships, iq => iq.InternshipId, i => i.InternshipId, (iq, i) => new
+                    {
+                        internshipId = i.InternshipId,
+                        question = iq.Question
+                    }).Where(x => x.internshipId == item.internshipId).Select(x => x.question).ToList();
+                    if (questions != null)
+                    {
+                        if (questions.Count == 1)
+                        {
+                            item.questionOne = questions[0];
+                        }
+                        if (questions.Count == 2)
+                        {
+                            item.questionOne = questions[0];
+                            item.questionTwo = questions[1];
+                        }
+                        if (questions.Count == 3)
+                        {
+                            item.questionOne = questions[0];
+                            item.questionTwo = questions[1];
+                            item.questionThree = questions[2];
+                        }
+                    }
+                }
+                return internships;
+            }
+        }
+
         public static CorporateInfoModel GetCorporateInfo(int id)
         {
             using (var context = new MakeMyJobsEntities())
@@ -47,7 +272,7 @@ namespace MakeMyJobsAPI.Business
 
                     corporateInfoModel.corporateJobs = CorporateBusiness.GetJobsByUser(corporateInfoModel.userId, 0, true);
                     corporateInfoModel.corporateInternships = CorporateBusiness.GetInternshipsByUser(corporateInfoModel.userId);
-                    
+
                     return corporateInfoModel;
                 }
                 else
@@ -172,7 +397,8 @@ namespace MakeMyJobsAPI.Business
             using (var context = new MakeMyJobsEntities())
             {
                 int jobAdded = 0;
-                Job job = new Job() {
+                Job job = new Job()
+                {
                     userId = model.userId,
                     JobTitle = model.jobTitle,
                     Description = model.description,
@@ -187,25 +413,58 @@ namespace MakeMyJobsAPI.Business
                 };
                 context.Jobs.Add(job);
                 jobAdded += context.SaveChanges();
-                foreach (var item in model.locations)
+
+                if (model.locations != null)
                 {
-                    context.JobCities.Add(new JobCity() {
-                        JobId = job.JobId,
-                        CityId = item.value
-                    });
+                    foreach (var item in model.locations)
+                    {
+                        context.JobCities.Add(new JobCity()
+                        {
+                            JobId = job.JobId,
+                            CityId = item.value
+                        });
+                    }
+                    jobAdded += context.SaveChanges();
                 }
-                jobAdded += context.SaveChanges();
-                bool hasQuestions = false;
-                if(model.questionOne != null)
+
+                if (model.tags != null)
                 {
-                    context.JobQuestions.Add(new JobQuestion() {
+                    foreach (var item in model.tags)
+                    {
+                        context.JobTags.Add(new JobTag()
+                        {
+                            JobId = job.JobId,
+                            TagId = item.value
+                        });
+                    }
+                    jobAdded += context.SaveChanges();
+                }
+
+                if (model.skills != null)
+                {
+                    foreach (var item in model.skills)
+                    {
+                        context.JobSkills.Add(new JobSkill()
+                        {
+                            JobId = job.JobId,
+                            SkillId = item.value
+                        });
+                    }
+                    jobAdded += context.SaveChanges();
+                }
+
+                bool hasQuestions = false;
+                if (model.questionOne != null)
+                {
+                    context.JobQuestions.Add(new JobQuestion()
+                    {
                         IsActive = 1,
                         Question = model.questionOne,
                         JobId = job.JobId
                     });
                     hasQuestions = true;
                 }
-                if(model.questionTwo != null)
+                if (model.questionTwo != null)
                 {
                     context.JobQuestions.Add(new JobQuestion()
                     {
@@ -215,7 +474,7 @@ namespace MakeMyJobsAPI.Business
                     });
                     hasQuestions = true;
                 }
-                if(model.questionThree != null)
+                if (model.questionThree != null)
                 {
                     context.JobQuestions.Add(new JobQuestion()
                     {
@@ -256,21 +515,66 @@ namespace MakeMyJobsAPI.Business
                     job.ExpiaryDate = model.expiryDate;
                     updated += context.SaveChanges();
 
-                    foreach (var item in model.locations)
+
+                    var prevLocations = context.JobCities.Where(x => x.JobId == model.jobId).ToList();
+                    foreach (var item in prevLocations)
                     {
-                        var location = context.JobCities.FirstOrDefault(x => x.CityId == item.value && x.JobId == model.jobId);
-                        if(location != null)
-                        {
-                            context.JobCities.Remove(location);
-                            updated += context.SaveChanges();
-                        }
-                        context.JobCities.Add(new JobCity()
-                        {
-                            JobId = job.JobId,
-                            CityId = item.value
-                        });
+                        context.JobCities.Remove(item);
                     }
-                    updated += context.SaveChanges();
+                    int deleted = context.SaveChanges();
+
+                    if (model.locations != null)
+                    {
+                        foreach (var item in model.locations)
+                        {
+                            context.JobCities.Add(new JobCity()
+                            {
+                                JobId = job.JobId,
+                                CityId = item.value
+                            });
+                        }
+                        updated += context.SaveChanges();
+                    }
+
+                    var prevTags = context.JobTags.Where(x => x.JobId == model.jobId).ToList();
+                    foreach (var item in prevTags)
+                    {
+                        context.JobTags.Remove(item);
+                    }
+                    context.SaveChanges();
+
+                    if (model.tags != null)
+                    {
+                        foreach (var item in model.tags)
+                        {
+                            context.JobTags.Add(new JobTag()
+                            {
+                                JobId = job.JobId,
+                                TagId = item.value
+                            });
+                        }
+                        updated += context.SaveChanges();
+                    }
+
+                    var prevSkills = context.JobSkills.Where(x => x.JobId == model.jobId).ToList();
+                    foreach (var item in prevSkills)
+                    {
+                        context.JobSkills.Remove(item);
+                    }
+                    context.SaveChanges();
+
+                    if (model.skills != null)
+                    {
+                        foreach (var item in model.skills)
+                        {
+                            context.JobSkills.Add(new JobSkill()
+                            {
+                                JobId = job.JobId,
+                                SkillId = item.value
+                            });
+                        }
+                        updated += context.SaveChanges();
+                    }
 
                     var questions = context.JobQuestions.Where(x => x.JobId == model.jobId).ToList();
                     foreach (var item in questions)
@@ -343,12 +647,33 @@ namespace MakeMyJobsAPI.Business
                 };
                 context.Internships.Add(internship);
                 internshipAdded += context.SaveChanges();
+
                 foreach (var item in model.locations)
                 {
                     context.InternshipCities.Add(new InternshipCity()
                     {
                         InternshipId = internship.InternshipId,
                         CityId = item.value
+                    });
+                }
+                internshipAdded += context.SaveChanges();
+
+                foreach (var item in model.skills)
+                {
+                    context.InternshipSkills.Add(new InternshipSkill()
+                    {
+                        InternshipId = internship.InternshipId,
+                        SkillId = item.value
+                    });
+                }
+                internshipAdded += context.SaveChanges();
+
+                foreach (var item in model.tags)
+                {
+                    context.InternshipTags.Add(new InternshipTag()
+                    {
+                        InternshipId = internship.InternshipId,
+                        TagId = item.value
                     });
                 }
                 internshipAdded += context.SaveChanges();
@@ -396,7 +721,7 @@ namespace MakeMyJobsAPI.Business
         {
             using (var context = new MakeMyJobsEntities())
             {
-                List<JobResponseModel> jobs= context.Jobs.Where(x => x.userId == id && x.IsActive == 1).Select(x => new JobResponseModel()
+                List<JobResponseModel> jobs = context.Jobs.Where(x => x.userId == id && x.IsActive == 1).Select(x => new JobResponseModel()
                 {
                     jobId = x.JobId,
                     jobTitle = x.JobTitle,
@@ -412,7 +737,7 @@ namespace MakeMyJobsAPI.Business
                     postedOn = x.PostedOn
                 }).ToList();
 
-                if(page > 0)
+                if (page > 0)
                 {
                     jobs = jobs.Skip(page * 4).ToList();
                 }
@@ -424,7 +749,8 @@ namespace MakeMyJobsAPI.Business
 
                 foreach (var item in jobs)
                 {
-                    item.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new {
+                    item.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
+                    {
                         cityId = jc.CityId,
                         cityName = c.CityName,
                         jobId = jc.JobId
@@ -438,14 +764,16 @@ namespace MakeMyJobsAPI.Business
                     {
                         item.locationNames += city.text + ", ";
                     }
-                    item.locationNames = item.locationNames.Substring(0, item.locationNames.Length - 2);
-
+                    if (item.locationNames != null)
+                    {
+                        item.locationNames = item.locationNames.Substring(0, item.locationNames.Length - 2);
+                    }
                     List<String> questions = context.JobQuestions.Join(context.Jobs, jq => jq.JobId, j => j.JobId, (jq, j) => new
                     {
                         jobId = j.JobId,
                         question = jq.Question
                     }).Where(x => x.jobId == item.jobId).Select(x => x.question).ToList();
-                    if(questions != null)
+                    if (questions != null)
                     {
                         if (questions.Count == 1)
                         {
@@ -508,7 +836,10 @@ namespace MakeMyJobsAPI.Business
                     {
                         item.locationNames += city.text + ", ";
                     }
-                    item.locationNames = item.locationNames.Substring(0, item.locationNames.Length - 2);
+                    if (item.locationNames != null)
+                    {
+                        item.locationNames = item.locationNames.Substring(0, item.locationNames.Length - 2);
+                    }
 
                     List<String> questions = context.InternshipQuestions.Join(context.Internships, iq => iq.InternshipId, i => i.InternshipId, (iq, i) => new
                     {
@@ -558,7 +889,8 @@ namespace MakeMyJobsAPI.Business
                     LastUpdatedOn = job.LastUpdatedOn,
                     postedOn = job.PostedOn
                 };
-                jobResponse.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new {
+                jobResponse.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
+                {
                     cityId = jc.CityId,
                     cityName = c.CityName,
                     jobId = jc.JobId
@@ -572,7 +904,50 @@ namespace MakeMyJobsAPI.Business
                 {
                     jobResponse.locationNames += city.text + ", ";
                 }
-                jobResponse.locationNames = jobResponse.locationNames.Substring(0, jobResponse.locationNames.Length - 2);
+                if (jobResponse.locationNames != null)
+                {
+                    jobResponse.locationNames = jobResponse.locationNames.Substring(0, jobResponse.locationNames.Length - 2);
+                }
+
+                jobResponse.tags = context.JobTags.Join(context.Tags, jt => jt.TagId, t => t.TagId, (jt, t) => new
+                {
+                    tagId = jt.TagId,
+                    tagName = t.TagName,
+                    jobId = jt.JobId
+                }).Where(x => x.jobId == jobResponse.jobId).Select(x => new DropdownModel()
+                {
+                    value = x.tagId,
+                    text = x.tagName
+                }).ToList();
+
+                foreach (var item in jobResponse.tags)
+                {
+                    jobResponse.tagNames += item.text + ", ";
+                }
+                if (jobResponse.tagNames != null)
+                {
+                    jobResponse.tagNames = jobResponse.tagNames.Substring(0, jobResponse.tagNames.Length - 2);
+                }
+
+                jobResponse.skills = context.JobSkills.Join(context.Skills, js => js.SkillId, s => s.SkillId, (jt, t) => new
+                {
+                    skillId = jt.SkillId,
+                    skillName = t.SkillName,
+                    jobId = jt.JobId
+                }).Where(x => x.jobId == jobResponse.jobId).Select(x => new DropdownModel()
+                {
+                    value = x.skillId,
+                    text = x.skillName
+                }).ToList();
+
+                foreach (var item in jobResponse.skills)
+                {
+                    jobResponse.skillNames += item.text + ", ";
+                }
+                if (jobResponse.skillNames != null)
+                {
+                    jobResponse.skillNames = jobResponse.skillNames.Substring(0, jobResponse.skillNames.Length - 2);
+                }
 
                 List<String> questions = context.JobQuestions.Join(context.Jobs, jq => jq.JobId, j => j.JobId, (jq, j) => new
                 {
@@ -624,7 +999,8 @@ namespace MakeMyJobsAPI.Business
             using (var context = new MakeMyJobsEntities())
             {
                 var internship = context.Internships.FirstOrDefault(x => x.InternshipId == id && x.IsActicve == 1);
-                InternshipResponseModel internshipResponse = new InternshipResponseModel() { 
+                InternshipResponseModel internshipResponse = new InternshipResponseModel()
+                {
                     internshipId = internship.InternshipId,
                     userId = internship.UserId,
                     title = internship.Title,
@@ -642,7 +1018,8 @@ namespace MakeMyJobsAPI.Business
                     startDate = internship.StartDate
                 };
 
-                internshipResponse.locations = context.InternshipCities.Join(context.Cities, ic => ic.CityId, c => c.CityId, (ic, c) => new {
+                internshipResponse.locations = context.InternshipCities.Join(context.Cities, ic => ic.CityId, c => c.CityId, (ic, c) => new
+                {
                     cityId = ic.CityId,
                     cityName = c.CityName,
                     internshipId = ic.InternshipId
@@ -656,7 +1033,51 @@ namespace MakeMyJobsAPI.Business
                 {
                     internshipResponse.locationNames += city.text + ", ";
                 }
-                internshipResponse.locationNames = internshipResponse.locationNames.Substring(0, internshipResponse.locationNames.Length - 2);
+                if (internshipResponse.locationNames != null)
+                {
+                    internshipResponse.locationNames = internshipResponse.locationNames.Substring(0, internshipResponse.locationNames.Length - 2);
+                }
+
+                internshipResponse.skills = context.InternshipSkills.Join(context.Skills, ic => ic.SkillId, s => s.SkillId, (ic, s) => new
+                {
+                    skillId = ic.SkillId,
+                    skillName = s.SkillName,
+                    internshipId = ic.InternshipId
+                }).Where(x => x.internshipId == internshipResponse.internshipId).Select(x => new DropdownModel()
+                {
+                    value = x.skillId,
+                    text = x.skillName
+                }).ToList();
+
+                foreach (var skill in internshipResponse.skills)
+                {
+                    internshipResponse.skillNames += skill.text + ", ";
+                }
+                if (internshipResponse.skillNames != null)
+                {
+                    internshipResponse.skillNames = internshipResponse.skillNames.Substring(0, internshipResponse.skillNames.Length - 2);
+                }
+
+                internshipResponse.tags = context.InternshipTags.Join(context.Tags, it => it.TagId, t => t.TagId, (it, t) => new
+                {
+                    tagId = it.TagId,
+                    tagName = t.TagName,
+                    internshipId = it.InternshipId
+                }).Where(x => x.internshipId == internshipResponse.internshipId).Select(x => new DropdownModel()
+                {
+                    value = x.tagId,
+                    text = x.tagName
+                }).ToList();
+
+                foreach (var city in internshipResponse.tags)
+                {
+                    internshipResponse.tagNames += city.text + ", ";
+                }
+                if (internshipResponse.tagNames != null)
+                {
+                    internshipResponse.tagNames = internshipResponse.tagNames.Substring(0, internshipResponse.tagNames.Length - 2);
+                }
+
 
                 List<String> questions = context.InternshipQuestions.Join(context.Internships, iq => iq.InternshipId, i => i.InternshipId, (iq, i) => new
                 {
@@ -682,7 +1103,140 @@ namespace MakeMyJobsAPI.Business
                     }
                 }
 
-                return internshipResponse ;
+                return internshipResponse;
+            }
+        }
+
+        public static int UpdateInternship(InternshipModel model)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                int updated = 0;
+                Internship internship = context.Internships.FirstOrDefault(x => x.InternshipId == model.internshipId);
+                if (internship == null)
+                {
+                    return updated;
+                }
+                else
+                {
+                    internship.Title = model.title;
+                    internship.Description = model.description;
+                    internship.MaxStipend = model.maxStipend;
+                    internship.MinStipend = model.minStipend;
+                    internship.PostsAvailable = model.postsAvailable;
+                    internship.StartDate = model.startDate;
+                    internship.IsPartTimeAvailable = model.isPartTimeAvailable ? 1 : 0;
+                    internship.IsWFHAvailable = model.isWFHAvailable ? 1 : 0;
+                    internship.JobOffer = model.jobOffer ? 1 : 0;
+                    internship.PostedOn = DateTime.Now;
+                    internship.LastUpdatedOn = DateTime.Now;
+                    internship.ExpiryDate = model.expiryDate;
+                    updated += context.SaveChanges();
+
+                    var prevLocations = context.InternshipCities.Where(x => x.InternshipId == model.internshipId).ToList();
+                    foreach (var item in prevLocations)
+                    {
+                        context.InternshipCities.Remove(item);
+                    }
+                    int deleted = context.SaveChanges();
+
+                    if (model.locations != null)
+                    {
+                        foreach (var item in model.locations)
+                        {
+                            context.InternshipCities.Add(new InternshipCity()
+                            {
+                                InternshipId = internship.InternshipId,
+                                CityId = item.value
+                            });
+                        }
+                        updated += context.SaveChanges();
+                    }
+
+                    var prevSkills = context.InternshipSkills.Where(x => x.InternshipId == model.internshipId).ToList();
+                    foreach (var item in prevSkills)
+                    {
+                        context.InternshipSkills.Remove(item);
+                    }
+                    context.SaveChanges();
+
+                    if (model.skills != null)
+                    {
+                        foreach (var item in model.skills)
+                        {
+                            context.InternshipSkills.Add(new InternshipSkill()
+                            {
+                                InternshipId = internship.InternshipId,
+                                SkillId = item.value
+                            });
+                        }
+                        updated += context.SaveChanges();
+                    }
+
+                    var prevTags = context.InternshipTags.Where(x => x.InternshipId == model.internshipId).ToList();
+                    foreach (var item in prevTags)
+                    {
+                        context.InternshipTags.Remove(item);
+                    }
+                    context.SaveChanges();
+
+                    if (model.tags != null)
+                    {
+                        foreach (var item in model.tags)
+                        {
+                            context.InternshipTags.Add(new InternshipTag()
+                            {
+                                InternshipId = internship.InternshipId,
+                                TagId = item.value
+                            });
+                        }
+                        updated += context.SaveChanges();
+                    }
+
+                    var questions = context.InternshipQuestions.Where(x => x.InternshipId == model.internshipId).ToList();
+                    foreach (var item in questions)
+                    {
+                        context.Entry(item).State = System.Data.Entity.EntityState.Deleted;
+                    }
+                    updated += context.SaveChanges();
+
+                    bool hasQuestions = false;
+                    if (model.questionOne != null)
+                    {
+                        context.JobQuestions.Add(new JobQuestion()
+                        {
+                            IsActive = 1,
+                            Question = model.questionOne,
+                            JobId = internship.InternshipId
+                        });
+                        hasQuestions = true;
+                    }
+                    if (model.questionTwo != null)
+                    {
+                        context.JobQuestions.Add(new JobQuestion()
+                        {
+                            IsActive = 1,
+                            Question = model.questionTwo,
+                            JobId = internship.InternshipId
+                        });
+                        hasQuestions = true;
+                    }
+                    if (model.questionThree != null)
+                    {
+                        context.JobQuestions.Add(new JobQuestion()
+                        {
+                            IsActive = 1,
+                            Question = model.questionThree,
+                            JobId = internship.InternshipId
+                        });
+                        hasQuestions = true;
+                    }
+                    if (hasQuestions)
+                    {
+                        updated += context.SaveChanges();
+                    }
+                    return updated;
+                }
             }
         }
 

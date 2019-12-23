@@ -10,6 +10,7 @@ export class CorporateEditProfile extends Component {
         super(props)
         this.http = new HttpService();
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
+        this.utils = new Utils();
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new CorporateModel(),
@@ -38,6 +39,12 @@ export class CorporateEditProfile extends Component {
                 }
                 else {
                     var tempUser = response.data.results[0];
+                    if (tempUser.dateOfBirth !== "" && tempUser.dateOfBirth != null) {
+                        tempUser.dateOfBirth = this.utils.formatDateToBind(tempUser.dateOfBirth);
+                    }
+                    else{
+                        tempUser.dateOfBirth = ""
+                    }
                     this.setState({
                         user: tempUser
                     })
@@ -143,7 +150,7 @@ export class CorporateEditProfile extends Component {
                                         <div className="form-group">
                                             <label className="control-label col-sm-3" htmlFor="dateOfBirth">Date of birth:</label>
                                             <div className="col-sm-8">
-                                                <input type="date" className="form-control" id="dateOfBirth" name="dateOfBirth" value={this.state.user.dateOfBirth == null ? "" : this.state.user.dateOfBirth} onChange={this.handleEditFormChange} />
+                                                <input type="date" className="form-control" id="dateOfBirth" name="dateOfBirth" value={this.state.user.dateOfBirth} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
 

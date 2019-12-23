@@ -37,6 +37,12 @@ export class StudentEditProfile extends Component {
                 }
                 else {
                     var tempUser = response.data.results[0];
+                    if (tempUser.dateOfBirth !== "" && tempUser.dateOfBirth != null) {
+                        tempUser.dateOfBirth = this.utils.formatDateToBind(tempUser.dateOfBirth);
+                    }
+                    else {
+                        tempUser.dateOfBirth = ""
+                    }
                     this.setState({
                         user: tempUser
                     })
@@ -150,7 +156,7 @@ export class StudentEditProfile extends Component {
                                         <div className="form-group">
                                             <label className="control-label col-sm-4" htmlFor="dateOfBirth">Date of birth:</label>
                                             <div className="col-sm-8">
-                                                <input type="date" className="form-control" id="dateOfBirth" name="dateOfBirth" value={this.state.user.dateOfBirth == null ? "" : this.state.user.dateOfBirth} onChange={this.handleEditFormChange} />
+                                                <input type="date" className="form-control" id="dateOfBirth" name="dateOfBirth" value={this.state.user.dateOfBirth} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
                                         <div className="form-group">

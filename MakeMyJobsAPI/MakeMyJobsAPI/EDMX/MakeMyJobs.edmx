@@ -121,6 +121,22 @@
           <Property Name="JobOffer" Type="int" Nullable="false" />
           <Property Name="IsActicve" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="InternshipSkill">
+          <Key>
+            <PropertyRef Name="InternSkillTag" />
+          </Key>
+          <Property Name="InternSkillTag" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InternshipId" Type="int" Nullable="false" />
+          <Property Name="SkillId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InternshipTags">
+          <Key>
+            <PropertyRef Name="InternTagId" />
+          </Key>
+          <Property Name="InternTagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InternshipId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="JobCity">
           <Key>
             <PropertyRef Name="JobCityId" />
@@ -155,6 +171,22 @@
           <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
           <Property Name="ExpiaryDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="JobSkill">
+          <Key>
+            <PropertyRef Name="JobSkillId" />
+          </Key>
+          <Property Name="JobSkillId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobId" Type="int" Nullable="false" />
+          <Property Name="SkillId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JobTags">
+          <Key>
+            <PropertyRef Name="JobTagId" />
+          </Key>
+          <Property Name="JobTagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Lookup">
           <Key>
             <PropertyRef Name="LookupId" />
@@ -164,6 +196,13 @@
           <Property Name="Name" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="500" />
           <Property Name="ShowOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Skill">
+          <Key>
+            <PropertyRef Name="SkillId" />
+          </Key>
+          <Property Name="SkillId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SkillName" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -203,6 +242,13 @@
           <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
           <Property Name="DocumentType" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TagName" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -358,6 +404,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InternshipSkill_Internships">
+          <End Role="Internships" Type="Self.Internships" Multiplicity="1" />
+          <End Role="InternshipSkill" Type="Self.InternshipSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internships">
+              <PropertyRef Name="InternshipId" />
+            </Principal>
+            <Dependent Role="InternshipSkill">
+              <PropertyRef Name="InternshipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipSkill_Skill">
+          <End Role="Skill" Type="Self.Skill" Multiplicity="1" />
+          <End Role="InternshipSkill" Type="Self.InternshipSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skill">
+              <PropertyRef Name="SkillId" />
+            </Principal>
+            <Dependent Role="InternshipSkill">
+              <PropertyRef Name="SkillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipTags_Internships">
+          <End Role="Internships" Type="Self.Internships" Multiplicity="1" />
+          <End Role="InternshipTags" Type="Self.InternshipTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internships">
+              <PropertyRef Name="InternshipId" />
+            </Principal>
+            <Dependent Role="InternshipTags">
+              <PropertyRef Name="InternshipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipTags_Tags">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
+          <End Role="InternshipTags" Type="Self.InternshipTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="InternshipTags">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_JobCity_City">
           <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="JobCity" Type="Self.JobCity" Multiplicity="*" />
@@ -403,6 +497,54 @@
             </Principal>
             <Dependent Role="Jobs">
               <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobSkill_Jobs">
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+          <End Role="JobSkill" Type="Self.JobSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobSkill">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobSkill_Skill">
+          <End Role="Skill" Type="Self.Skill" Multiplicity="1" />
+          <End Role="JobSkill" Type="Self.JobSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skill">
+              <PropertyRef Name="SkillId" />
+            </Principal>
+            <Dependent Role="JobSkill">
+              <PropertyRef Name="SkillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobTags_Jobs">
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+          <End Role="JobTags" Type="Self.JobTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobTags">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobTags_Tags">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
+          <End Role="JobTags" Type="Self.JobTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="JobTags">
+              <PropertyRef Name="TagId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -464,13 +606,19 @@
           <EntitySet Name="InternshipCity" EntityType="Self.InternshipCity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternshipQuestions" EntityType="Self.InternshipQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Internships" EntityType="Self.Internships" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternshipSkill" EntityType="Self.InternshipSkill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternshipTags" EntityType="Self.InternshipTags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobCity" EntityType="Self.JobCity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobQuestions" EntityType="Self.JobQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobSkill" EntityType="Self.JobSkill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobTags" EntityType="Self.JobTags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lookup" EntityType="Self.Lookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Skill" EntityType="Self.Skill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentDocument" EntityType="Self.StudentDocument" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Corporate_Country" Association="Self.FK_Corporate_Country">
             <End Role="Country" EntitySet="Country" />
@@ -520,6 +668,22 @@
             <End Role="User" EntitySet="User" />
             <End Role="Internships" EntitySet="Internships" />
           </AssociationSet>
+          <AssociationSet Name="FK_InternshipSkill_Internships" Association="Self.FK_InternshipSkill_Internships">
+            <End Role="Internships" EntitySet="Internships" />
+            <End Role="InternshipSkill" EntitySet="InternshipSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipSkill_Skill" Association="Self.FK_InternshipSkill_Skill">
+            <End Role="Skill" EntitySet="Skill" />
+            <End Role="InternshipSkill" EntitySet="InternshipSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipTags_Internships" Association="Self.FK_InternshipTags_Internships">
+            <End Role="Internships" EntitySet="Internships" />
+            <End Role="InternshipTags" EntitySet="InternshipTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipTags_Tags" Association="Self.FK_InternshipTags_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="InternshipTags" EntitySet="InternshipTags" />
+          </AssociationSet>
           <AssociationSet Name="FK_JobCity_City" Association="Self.FK_JobCity_City">
             <End Role="City" EntitySet="City" />
             <End Role="JobCity" EntitySet="JobCity" />
@@ -535,6 +699,22 @@
           <AssociationSet Name="FK_Jobs_User" Association="Self.FK_Jobs_User">
             <End Role="User" EntitySet="User" />
             <End Role="Jobs" EntitySet="Jobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobSkill_Jobs" Association="Self.FK_JobSkill_Jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="JobSkill" EntitySet="JobSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobSkill_Skill" Association="Self.FK_JobSkill_Skill">
+            <End Role="Skill" EntitySet="Skill" />
+            <End Role="JobSkill" EntitySet="JobSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobTags_Jobs" Association="Self.FK_JobTags_Jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="JobTags" EntitySet="JobTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobTags_Tags" Association="Self.FK_JobTags_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="JobTags" EntitySet="JobTags" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_Country" Association="Self.FK_Student_Country">
             <End Role="Country" EntitySet="Country" />
@@ -785,6 +965,44 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Internship" EntitySet="Internships" />
           </AssociationSet>
+          <EntitySet Name="Skills" EntityType="MakeMyJobsModel.Skill" />
+          <EntitySet Name="Tags" EntityType="MakeMyJobsModel.Tag" />
+          <EntitySet Name="JobTags" EntityType="MakeMyJobsModel.JobTag" />
+          <AssociationSet Name="FK_JobTags_Jobs" Association="MakeMyJobsModel.FK_JobTags_Jobs">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="JobTag" EntitySet="JobTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobTags_Tags" Association="MakeMyJobsModel.FK_JobTags_Tags">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="JobTag" EntitySet="JobTags" />
+          </AssociationSet>
+          <EntitySet Name="JobSkills" EntityType="MakeMyJobsModel.JobSkill" />
+          <AssociationSet Name="FK_JobSkill_Jobs" Association="MakeMyJobsModel.FK_JobSkill_Jobs">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="JobSkill" EntitySet="JobSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobSkill_Skill" Association="MakeMyJobsModel.FK_JobSkill_Skill">
+            <End Role="Skill" EntitySet="Skills" />
+            <End Role="JobSkill" EntitySet="JobSkills" />
+          </AssociationSet>
+          <EntitySet Name="InternshipSkills" EntityType="MakeMyJobsModel.InternshipSkill" />
+          <EntitySet Name="InternshipTags" EntityType="MakeMyJobsModel.InternshipTag" />
+          <AssociationSet Name="FK_InternshipSkill_Internships" Association="MakeMyJobsModel.FK_InternshipSkill_Internships">
+            <End Role="Internship" EntitySet="Internships" />
+            <End Role="InternshipSkill" EntitySet="InternshipSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipTags_Internships" Association="MakeMyJobsModel.FK_InternshipTags_Internships">
+            <End Role="Internship" EntitySet="Internships" />
+            <End Role="InternshipTag" EntitySet="InternshipTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipSkill_Skill" Association="MakeMyJobsModel.FK_InternshipSkill_Skill">
+            <End Role="Skill" EntitySet="Skills" />
+            <End Role="InternshipSkill" EntitySet="InternshipSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipTags_Tags" Association="MakeMyJobsModel.FK_InternshipTags_Tags">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="InternshipTag" EntitySet="InternshipTags" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -1007,6 +1225,8 @@
           <Property Name="PostedOn" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="LastUpdatedOn" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="ExpiaryDate" Type="DateTime" Precision="3" Nullable="false" />
+          <NavigationProperty Name="JobTags" Relationship="MakeMyJobsModel.FK_JobTags_Jobs" FromRole="Job" ToRole="JobTag" />
+          <NavigationProperty Name="JobSkills" Relationship="MakeMyJobsModel.FK_JobSkill_Jobs" FromRole="Job" ToRole="JobSkill" />
         </EntityType>
         <Association Name="FK_JobCity_Jobs">
           <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
@@ -1096,6 +1316,8 @@
           <NavigationProperty Name="InternshipCities" Relationship="MakeMyJobsModel.FK_InternshipCity_Internships" FromRole="Internship" ToRole="InternshipCity" />
           <NavigationProperty Name="InternshipQuestions" Relationship="MakeMyJobsModel.FK_InternshipQuestions_Internships" FromRole="Internship" ToRole="InternshipQuestion" />
           <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_Internships_User" FromRole="Internship" ToRole="User" />
+          <NavigationProperty Name="InternshipSkills" Relationship="MakeMyJobsModel.FK_InternshipSkill_Internships" FromRole="Internship" ToRole="InternshipSkill" />
+          <NavigationProperty Name="InternshipTags" Relationship="MakeMyJobsModel.FK_InternshipTags_Internships" FromRole="Internship" ToRole="InternshipTag" />
         </EntityType>
         <Association Name="FK_InternshipCity_City">
           <End Type="MakeMyJobsModel.City" Role="City" Multiplicity="1" />
@@ -1142,6 +1364,160 @@
             </Principal>
             <Dependent Role="Internship">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Skill">
+          <Key>
+            <PropertyRef Name="SkillId" />
+          </Key>
+          <Property Name="SkillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SkillName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JobSkills" Relationship="MakeMyJobsModel.FK_JobSkill_Skill" FromRole="Skill" ToRole="JobSkill" />
+          <NavigationProperty Name="InternshipSkills" Relationship="MakeMyJobsModel.FK_InternshipSkill_Skill" FromRole="Skill" ToRole="InternshipSkill" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JobTags" Relationship="MakeMyJobsModel.FK_JobTags_Tags" FromRole="Tag" ToRole="JobTag" />
+          <NavigationProperty Name="InternshipTags" Relationship="MakeMyJobsModel.FK_InternshipTags_Tags" FromRole="Tag" ToRole="InternshipTag" />
+        </EntityType>
+        <EntityType Name="JobTag">
+          <Key>
+            <PropertyRef Name="JobTagId" />
+          </Key>
+          <Property Name="JobTagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <Property Name="TagId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Job" Relationship="MakeMyJobsModel.FK_JobTags_Jobs" FromRole="JobTag" ToRole="Job" />
+          <NavigationProperty Name="Tag" Relationship="MakeMyJobsModel.FK_JobTags_Tags" FromRole="JobTag" ToRole="Tag" />
+        </EntityType>
+        <Association Name="FK_JobTags_Jobs">
+          <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobTag" Role="JobTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobTag">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobTags_Tags">
+          <End Type="MakeMyJobsModel.Tag" Role="Tag" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobTag" Role="JobTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="JobTag">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="JobSkill">
+          <Key>
+            <PropertyRef Name="JobSkillId" />
+          </Key>
+          <Property Name="JobSkillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <Property Name="SkillId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Job" Relationship="MakeMyJobsModel.FK_JobSkill_Jobs" FromRole="JobSkill" ToRole="Job" />
+          <NavigationProperty Name="Skill" Relationship="MakeMyJobsModel.FK_JobSkill_Skill" FromRole="JobSkill" ToRole="Skill" />
+        </EntityType>
+        <Association Name="FK_JobSkill_Jobs">
+          <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobSkill" Role="JobSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobSkill">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobSkill_Skill">
+          <End Type="MakeMyJobsModel.Skill" Role="Skill" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobSkill" Role="JobSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skill">
+              <PropertyRef Name="SkillId" />
+            </Principal>
+            <Dependent Role="JobSkill">
+              <PropertyRef Name="SkillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InternshipSkill">
+          <Key>
+            <PropertyRef Name="InternSkillTag" />
+          </Key>
+          <Property Name="InternSkillTag" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InternshipId" Type="Int32" Nullable="false" />
+          <Property Name="SkillId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Internship" Relationship="MakeMyJobsModel.FK_InternshipSkill_Internships" FromRole="InternshipSkill" ToRole="Internship" />
+          <NavigationProperty Name="Skill" Relationship="MakeMyJobsModel.FK_InternshipSkill_Skill" FromRole="InternshipSkill" ToRole="Skill" />
+        </EntityType>
+        <EntityType Name="InternshipTag">
+          <Key>
+            <PropertyRef Name="InternTagId" />
+          </Key>
+          <Property Name="InternTagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InternshipId" Type="Int32" Nullable="false" />
+          <Property Name="TagId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Internship" Relationship="MakeMyJobsModel.FK_InternshipTags_Internships" FromRole="InternshipTag" ToRole="Internship" />
+          <NavigationProperty Name="Tag" Relationship="MakeMyJobsModel.FK_InternshipTags_Tags" FromRole="InternshipTag" ToRole="Tag" />
+        </EntityType>
+        <Association Name="FK_InternshipSkill_Internships">
+          <End Type="MakeMyJobsModel.Internship" Role="Internship" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipSkill" Role="InternshipSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internship">
+              <PropertyRef Name="InternshipId" />
+            </Principal>
+            <Dependent Role="InternshipSkill">
+              <PropertyRef Name="InternshipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipTags_Internships">
+          <End Type="MakeMyJobsModel.Internship" Role="Internship" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipTag" Role="InternshipTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internship">
+              <PropertyRef Name="InternshipId" />
+            </Principal>
+            <Dependent Role="InternshipTag">
+              <PropertyRef Name="InternshipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipSkill_Skill">
+          <End Type="MakeMyJobsModel.Skill" Role="Skill" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipSkill" Role="InternshipSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skill">
+              <PropertyRef Name="SkillId" />
+            </Principal>
+            <Dependent Role="InternshipSkill">
+              <PropertyRef Name="SkillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipTags_Tags">
+          <End Type="MakeMyJobsModel.Tag" Role="Tag" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipTag" Role="InternshipTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="InternshipTag">
+              <PropertyRef Name="TagId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1374,6 +1750,58 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="InternshipId" ColumnName="InternshipId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Skills">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.Skill">
+              <MappingFragment StoreEntitySet="Skill">
+                <ScalarProperty Name="SkillName" ColumnName="SkillName" />
+                <ScalarProperty Name="SkillId" ColumnName="SkillId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobTags">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.JobTag">
+              <MappingFragment StoreEntitySet="JobTags">
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="JobTagId" ColumnName="JobTagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobSkills">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.JobSkill">
+              <MappingFragment StoreEntitySet="JobSkill">
+                <ScalarProperty Name="SkillId" ColumnName="SkillId" />
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="JobSkillId" ColumnName="JobSkillId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternshipSkills">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.InternshipSkill">
+              <MappingFragment StoreEntitySet="InternshipSkill">
+                <ScalarProperty Name="SkillId" ColumnName="SkillId" />
+                <ScalarProperty Name="InternshipId" ColumnName="InternshipId" />
+                <ScalarProperty Name="InternSkillTag" ColumnName="InternSkillTag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternshipTags">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.InternshipTag">
+              <MappingFragment StoreEntitySet="InternshipTags">
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="InternshipId" ColumnName="InternshipId" />
+                <ScalarProperty Name="InternTagId" ColumnName="InternTagId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

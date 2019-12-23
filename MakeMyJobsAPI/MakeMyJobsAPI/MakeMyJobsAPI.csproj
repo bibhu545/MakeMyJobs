@@ -197,6 +197,12 @@
     <Compile Include="EDMX\InternshipQuestion.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDMX\InternshipSkill.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\InternshipTag.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDMX\Job.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
@@ -204,6 +210,12 @@
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\JobQuestion.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\JobSkill.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\JobTag.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Lookup.cs">
@@ -224,6 +236,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MakeMyJobs.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EDMX\Skill.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDMX\State.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
@@ -231,6 +246,9 @@
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\StudentDocument.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\Tag.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\User.cs">

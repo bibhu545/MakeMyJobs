@@ -19,6 +19,8 @@ import UserEditProfile from '../Components/Users/UserEditProfile';
 import ChangePassword from '../Components/Users/ChangePassword';
 import MyJobs from '../Components/Users/Corporate/MyJobs';
 import MyInternships from '../Components/Users/Corporate/MyInternships';
+import EditJob from '../Components/Jobs/EditJob';
+import EditInternship from '../Components/Internships/EditInternship';
 
 function RouterModule() {
     return (
@@ -29,8 +31,10 @@ function RouterModule() {
                     <Route path="/internships" component={Internships}></Route>
                     <Route path="/search" component={SearchResult}></Route>
                     <Route path="/add-job" component={AddJob}></Route>
+                    <Route path="/edit-job" component={EditJob}></Route>
                     <Route path="/job-description" component={JobDescription}></Route>
                     <Route path="/add-internship" component={AddInternship}></Route>
+                    <Route path="/edit-internship" component={EditInternship}></Route>
                     <Route path="/internship-description" component={InternshipDescription}></Route>
                     <Route path="/signup" component={Signup}></Route>
                     <Route path="/login" component={Login}></Route>
