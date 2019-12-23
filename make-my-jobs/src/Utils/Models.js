@@ -73,7 +73,7 @@ export class UserModel {
 export class ProffessionalModel {
     constructor() {
         this.userId = 0;
-        this.ProffesionalId = 0;
+        this.employeeId = 0;
         this.email = '';
         this.city = '';
         this.address = '';
@@ -145,6 +145,8 @@ export class JobModel {
         this.userId = 0;
         this.jobTitle = '';
         this.description = '';
+        this.companyName = '';
+        this.companyInfo = '';
         this.locations = [];
         this.tags = [];
         this.skills = [];
@@ -170,6 +172,8 @@ export class InternshipModel {
         this.userId = 0;
         this.title = '';
         this.description = '';
+        this.companyName = '';
+        this.companyInfo = '';
         this.locations = [];
         this.tags = [];
         this.skills = [];

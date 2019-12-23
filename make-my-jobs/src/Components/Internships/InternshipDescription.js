@@ -95,11 +95,12 @@ export class InternshipDescription extends Component {
                             <div className="panel panel-default">
                                 <div className="panel-body">
                                     <p>
-                                        <strong>About Cognizance IIT Roorkee (<a href='https://www.cognizance.org.in'>https://www.cognizance.org.in</a>)
+                                        <strong>About {internDetails.companyName == null ? <span>Company:</span> : internDetails.companyName}:
+                                            {/* (<a href='https://www.cognizance.org.in'>https://www.cognizance.org.in</a>) */}
                                         </strong>
                                     </p>
                                     <p className='justify'>
-                                        Initiated in 2003, Cognizance is the annual Techno-Socio-Managerial Festival of IIT Roorkee that experiences a conglomeration of over 200 events with participation from over 1,50,000 students from all over the world. The events are held at a two-tier level and include 22 different disciplines (the only technical Institute in the country to do so) that cover almost every field of technical, social and management spectrum. We provide a platform to the flourishing minds of the nation to exhibit their knowledge and innovation in an environment of like-minded excellence and intellect.
+                                        {internDetails.companyInfo == null ? <span>Not provided.</span> : internDetails.companyInfo}
                                     </p>
 
                                     <p>

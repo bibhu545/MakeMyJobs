@@ -48,5 +48,7 @@ namespace MakeMyJobsAPI.EDMX
         public virtual DbSet<JobSkill> JobSkills { get; set; }
         public virtual DbSet<InternshipSkill> InternshipSkills { get; set; }
         public virtual DbSet<InternshipTag> InternshipTags { get; set; }
+        public virtual DbSet<CorporateDocument> CorporateDocuments { get; set; }
+        public virtual DbSet<EmployeeDocument> EmployeeDocuments { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using MakeMyJobsAPI.Business;
 using MakeMyJobsAPI.Models;
+using MakeMyJobsAPI.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -45,6 +47,13 @@ namespace MakeMyJobsAPI.Controllers
             try
             {
                 var result = EmployeeBusiness.UpdateEmployeeBasicInfo(model);
+                if(result != null)
+                {
+                    if(Request.Files.Count > 0)
+                    {
+                        UploadEmployeeResume(result.employeeId);
+                    }
+                }
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response };
             }
@@ -52,6 +61,33 @@ namespace MakeMyJobsAPI.Controllers
             {
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
+        }
+
+        public bool UploadEmployeeResume(int employeeId)
+        {
+            var folderPath = CommonFunctions.GetConfigValue("employeeResumePath");
+            List<string> documentExtensions = new List<string>() { ".pdf", ".doc", ".docx" };
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var fileName = Path.GetFileName(Request.Files[i].FileName);
+                var fileExtension = Path.GetExtension(Request.Files[i].FileName).ToLower();
+                var fileNameOnDisk = string.Empty;
+                if (documentExtensions.IndexOf(fileExtension) < 0)
+                {
+                    return false;
+                }
+                fileNameOnDisk = fileNameOnDisk = "ER-" + employeeId + "-" + Guid.NewGuid().ToString().Replace("-", "") + fileExtension;
+                Request.Files[i].SaveAs(folderPath + fileNameOnDisk);
+                if (EmployeeBusiness.UploadResume(employeeId, fileName, fileNameOnDisk, Request.Files[i].ContentLength) > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public JsonResult AddEmployeeEducation(EmployeeEducationModel model)

@@ -33,6 +33,19 @@
           <Property Name="CompanyInfo" Type="text" />
           <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CorporateDocument">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorporateId" Type="int" Nullable="false" />
+          <Property Name="DocumentName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="DocumentNameOnDisk" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="DocumentSize" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="DocumentType" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="CountryId" />
@@ -57,6 +70,19 @@
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="DateJoined" Type="datetime" Nullable="false" />
           <Property Name="Resume" Type="varchar" MaxLength="500" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeDocument">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="DocumentName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="DocumentNameOnDisk" Type="nchar" MaxLength="500" Nullable="false" />
+          <Property Name="DocumentSize" Type="bigint" Nullable="false" />
+          <Property Name="DocumentType" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="EmployeeEducation">
@@ -296,6 +322,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CorporateDocument_Corporate">
+          <End Role="Corporate" Type="Self.Corporate" Multiplicity="1" />
+          <End Role="CorporateDocument" Type="Self.CorporateDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Corporate">
+              <PropertyRef Name="CorporateId" />
+            </Principal>
+            <Dependent Role="CorporateDocument">
+              <PropertyRef Name="CorporateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Employee_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="1" />
           <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
@@ -329,6 +367,18 @@
             </Principal>
             <Dependent Role="Employee">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeDocument_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeDocument" Type="Self.EmployeeDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeDocument">
+              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -599,8 +649,10 @@
         <EntityContainer Name="MakeMyJobsModelStoreContainer">
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Corporate" EntityType="Self.Corporate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorporateDocument" EntityType="Self.CorporateDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeDocument" EntityType="Self.EmployeeDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeEducation" EntityType="Self.EmployeeEducation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeExperience" EntityType="Self.EmployeeExperience" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternshipCity" EntityType="Self.InternshipCity" Schema="dbo" store:Type="Tables" />
@@ -632,6 +684,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="Corporate" EntitySet="Corporate" />
           </AssociationSet>
+          <AssociationSet Name="FK_CorporateDocument_Corporate" Association="Self.FK_CorporateDocument_Corporate">
+            <End Role="Corporate" EntitySet="Corporate" />
+            <End Role="CorporateDocument" EntitySet="CorporateDocument" />
+          </AssociationSet>
           <AssociationSet Name="FK_Employee_Country" Association="Self.FK_Employee_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="Employee" EntitySet="Employee" />
@@ -643,6 +699,10 @@
           <AssociationSet Name="FK_Employee_User" Association="Self.FK_Employee_User">
             <End Role="User" EntitySet="User" />
             <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeDocument_Employee" Association="Self.FK_EmployeeDocument_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeDocument" EntitySet="EmployeeDocument" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeEducation_Employee" Association="Self.FK_EmployeeEducation_Employee">
             <End Role="Employee" EntitySet="Employee" />
@@ -1003,6 +1063,16 @@
             <End Role="Tag" EntitySet="Tags" />
             <End Role="InternshipTag" EntitySet="InternshipTags" />
           </AssociationSet>
+          <EntitySet Name="CorporateDocuments" EntityType="MakeMyJobsModel.CorporateDocument" />
+          <AssociationSet Name="FK_CorporateDocument_Corporate" Association="MakeMyJobsModel.FK_CorporateDocument_Corporate">
+            <End Role="Corporate" EntitySet="Corporates" />
+            <End Role="CorporateDocument" EntitySet="CorporateDocuments" />
+          </AssociationSet>
+          <EntitySet Name="EmployeeDocuments" EntityType="MakeMyJobsModel.EmployeeDocument" />
+          <AssociationSet Name="FK_EmployeeDocument_Employee" Association="MakeMyJobsModel.FK_EmployeeDocument_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeDocument" EntitySet="EmployeeDocuments" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -1027,6 +1097,7 @@
           <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_Employee_User" FromRole="Employee" ToRole="User" />
           <NavigationProperty Name="EmployeeExperiences" Relationship="MakeMyJobsModel.FK_EmployeeExperience_Employee" FromRole="Employee" ToRole="EmployeeExperience" />
           <NavigationProperty Name="EmployeeEducations" Relationship="MakeMyJobsModel.FK_EmployeeEducation_Employee" FromRole="Employee" ToRole="EmployeeEducation" />
+          <NavigationProperty Name="EmployeeDocuments" Relationship="MakeMyJobsModel.FK_EmployeeDocument_Employee" FromRole="Employee" ToRole="EmployeeDocument" />
         </EntityType>
         <Association Name="FK_Employee_Country">
           <End Type="MakeMyJobsModel.Country" Role="Country" Multiplicity="1" />
@@ -1138,6 +1209,7 @@
           <NavigationProperty Name="State1" Relationship="MakeMyJobsModel.FK_Corporate_State" FromRole="Corporate" ToRole="State" />
           <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_Corporate_User" FromRole="Corporate" ToRole="User" />
           <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CorporateDocuments" Relationship="MakeMyJobsModel.FK_CorporateDocument_Corporate" FromRole="Corporate" ToRole="CorporateDocument" />
         </EntityType>
         <Association Name="FK_Corporate_Country">
           <End Type="MakeMyJobsModel.Country" Role="Country" Multiplicity="1" />
@@ -1521,6 +1593,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CorporateDocument">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorporateId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentNameOnDisk" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentSize" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DocumentType" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Corporate" Relationship="MakeMyJobsModel.FK_CorporateDocument_Corporate" FromRole="CorporateDocument" ToRole="Corporate" />
+        </EntityType>
+        <Association Name="FK_CorporateDocument_Corporate">
+          <End Type="MakeMyJobsModel.Corporate" Role="Corporate" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.CorporateDocument" Role="CorporateDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Corporate">
+              <PropertyRef Name="CorporateId" />
+            </Principal>
+            <Dependent Role="CorporateDocument">
+              <PropertyRef Name="CorporateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmployeeDocument">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentNameOnDisk" Type="String" Nullable="false" MaxLength="500" FixedLength="true" Unicode="true" />
+          <Property Name="DocumentSize" Type="Int64" Nullable="false" />
+          <Property Name="DocumentType" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="MakeMyJobsModel.FK_EmployeeDocument_Employee" FromRole="EmployeeDocument" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_EmployeeDocument_Employee">
+          <End Type="MakeMyJobsModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.EmployeeDocument" Role="EmployeeDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeDocument">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1802,6 +1926,34 @@
                 <ScalarProperty Name="TagId" ColumnName="TagId" />
                 <ScalarProperty Name="InternshipId" ColumnName="InternshipId" />
                 <ScalarProperty Name="InternTagId" ColumnName="InternTagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorporateDocuments">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.CorporateDocument">
+              <MappingFragment StoreEntitySet="CorporateDocument">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="LastUpdatedOn" ColumnName="LastUpdatedOn" />
+                <ScalarProperty Name="DocumentSize" ColumnName="DocumentSize" />
+                <ScalarProperty Name="DocumentNameOnDisk" ColumnName="DocumentNameOnDisk" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="CorporateId" ColumnName="CorporateId" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeDocuments">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.EmployeeDocument">
+              <MappingFragment StoreEntitySet="EmployeeDocument">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastUpdatedOn" ColumnName="LastUpdatedOn" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="DocumentSize" ColumnName="DocumentSize" />
+                <ScalarProperty Name="DocumentNameOnDisk" ColumnName="DocumentNameOnDisk" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

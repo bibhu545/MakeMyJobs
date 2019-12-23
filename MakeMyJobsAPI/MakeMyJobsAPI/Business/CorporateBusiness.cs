@@ -345,14 +345,33 @@ namespace MakeMyJobsAPI.Business
                     corporate.CompanyInfo = model.companyInfo;
                     updated += context.SaveChanges();
                 }
-                if (updated > 0)
+                return GetUpdatedCorporateInfo(user.UserId, corporate.CorporateId);
+            }
+        }
+
+        public static int SaveLogo(int corporateId, String fileName, String fileNameOnDisk, long fileSize)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                var previousLogo = context.CorporateDocuments.FirstOrDefault(x => x.CorporateId == corporateId && x.DocumentType == 1);
+                if (previousLogo != null)
                 {
-                    return GetUpdatedCorporateInfo(user.UserId, corporate.CorporateId);
+                    context.Entry(previousLogo).State = System.Data.Entity.EntityState.Deleted;
                 }
                 else
                 {
-                    return null;
+                    context.CorporateDocuments.Add(new CorporateDocument()
+                    {
+                        DocumentName = fileName,
+                        DocumentNameOnDisk = fileNameOnDisk,
+                        DocumentSize = fileSize,
+                        DocumentType = 1,
+                        IsActive = 1,
+                        LastUpdatedOn = DateTime.Now,
+                        CorporateId = corporateId
+                    });
                 }
+                return context.SaveChanges();
             }
         }
 
@@ -889,6 +908,11 @@ namespace MakeMyJobsAPI.Business
                     LastUpdatedOn = job.LastUpdatedOn,
                     postedOn = job.PostedOn
                 };
+
+                var corporate = context.Corporates.FirstOrDefault(x => x.UserId == jobResponse.userId);
+                jobResponse.companyName = corporate.CompanyName;
+                jobResponse.companyInfo = corporate.CompanyInfo;
+
                 jobResponse.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
                 {
                     cityId = jc.CityId,
@@ -1017,6 +1041,10 @@ namespace MakeMyJobsAPI.Business
                     postsAvailable = internship.PostsAvailable,
                     startDate = internship.StartDate
                 };
+
+                var corporate = context.Corporates.FirstOrDefault(x => x.UserId == internshipResponse.userId);
+                internshipResponse.companyName = corporate.CompanyName;
+                internshipResponse.companyInfo = corporate.CompanyInfo;
 
                 internshipResponse.locations = context.InternshipCities.Join(context.Cities, ic => ic.CityId, c => c.CityId, (ic, c) => new
                 {

@@ -14,6 +14,12 @@ namespace MakeMyJobsAPI.EDMX
     
     public partial class Corporate
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Corporate()
+        {
+            this.CorporateDocuments = new HashSet<CorporateDocument>();
+        }
+    
         public int CorporateId { get; set; }
         public int UserId { get; set; }
         public string FirstName { get; set; }
@@ -34,5 +40,7 @@ namespace MakeMyJobsAPI.EDMX
         public virtual Country Country1 { get; set; }
         public virtual State State1 { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorporateDocument> CorporateDocuments { get; set; }
     }
 }

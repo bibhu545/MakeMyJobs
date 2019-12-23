@@ -38,6 +38,12 @@ export class ProffesionalEditProfile extends Component {
                 }
                 else {
                     var tempUser = response.data.results[0];
+                    if (tempUser.dateOfBirth !== "" && tempUser.dateOfBirth != null) {
+                        tempUser.dateOfBirth = this.utils.formatDateToBind(tempUser.dateOfBirth);
+                    }
+                    else {
+                        tempUser.dateOfBirth = ""
+                    }
                     this.setState({
                         user: tempUser
                     })
@@ -57,8 +63,25 @@ export class ProffesionalEditProfile extends Component {
 
     onEditFormSubmitted = (e) => {
         e.preventDefault();
-        this.http.postData('http://makemyjobs.me/Employee/UpdateEmployeeBasicInfo', this.state.user).then(response => {
-            if (response.data.results[0] == null) {
+
+        const requestData = new FormData();
+        requestData.append('firstName', this.state.user.firstName);
+        requestData.append('lastName', this.state.user.lastName);
+        requestData.append('email', this.state.user.email);
+        requestData.append('contactNumber', this.state.user.contactNumber);
+        requestData.append('address', this.state.user.address);
+        requestData.append('city', this.state.user.city);
+        requestData.append('country', this.state.user.country);
+        requestData.append('dateOfBirth', this.state.user.dateOfBirth);
+        requestData.append('state', this.state.user.state);
+        requestData.append('zipCode', this.state.user.zipCode);
+        requestData.append('resume', this.state.user.resume);
+        requestData.append('userId', this.state.user.userId);
+        requestData.append('employeeId', this.state.user.employeeId);
+        requestData.append('dateJoined', this.state.user.dateJoined);
+
+        this.http.postData('http://makemyjobs.me/Employee/UpdateEmployeeBasicInfo', requestData).then(response => {
+            if (response.data == null) {
                 new Utils().showErrorMessage('Error occured in updating data.');
             }
             else {
@@ -84,6 +107,13 @@ export class ProffesionalEditProfile extends Component {
             console.log(error);
         });
     }
+
+    fileChangedHandler = (e) => {
+        let user = { ...this.state.user };
+        user['resume'] = e.target.files[0];
+        this.setState({ user });
+    };
+
     render() {
         if (this.state.updated === 1) {
             return (
@@ -143,7 +173,7 @@ export class ProffesionalEditProfile extends Component {
                                         <div className="form-group">
                                             <label className="control-label col-sm-4" htmlFor="dateOfBirth">Date of birth:</label>
                                             <div className="col-sm-8">
-                                                <input type="date" className="form-control" id="dateOfBirth" name="dateOfBirth" value={this.state.user.dateOfBirth == null ? "" : this.state.user.dateOfBirth} onChange={this.handleEditFormChange} />
+                                                <input type="date" className="form-control" id="dateOfBirth" name="dateOfBirth" value={this.state.user.dateOfBirth} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
 
@@ -197,12 +227,12 @@ export class ProffesionalEditProfile extends Component {
                                                 <input type="text" className="form-control" id="zipCode" placeholder="Enter Pincode" name="zipCode" value={this.state.user.zipCode == null ? "" : this.state.user.zipCode} onChange={this.handleEditFormChange} />
                                             </div>
                                         </div>
-                                        {/* <div className="form-group">
+                                        <div className="form-group">
                                             <label className="control-label col-sm-4" htmlFor="resume">Resume:</label>
                                             <div className="col-sm-8">
-                                                <input type="file" className="form-control" id="resume" name="resume" value={this.state.user.resume == null ? "" : this.state.user.resume} onChange={this.handleEditFormChange} />
+                                                <input type="file" accept="application/pdf" className="form-control" id="resume" name="resume" onChange={this.fileChangedHandler} />
                                             </div>
-                                        </div> */}
+                                        </div>
                                         <div className='center-content'>
                                             <button type='submit' className='btn btn-primary'>Update Now</button>
                                             <a href='/my-profile' className='btn btn-default'>Cancel</a>

@@ -72,6 +72,8 @@ namespace MakeMyJobsAPI.Models
         public string locationNames { get; set; }
         public string tagNames { get; set; }
         public string skillNames { get; set; }
+        public string companyName { get; set; }
+        public string companyInfo { get; set; }
     }
 
     public class InternshipModel
@@ -125,5 +127,7 @@ namespace MakeMyJobsAPI.Models
         public string locationNames { get; set; }
         public string tagNames { get; set; }
         public string skillNames { get; set; }
+        public string companyName { get; set; }
+        public string companyInfo { get; set; }
     }
 }

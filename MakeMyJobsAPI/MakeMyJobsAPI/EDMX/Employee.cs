@@ -19,6 +19,7 @@ namespace MakeMyJobsAPI.EDMX
         {
             this.EmployeeExperiences = new HashSet<EmployeeExperience>();
             this.EmployeeEducations = new HashSet<EmployeeEducation>();
+            this.EmployeeDocuments = new HashSet<EmployeeDocument>();
         }
     
         public int EmployeeId { get; set; }
@@ -43,5 +44,7 @@ namespace MakeMyJobsAPI.EDMX
         public virtual ICollection<EmployeeExperience> EmployeeExperiences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeEducation> EmployeeEducations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeeDocument> EmployeeDocuments { get; set; }
     }
 }

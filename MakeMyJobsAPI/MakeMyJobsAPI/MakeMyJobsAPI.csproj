@@ -176,10 +176,16 @@
     <Compile Include="EDMX\Corporate.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDMX\CorporateDocument.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDMX\Country.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Employee.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\EmployeeDocument.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\EmployeeEducation.cs">

@@ -42,7 +42,7 @@ export class CorporateEditProfile extends Component {
                     if (tempUser.dateOfBirth !== "" && tempUser.dateOfBirth != null) {
                         tempUser.dateOfBirth = this.utils.formatDateToBind(tempUser.dateOfBirth);
                     }
-                    else{
+                    else {
                         tempUser.dateOfBirth = ""
                     }
                     this.setState({
@@ -64,8 +64,27 @@ export class CorporateEditProfile extends Component {
 
     onEditFormSubmitted = (e) => {
         e.preventDefault();
-        this.http.postData('http://makemyjobs.me/Corporate/UpdateCorporateBasicInfo', this.state.user).then(response => {
-            if (response.data.results[0] == null) {
+
+        const requestData = new FormData();
+        requestData.append('firstName', this.state.user.firstName);
+        requestData.append('lastName', this.state.user.lastName);
+        requestData.append('email', this.state.user.email);
+        requestData.append('contactNumber', this.state.user.contactNumber);
+        requestData.append('address', this.state.user.address);
+        requestData.append('city', this.state.user.city);
+        requestData.append('companyName', this.state.user.companyName);
+        requestData.append('companyInfo', this.state.user.companyInfo);
+        requestData.append('country', this.state.user.country);
+        requestData.append('dateOfBirth', this.state.user.dateOfBirth);
+        requestData.append('state', this.state.user.state);
+        requestData.append('zipCode', this.state.user.zipCode);
+        requestData.append('logo', this.state.user.logo);
+        requestData.append('userId', this.state.user.userId);
+        requestData.append('corporateId', this.state.user.corporateId);
+        requestData.append('dateJoined', this.state.user.dateJoined);
+
+        this.http.postData('http://makemyjobs.me/Corporate/UpdateCorporateBasicInfo', requestData).then(response => {
+            if (response.data == null) {
                 new Utils().showErrorMessage('Error occured in updating data.');
             }
             else {
@@ -92,6 +111,12 @@ export class CorporateEditProfile extends Component {
         });
     }
 
+    fileChangedHandler = (e) => {
+        let user = { ...this.state.user };
+        user['logo'] = e.target.files[0];
+        this.setState({ user });
+    };
+
     render() {
         if (this.state.updated === 1) {
             return (
@@ -117,7 +142,7 @@ export class CorporateEditProfile extends Component {
                             <br />
                             <div className='row'>
                                 <div className='col-md-12'>
-                                    <form className="form-horizontal" onSubmit={this.onEditFormSubmitted}>
+                                    <form encType="multipart/form-data" className="form-horizontal" onSubmit={this.onEditFormSubmitted}>
 
                                         <div className="form-group">
                                             <label className="control-label col-sm-3" htmlFor="firstName">First name*:</label>
@@ -219,12 +244,12 @@ export class CorporateEditProfile extends Component {
                                                 </textarea>
                                             </div>
                                         </div>
-                                        {/* <div className="form-group">
-                                            <label className="control-label col-sm-3" htmlFor="resume">Resume:</label>
+                                        <div className="form-group">
+                                            <label className="control-label col-sm-3" htmlFor="logo">Update logo:</label>
                                             <div className="col-sm-8">
-                                                <input type="file" className="form-control" id="resume" name="resume" value={this.state.user.resume == null ? "" : this.state.user.resume} onChange={this.handleEditFormChange} />
+                                                <input type="file" accept="image/*" className="form-control" id="logo" name="logo" onChange={this.fileChangedHandler} />
                                             </div>
-                                        </div> */}
+                                        </div>
                                         <div className='center-content'>
                                             <button type='submit' className='btn btn-primary'>Update Now</button>
                                             <a href='/my-profile' className='btn btn-default'>Cancel</a>

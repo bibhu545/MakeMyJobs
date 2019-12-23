@@ -1,8 +1,10 @@
 ﻿using MakeMyJobsAPI.Business;
 using MakeMyJobsAPI.Models;
+using MakeMyJobsAPI.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -73,6 +75,13 @@ namespace MakeMyJobsAPI.Controllers
             try
             {
                 var result = CorporateBusiness.UpdateCorporateBasicInfo(model);
+                if (result != null)
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        UploadLogo(result.corporateId);
+                    }
+                }
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response };
             }
@@ -80,6 +89,33 @@ namespace MakeMyJobsAPI.Controllers
             {
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
+        }
+
+        public bool UploadLogo(int corporateId)
+        {
+            var folderPath = CommonFunctions.GetConfigValue("logoPath");
+            List<string> documentExtensions = new List<string>() { ".jpg", ".png", ".jpeg", ".ico" };
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var fileName = Path.GetFileName(Request.Files[i].FileName);
+                var fileExtension = Path.GetExtension(Request.Files[i].FileName).ToLower();
+                var fileNameOnDisk = string.Empty;
+                if (documentExtensions.IndexOf(fileExtension) < 0)
+                {
+                    return false;
+                }
+                fileNameOnDisk = fileNameOnDisk = "CTL-" + corporateId + "-" + Guid.NewGuid().ToString().Replace("-", "") + fileExtension;
+                Request.Files[i].SaveAs(folderPath + fileNameOnDisk);
+                if (CorporateBusiness.SaveLogo(corporateId, fileName, fileNameOnDisk, Request.Files[i].ContentLength) > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public JsonResult CreateJob(JobModel model)

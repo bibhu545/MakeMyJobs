@@ -134,14 +134,33 @@ namespace MakeMyJobsAPI.Business
                     employee.ZipCode = model.zipCode;
                     updated += context.SaveChanges();
                 }
-                if (updated > 0)
+                return GetUpdatedEmployeeInfo(user.UserId, employee.EmployeeId);
+            }
+        }
+
+        public static int UploadResume(int employeeId, String fileName, String fileNameOnDisk, long fileSize)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                var previousResume = context.EmployeeDocuments.FirstOrDefault(x => x.EmployeeId == employeeId && x.DocumentType == 1);
+                if (previousResume != null)
                 {
-                    return GetUpdatedEmployeeInfo(user.UserId, employee.EmployeeId);
+                    context.Entry(previousResume).State = System.Data.Entity.EntityState.Deleted;
                 }
                 else
                 {
-                    return null;
+                    context.EmployeeDocuments.Add(new EmployeeDocument()
+                    {
+                        DocumentName = fileName,
+                        DocumentNameOnDisk = fileNameOnDisk,
+                        DocumentSize = fileSize,
+                        DocumentType = 1,
+                        IsActive = 1,
+                        LastUpdatedOn = DateTime.Now,
+                        EmployeeId = employeeId
+                    });
                 }
+                return context.SaveChanges();
             }
         }
 
