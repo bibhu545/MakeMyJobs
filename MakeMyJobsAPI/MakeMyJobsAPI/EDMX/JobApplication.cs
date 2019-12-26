@@ -12,21 +12,15 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class JobQuestion
+    public partial class JobApplication
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public JobQuestion()
-        {
-            this.JobAnswers = new HashSet<JobAnswer>();
-        }
-    
-        public int JobQuestionId { get; set; }
+        public int JobApplicationId { get; set; }
+        public int UserId { get; set; }
         public int JobId { get; set; }
-        public string Question { get; set; }
-        public int IsActive { get; set; }
+        public int Status { get; set; }
+        public System.DateTime ApplyDate { get; set; }
     
         public virtual Job Job { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JobAnswer> JobAnswers { get; set; }
+        public virtual User User { get; set; }
     }
 }

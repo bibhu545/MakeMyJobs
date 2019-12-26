@@ -22,6 +22,10 @@ namespace MakeMyJobsAPI.EDMX
             this.Corporates = new HashSet<Corporate>();
             this.Jobs = new HashSet<Job>();
             this.Internships = new HashSet<Internship>();
+            this.InternshipApplications = new HashSet<InternshipApplication>();
+            this.JobApplications = new HashSet<JobApplication>();
+            this.InternshipAnswers = new HashSet<InternshipAnswer>();
+            this.JobAnswers = new HashSet<JobAnswer>();
         }
     
         public int UserId { get; set; }
@@ -40,5 +44,13 @@ namespace MakeMyJobsAPI.EDMX
         public virtual ICollection<Job> Jobs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Internship> Internships { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InternshipApplication> InternshipApplications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JobApplication> JobApplications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InternshipAnswer> InternshipAnswers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JobAnswer> JobAnswers { get; set; }
     }
 }

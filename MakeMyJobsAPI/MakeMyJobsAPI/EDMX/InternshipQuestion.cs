@@ -14,11 +14,19 @@ namespace MakeMyJobsAPI.EDMX
     
     public partial class InternshipQuestion
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public InternshipQuestion()
+        {
+            this.InternshipAnswers = new HashSet<InternshipAnswer>();
+        }
+    
         public int InternQuestionId { get; set; }
         public int InternshipId { get; set; }
         public string Question { get; set; }
         public int IsActive { get; set; }
     
         public virtual Internship Internship { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InternshipAnswer> InternshipAnswers { get; set; }
     }
 }

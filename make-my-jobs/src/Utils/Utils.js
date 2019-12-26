@@ -35,14 +35,19 @@ export class Utils {
     }
 
     getUserInfoFromCookies = () => {
-        var userDataFromCookie = cookie.load('loggedUser').split("random");
-        var userData = new UserCookieInfoModel();
-        userData.userId = userDataFromCookie[0];
-        userData.email = userDataFromCookie[1];
-        userData.firstName = userDataFromCookie[2];
-        userData.lastName = userDataFromCookie[3];
-        userData.userType = userDataFromCookie[4];
-        return userData;
+        if (cookie.load('loggedUser') === undefined) {
+            return new UserCookieInfoModel();
+        }
+        else {
+            var userDataFromCookie = cookie.load('loggedUser').split("random");
+            var userData = new UserCookieInfoModel();
+            userData.userId = userDataFromCookie[0];
+            userData.email = userDataFromCookie[1];
+            userData.firstName = userDataFromCookie[2];
+            userData.lastName = userDataFromCookie[3];
+            userData.userType = userDataFromCookie[4];
+            return userData;
+        }
     }
 
     getUserTypeFromCookies = () => {

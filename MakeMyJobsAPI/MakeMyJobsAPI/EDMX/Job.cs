@@ -21,6 +21,8 @@ namespace MakeMyJobsAPI.EDMX
             this.JobQuestions = new HashSet<JobQuestion>();
             this.JobTags = new HashSet<JobTag>();
             this.JobSkills = new HashSet<JobSkill>();
+            this.JobApplications = new HashSet<JobApplication>();
+            this.JobAnswers = new HashSet<JobAnswer>();
         }
     
         public int JobId { get; set; }
@@ -45,5 +47,9 @@ namespace MakeMyJobsAPI.EDMX
         public virtual ICollection<JobTag> JobTags { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JobSkill> JobSkills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JobApplication> JobApplications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JobAnswer> JobAnswers { get; set; }
     }
 }

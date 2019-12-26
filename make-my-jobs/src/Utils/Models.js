@@ -163,6 +163,8 @@ export class JobModel {
         this.skillNames = '';
         this.postedOn = '';
         this.lastUpdatedOn = '';
+        this.applied = false;
+        this.totalApplications = 0;
     }
 }
 
@@ -194,5 +196,25 @@ export class InternshipModel {
         this.questionOne = '';
         this.questionTwo = '';
         this.questionThree = '';
+    }
+}
+
+export class AnswerModel {
+    constructor() {
+        this.userId = 0;
+        this.jobId = 0;
+        this.answerOne = '';
+        this.answerTwo = '';
+        this.answerThree = '';
+    }
+}
+
+export class AppliedJobModel {
+    constructor() {
+        this.jobDetails = new JobModel();
+        this.answerOne = '';
+        this.answerTwo = '';
+        this.answerThree = '';
+        this.applyDate = '';
     }
 }

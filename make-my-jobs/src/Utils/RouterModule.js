@@ -21,6 +21,8 @@ import MyJobs from '../Components/Users/Corporate/MyJobs';
 import MyInternships from '../Components/Users/Corporate/MyInternships';
 import EditJob from '../Components/Jobs/EditJob';
 import EditInternship from '../Components/Internships/EditInternship';
+import ApplyJob from '../Components/Jobs/ApplyJob';
+import ViewApplicants from '../Components/Users/Corporate/ViewApplicants';
 
 function RouterModule() {
     return (
@@ -33,6 +35,8 @@ function RouterModule() {
                     <Route path="/add-job" component={AddJob}></Route>
                     <Route path="/edit-job" component={EditJob}></Route>
                     <Route path="/job-description" component={JobDescription}></Route>
+                    <Route path="/view-applicants" component={ViewApplicants}></Route>
+                    <Route path="/apply-job" component={ApplyJob}></Route>
                     <Route path="/add-internship" component={AddInternship}></Route>
                     <Route path="/edit-internship" component={EditInternship}></Route>
                     <Route path="/internship-description" component={InternshipDescription}></Route>

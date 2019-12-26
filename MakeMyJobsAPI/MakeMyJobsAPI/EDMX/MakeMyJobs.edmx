@@ -110,6 +110,26 @@
           <Property Name="LeftOn" Type="datetime" />
           <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="InternshipAnswers">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InternQuestionId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AnswerText" Type="text" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InternshipApplication">
+          <Key>
+            <PropertyRef Name="InternApplicationId" />
+          </Key>
+          <Property Name="InternApplicationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="InternshipId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="ApplyDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="InternshipCity">
           <Key>
             <PropertyRef Name="InternCityId" />
@@ -162,6 +182,27 @@
           <Property Name="InternTagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InternshipId" Type="int" Nullable="false" />
           <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JobAnswers">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="JobId" Type="int" Nullable="false" />
+          <Property Name="JobQuestionId" Type="int" Nullable="false" />
+          <Property Name="AnswerText" Type="text" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JobApplication">
+          <Key>
+            <PropertyRef Name="JobApplicationId" />
+          </Key>
+          <Property Name="JobApplicationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="JobId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="ApplyDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="JobCity">
           <Key>
@@ -406,6 +447,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InternshipAnswers_InternshipQuestions">
+          <End Role="InternshipQuestions" Type="Self.InternshipQuestions" Multiplicity="1" />
+          <End Role="InternshipAnswers" Type="Self.InternshipAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternshipQuestions">
+              <PropertyRef Name="InternQuestionId" />
+            </Principal>
+            <Dependent Role="InternshipAnswers">
+              <PropertyRef Name="InternQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipAnswers_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="InternshipAnswers" Type="Self.InternshipAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InternshipAnswers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipApplication_Internships">
+          <End Role="Internships" Type="Self.Internships" Multiplicity="1" />
+          <End Role="InternshipApplication" Type="Self.InternshipApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internships">
+              <PropertyRef Name="InternshipId" />
+            </Principal>
+            <Dependent Role="InternshipApplication">
+              <PropertyRef Name="InternshipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipApplication_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="InternshipApplication" Type="Self.InternshipApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InternshipApplication">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InternshipCity_City">
           <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="InternshipCity" Type="Self.InternshipCity" Multiplicity="*" />
@@ -499,6 +588,66 @@
             </Principal>
             <Dependent Role="InternshipTags">
               <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobAnswers_JobQuestions">
+          <End Role="JobQuestions" Type="Self.JobQuestions" Multiplicity="1" />
+          <End Role="JobAnswers" Type="Self.JobAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobQuestions">
+              <PropertyRef Name="JobQuestionId" />
+            </Principal>
+            <Dependent Role="JobAnswers">
+              <PropertyRef Name="JobQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobAnswers_Jobs">
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+          <End Role="JobAnswers" Type="Self.JobAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobAnswers">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobAnswers_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="JobAnswers" Type="Self.JobAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="JobAnswers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobApplication_Jobs">
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+          <End Role="JobApplication" Type="Self.JobApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobApplication">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobApplication_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="JobApplication" Type="Self.JobApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="JobApplication">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -655,11 +804,15 @@
           <EntitySet Name="EmployeeDocument" EntityType="Self.EmployeeDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeEducation" EntityType="Self.EmployeeEducation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeExperience" EntityType="Self.EmployeeExperience" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternshipAnswers" EntityType="Self.InternshipAnswers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternshipApplication" EntityType="Self.InternshipApplication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternshipCity" EntityType="Self.InternshipCity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternshipQuestions" EntityType="Self.InternshipQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Internships" EntityType="Self.Internships" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternshipSkill" EntityType="Self.InternshipSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternshipTags" EntityType="Self.InternshipTags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobAnswers" EntityType="Self.JobAnswers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobApplication" EntityType="Self.JobApplication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobCity" EntityType="Self.JobCity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobQuestions" EntityType="Self.JobQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
@@ -712,6 +865,22 @@
             <End Role="Employee" EntitySet="Employee" />
             <End Role="EmployeeExperience" EntitySet="EmployeeExperience" />
           </AssociationSet>
+          <AssociationSet Name="FK_InternshipAnswers_InternshipQuestions" Association="Self.FK_InternshipAnswers_InternshipQuestions">
+            <End Role="InternshipQuestions" EntitySet="InternshipQuestions" />
+            <End Role="InternshipAnswers" EntitySet="InternshipAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipAnswers_User" Association="Self.FK_InternshipAnswers_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="InternshipAnswers" EntitySet="InternshipAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipApplication_Internships" Association="Self.FK_InternshipApplication_Internships">
+            <End Role="Internships" EntitySet="Internships" />
+            <End Role="InternshipApplication" EntitySet="InternshipApplication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipApplication_User" Association="Self.FK_InternshipApplication_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="InternshipApplication" EntitySet="InternshipApplication" />
+          </AssociationSet>
           <AssociationSet Name="FK_InternshipCity_City" Association="Self.FK_InternshipCity_City">
             <End Role="City" EntitySet="City" />
             <End Role="InternshipCity" EntitySet="InternshipCity" />
@@ -743,6 +912,26 @@
           <AssociationSet Name="FK_InternshipTags_Tags" Association="Self.FK_InternshipTags_Tags">
             <End Role="Tags" EntitySet="Tags" />
             <End Role="InternshipTags" EntitySet="InternshipTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobAnswers_JobQuestions" Association="Self.FK_JobAnswers_JobQuestions">
+            <End Role="JobQuestions" EntitySet="JobQuestions" />
+            <End Role="JobAnswers" EntitySet="JobAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobAnswers_Jobs" Association="Self.FK_JobAnswers_Jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="JobAnswers" EntitySet="JobAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobAnswers_User" Association="Self.FK_JobAnswers_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="JobAnswers" EntitySet="JobAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobApplication_Jobs" Association="Self.FK_JobApplication_Jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="JobApplication" EntitySet="JobApplication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobApplication_User" Association="Self.FK_JobApplication_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="JobApplication" EntitySet="JobApplication" />
           </AssociationSet>
           <AssociationSet Name="FK_JobCity_City" Association="Self.FK_JobCity_City">
             <End Role="City" EntitySet="City" />
@@ -878,6 +1067,10 @@
           <NavigationProperty Name="Corporates" Relationship="MakeMyJobsModel.FK_Corporate_User" FromRole="User" ToRole="Corporate" />
           <NavigationProperty Name="Jobs" Relationship="MakeMyJobsModel.FK_Jobs_User" FromRole="User" ToRole="Job" />
           <NavigationProperty Name="Internships" Relationship="MakeMyJobsModel.FK_Internships_User" FromRole="User" ToRole="Internship" />
+          <NavigationProperty Name="InternshipApplications" Relationship="MakeMyJobsModel.FK_InternshipApplication_User" FromRole="User" ToRole="InternshipApplication" />
+          <NavigationProperty Name="JobApplications" Relationship="MakeMyJobsModel.FK_JobApplication_User" FromRole="User" ToRole="JobApplication" />
+          <NavigationProperty Name="InternshipAnswers" Relationship="MakeMyJobsModel.FK_InternshipAnswers_User" FromRole="User" ToRole="InternshipAnswer" />
+          <NavigationProperty Name="JobAnswers" Relationship="MakeMyJobsModel.FK_JobAnswers_User" FromRole="User" ToRole="JobAnswer" />
         </EntityType>
         <Association Name="FK_Student_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="1" />
@@ -1072,6 +1265,46 @@
           <AssociationSet Name="FK_EmployeeDocument_Employee" Association="MakeMyJobsModel.FK_EmployeeDocument_Employee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="EmployeeDocument" EntitySet="EmployeeDocuments" />
+          </AssociationSet>
+          <EntitySet Name="InternshipApplications" EntityType="MakeMyJobsModel.InternshipApplication" />
+          <EntitySet Name="JobApplications" EntityType="MakeMyJobsModel.JobApplication" />
+          <AssociationSet Name="FK_InternshipApplication_Internships" Association="MakeMyJobsModel.FK_InternshipApplication_Internships">
+            <End Role="Internship" EntitySet="Internships" />
+            <End Role="InternshipApplication" EntitySet="InternshipApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipApplication_User" Association="MakeMyJobsModel.FK_InternshipApplication_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="InternshipApplication" EntitySet="InternshipApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobApplication_Jobs" Association="MakeMyJobsModel.FK_JobApplication_Jobs">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="JobApplication" EntitySet="JobApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobApplication_User" Association="MakeMyJobsModel.FK_JobApplication_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="JobApplication" EntitySet="JobApplications" />
+          </AssociationSet>
+          <EntitySet Name="InternshipAnswers" EntityType="MakeMyJobsModel.InternshipAnswer" />
+          <AssociationSet Name="FK_InternshipAnswers_InternshipQuestions" Association="MakeMyJobsModel.FK_InternshipAnswers_InternshipQuestions">
+            <End Role="InternshipQuestion" EntitySet="InternshipQuestions" />
+            <End Role="InternshipAnswer" EntitySet="InternshipAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternshipAnswers_User" Association="MakeMyJobsModel.FK_InternshipAnswers_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="InternshipAnswer" EntitySet="InternshipAnswers" />
+          </AssociationSet>
+          <EntitySet Name="JobAnswers" EntityType="MakeMyJobsModel.JobAnswer" />
+          <AssociationSet Name="FK_JobAnswers_JobQuestions" Association="MakeMyJobsModel.FK_JobAnswers_JobQuestions">
+            <End Role="JobQuestion" EntitySet="JobQuestions" />
+            <End Role="JobAnswer" EntitySet="JobAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobAnswers_Jobs" Association="MakeMyJobsModel.FK_JobAnswers_Jobs">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="JobAnswer" EntitySet="JobAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobAnswers_User" Association="MakeMyJobsModel.FK_JobAnswers_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="JobAnswer" EntitySet="JobAnswers" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Employee">
@@ -1299,6 +1532,8 @@
           <Property Name="ExpiaryDate" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="JobTags" Relationship="MakeMyJobsModel.FK_JobTags_Jobs" FromRole="Job" ToRole="JobTag" />
           <NavigationProperty Name="JobSkills" Relationship="MakeMyJobsModel.FK_JobSkill_Jobs" FromRole="Job" ToRole="JobSkill" />
+          <NavigationProperty Name="JobApplications" Relationship="MakeMyJobsModel.FK_JobApplication_Jobs" FromRole="Job" ToRole="JobApplication" />
+          <NavigationProperty Name="JobAnswers" Relationship="MakeMyJobsModel.FK_JobAnswers_Jobs" FromRole="Job" ToRole="JobAnswer" />
         </EntityType>
         <Association Name="FK_JobCity_Jobs">
           <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
@@ -1333,6 +1568,7 @@
           <Property Name="Question" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Job" Relationship="MakeMyJobsModel.FK_JobQuestions_Jobs" FromRole="JobQuestion" ToRole="Job" />
+          <NavigationProperty Name="JobAnswers" Relationship="MakeMyJobsModel.FK_JobAnswers_JobQuestions" FromRole="JobQuestion" ToRole="JobAnswer" />
         </EntityType>
         <Association Name="FK_JobQuestions_Jobs">
           <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
@@ -1365,6 +1601,7 @@
           <Property Name="Question" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Internship" Relationship="MakeMyJobsModel.FK_InternshipQuestions_Internships" FromRole="InternshipQuestion" ToRole="Internship" />
+          <NavigationProperty Name="InternshipAnswers" Relationship="MakeMyJobsModel.FK_InternshipAnswers_InternshipQuestions" FromRole="InternshipQuestion" ToRole="InternshipAnswer" />
         </EntityType>
         <EntityType Name="Internship">
           <Key>
@@ -1390,6 +1627,7 @@
           <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_Internships_User" FromRole="Internship" ToRole="User" />
           <NavigationProperty Name="InternshipSkills" Relationship="MakeMyJobsModel.FK_InternshipSkill_Internships" FromRole="Internship" ToRole="InternshipSkill" />
           <NavigationProperty Name="InternshipTags" Relationship="MakeMyJobsModel.FK_InternshipTags_Internships" FromRole="Internship" ToRole="InternshipTag" />
+          <NavigationProperty Name="InternshipApplications" Relationship="MakeMyJobsModel.FK_InternshipApplication_Internships" FromRole="Internship" ToRole="InternshipApplication" />
         </EntityType>
         <Association Name="FK_InternshipCity_City">
           <End Type="MakeMyJobsModel.City" Role="City" Multiplicity="1" />
@@ -1642,6 +1880,164 @@
             </Principal>
             <Dependent Role="EmployeeDocument">
               <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InternshipApplication">
+          <Key>
+            <PropertyRef Name="InternApplicationId" />
+          </Key>
+          <Property Name="InternApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="InternshipId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="ApplyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Internship" Relationship="MakeMyJobsModel.FK_InternshipApplication_Internships" FromRole="InternshipApplication" ToRole="Internship" />
+          <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_InternshipApplication_User" FromRole="InternshipApplication" ToRole="User" />
+        </EntityType>
+        <EntityType Name="JobApplication">
+          <Key>
+            <PropertyRef Name="JobApplicationId" />
+          </Key>
+          <Property Name="JobApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="ApplyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Job" Relationship="MakeMyJobsModel.FK_JobApplication_Jobs" FromRole="JobApplication" ToRole="Job" />
+          <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_JobApplication_User" FromRole="JobApplication" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_InternshipApplication_Internships">
+          <End Type="MakeMyJobsModel.Internship" Role="Internship" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipApplication" Role="InternshipApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internship">
+              <PropertyRef Name="InternshipId" />
+            </Principal>
+            <Dependent Role="InternshipApplication">
+              <PropertyRef Name="InternshipId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipApplication_User">
+          <End Type="MakeMyJobsModel.User" Role="User" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipApplication" Role="InternshipApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InternshipApplication">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobApplication_Jobs">
+          <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobApplication" Role="JobApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobApplication">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobApplication_User">
+          <End Type="MakeMyJobsModel.User" Role="User" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobApplication" Role="JobApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="JobApplication">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InternshipAnswer">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InternQuestionId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AnswerText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="InternshipQuestion" Relationship="MakeMyJobsModel.FK_InternshipAnswers_InternshipQuestions" FromRole="InternshipAnswer" ToRole="InternshipQuestion" />
+          <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_InternshipAnswers_User" FromRole="InternshipAnswer" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_InternshipAnswers_InternshipQuestions">
+          <End Type="MakeMyJobsModel.InternshipQuestion" Role="InternshipQuestion" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipAnswer" Role="InternshipAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternshipQuestion">
+              <PropertyRef Name="InternQuestionId" />
+            </Principal>
+            <Dependent Role="InternshipAnswer">
+              <PropertyRef Name="InternQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternshipAnswers_User">
+          <End Type="MakeMyJobsModel.User" Role="User" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.InternshipAnswer" Role="InternshipAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InternshipAnswer">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="JobAnswer">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <Property Name="JobQuestionId" Type="Int32" Nullable="false" />
+          <Property Name="AnswerText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JobQuestion" Relationship="MakeMyJobsModel.FK_JobAnswers_JobQuestions" FromRole="JobAnswer" ToRole="JobQuestion" />
+          <NavigationProperty Name="Job" Relationship="MakeMyJobsModel.FK_JobAnswers_Jobs" FromRole="JobAnswer" ToRole="Job" />
+          <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_JobAnswers_User" FromRole="JobAnswer" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_JobAnswers_JobQuestions">
+          <End Type="MakeMyJobsModel.JobQuestion" Role="JobQuestion" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobAnswer" Role="JobAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobQuestion">
+              <PropertyRef Name="JobQuestionId" />
+            </Principal>
+            <Dependent Role="JobAnswer">
+              <PropertyRef Name="JobQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobAnswers_Jobs">
+          <End Type="MakeMyJobsModel.Job" Role="Job" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobAnswer" Role="JobAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="JobId" />
+            </Principal>
+            <Dependent Role="JobAnswer">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobAnswers_User">
+          <End Type="MakeMyJobsModel.User" Role="User" Multiplicity="1" />
+          <End Type="MakeMyJobsModel.JobAnswer" Role="JobAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="JobAnswer">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1954,6 +2350,51 @@
                 <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternshipApplications">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.InternshipApplication">
+              <MappingFragment StoreEntitySet="InternshipApplication">
+                <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="InternshipId" ColumnName="InternshipId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="InternApplicationId" ColumnName="InternApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobApplications">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.JobApplication">
+              <MappingFragment StoreEntitySet="JobApplication">
+                <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="JobApplicationId" ColumnName="JobApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternshipAnswers">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.InternshipAnswer">
+              <MappingFragment StoreEntitySet="InternshipAnswers">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="InternQuestionId" ColumnName="InternQuestionId" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobAnswers">
+            <EntityTypeMapping TypeName="MakeMyJobsModel.JobAnswer">
+              <MappingFragment StoreEntitySet="JobAnswers">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
+                <ScalarProperty Name="JobQuestionId" ColumnName="JobQuestionId" />
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -197,6 +197,12 @@
     <Compile Include="EDMX\Internship.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDMX\InternshipAnswer.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\InternshipApplication.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDMX\InternshipCity.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
@@ -210,6 +216,12 @@
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Job.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\JobAnswer.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\JobApplication.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\JobCity.cs">

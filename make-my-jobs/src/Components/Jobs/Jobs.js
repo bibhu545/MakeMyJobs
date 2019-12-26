@@ -14,7 +14,9 @@ export class Jobs extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Corporate/GetJobs').then(response => {
+        var userId = 0;
+        userId = this.utils.getUserInfoFromCookies().userId;
+        this.http.getData('http://makemyjobs.me/Corporate/GetJobs?userId=' + userId).then(response => {
             this.setState({
                 jobs: response.data.results[0]
             })
@@ -127,6 +129,12 @@ export class Jobs extends Component {
                                                             <i className="fas fa-calendar-week"></i>
                                                             Expiry date: {this.utils.GetDateFromServer(item.expiryDate)}
                                                         </div>
+                                                        {
+                                                            !item.applied ? null :
+                                                                <div className='pull-right'>
+                                                                    Already applied
+                                                                </div>
+                                                        }
                                                     </div>
                                                 </div>
                                             </a>

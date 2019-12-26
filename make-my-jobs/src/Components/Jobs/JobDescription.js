@@ -23,7 +23,7 @@ export class JobDescription extends Component {
             window.location = '/login';
         }
         else {
-            this.http.getData('http://makemyjobs.me/Corporate/GetJobInfo?id=' + this.jobId).then(response => {
+            this.http.getData('http://makemyjobs.me/Corporate/GetJobInfo?id=' + this.jobId + "&userId=" + this.userInfoFromCookies.userId).then(response => {
                 if (response.data != null) {
                     if (response.data.results[0] != null) {
                         this.setState({
@@ -46,6 +46,7 @@ export class JobDescription extends Component {
 
     render() {
         const { jobDetails } = this.state;
+        console.log(jobDetails)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -94,12 +95,12 @@ export class JobDescription extends Component {
                             <div className="panel panel-default">
                                 <div className="panel-body">
                                     <p>
-                                        <strong>About {jobDetails.companyName == null ? <span>Company:</span>: jobDetails.companyName}: 
+                                        <strong>About {jobDetails.companyName == null ? <span>Company:</span> : jobDetails.companyName}:
                                         {/* (<a href='https://www.cognizance.org.in'>https://www.cognizance.org.in</a>) */}
                                         </strong>
                                     </p>
                                     <p className='justify'>
-                                        {jobDetails.companyInfo == null ? <span>Not Provided</span>: jobDetails.companyInfo}
+                                        {jobDetails.companyInfo == null ? <span>Not Provided</span> : jobDetails.companyInfo}
                                     </p>
 
                                     <p>
@@ -132,7 +133,11 @@ export class JobDescription extends Component {
                                     {
                                         this.utils.getUserTypeFromCookies() === '3' ? null :
                                             <div className='center-content'>
-                                                <button className='btn btn-primary'>Apply Now</button>
+                                                <a href={'apply-job?id=' + jobDetails.jobId} className={'btn btn-primary ' + (jobDetails.applied ? 'disabled' : '')}>
+                                                    {
+                                                        jobDetails.applied ? "Applied" : "Apply Now"
+                                                    }
+                                                </a>
                                             </div>
                                     }
                                 </div>

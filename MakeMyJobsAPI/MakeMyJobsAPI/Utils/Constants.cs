@@ -21,5 +21,12 @@ namespace MakeMyJobsAPI.Utils
             public const int Employee = 2;
             public const int Corporate = 3;
         }
+        public class ApplyStatus
+        {
+            public const int Pending = 0;
+            public const int Viewed = 1;
+            public const int Approved = 2;
+            public const int Rejected = 3;
+        }
     }
 }

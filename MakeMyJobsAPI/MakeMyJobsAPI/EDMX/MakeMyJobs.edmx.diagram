@@ -60,6 +60,19 @@
         <AssociationConnector Association="MakeMyJobsModel.FK_CorporateDocument_Corporate" />
         <EntityTypeShape EntityType="MakeMyJobsModel.EmployeeDocument" Width="1.5" PointX="5.25" PointY="23.25" />
         <AssociationConnector Association="MakeMyJobsModel.FK_EmployeeDocument_Employee" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.InternshipApplication" Width="1.5" PointX="8" PointY="15.375" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.JobApplication" Width="1.5" PointX="13.25" PointY="15.5" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipApplication_Internships" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipApplication_User" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobApplication_Jobs" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobApplication_User" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.InternshipAnswer" Width="1.5" PointX="7.5" PointY="19.125" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipAnswers_InternshipQuestions" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_InternshipAnswers_User" />
+        <EntityTypeShape EntityType="MakeMyJobsModel.JobAnswer" Width="1.5" PointX="13.5" PointY="2.5" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobAnswers_JobQuestions" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobAnswers_Jobs" />
+        <AssociationConnector Association="MakeMyJobsModel.FK_JobAnswers_User" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

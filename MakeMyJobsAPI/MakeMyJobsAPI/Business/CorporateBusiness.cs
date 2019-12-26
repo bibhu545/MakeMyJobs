@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static MakeMyJobsAPI.Utils.Constants;
 
 namespace MakeMyJobsAPI.Business
 {
     public class CorporateBusiness
     {
-        public static List<JobResponseModel> GetJobs(int page = 0)
+        public static List<JobResponseModel> GetJobs(int userId = 0, int page = 0)
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -31,8 +32,18 @@ namespace MakeMyJobsAPI.Business
 
                 jobs = jobs.Skip(page * 4).ToList();
 
+                var appliedJobIds = context.JobApplications.Where(x => x.UserId == userId).Select(x => x.JobId).ToList();
+
                 foreach (var item in jobs)
                 {
+                    if(appliedJobIds != null)
+                    {
+                        if(appliedJobIds.IndexOf(item.jobId) >= 0)
+                        {
+                            item.applied = true;
+                        }
+                    }
+
                     item.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
                     {
                         cityId = jc.CityId,
@@ -768,6 +779,8 @@ namespace MakeMyJobsAPI.Business
 
                 foreach (var item in jobs)
                 {
+                    item.totalApplications = context.JobApplications.Where(x => x.JobId == item.jobId).ToList().Count;
+
                     item.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
                     {
                         cityId = jc.CityId,
@@ -888,7 +901,7 @@ namespace MakeMyJobsAPI.Business
             }
         }
 
-        public static JobResponseModel GetJobInfo(int id)
+        public static JobResponseModel GetJobInfo(int id, int userId = 0)
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -912,6 +925,11 @@ namespace MakeMyJobsAPI.Business
                 var corporate = context.Corporates.FirstOrDefault(x => x.UserId == jobResponse.userId);
                 jobResponse.companyName = corporate.CompanyName;
                 jobResponse.companyInfo = corporate.CompanyInfo;
+
+                if(context.JobApplications.Any(x => x.UserId == userId && x.JobId == jobResponse.jobId))
+                {
+                    jobResponse.applied = true;
+                }
 
                 jobResponse.locations = context.JobCities.Join(context.Cities, jc => jc.CityId, c => c.CityId, (jc, c) => new
                 {
@@ -1282,6 +1300,175 @@ namespace MakeMyJobsAPI.Business
                 else
                 {
                     return false;
+                }
+            }
+        }
+
+        public static int ApplyJob(JobAnswerModel model)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                int saved = 0;
+
+                context.JobApplications.Add(new JobApplication() {
+                    ApplyDate = DateTime.Now,
+                    JobId = model.jobId,
+                    Status = ApplyStatus.Pending,
+                    UserId = model.userId,
+                });
+
+                saved = context.SaveChanges();
+
+                var questions = context.JobQuestions.Where(x => x.JobId == model.jobId).ToList();
+                if (questions != null)
+                {
+                    for (int i = 0; i < questions.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            context.JobAnswers.Add(new JobAnswer() {
+                                AnswerText = model.answerOne,
+                                IsActive = 1,
+                                JobQuestionId = questions[i].JobQuestionId,
+                                UserId = model.userId,
+                                JobId = model.jobId
+                            });
+                        }
+                        if (i == 1)
+                        {
+                            context.JobAnswers.Add(new JobAnswer() {
+                                AnswerText = model.answerTwo,
+                                IsActive = 1,
+                                JobQuestionId = questions[i].JobQuestionId,
+                                UserId = model.userId,
+                                JobId = model.jobId
+                            });
+                        }
+                        if (i == 2)
+                        {
+                            context.JobAnswers.Add(new JobAnswer() {
+                                AnswerText = model.answerThree,
+                                IsActive = 1,
+                                JobQuestionId = questions[i].JobQuestionId,
+                                UserId = model.userId,
+                                JobId = model.jobId
+                            });
+                        }
+                    }
+                }
+                saved += context.SaveChanges();
+                return saved;
+            }
+        }
+
+        public static List<JobApplicationResponse> GetAppliedJobs(int id)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                List<JobApplicationResponse> jobApplications = new List<JobApplicationResponse>();
+                var appliedjobs = context.JobApplications.Where(x => x.UserId == id).ToList();
+                if (appliedjobs != null)
+                {
+                    foreach (var item in appliedjobs)
+                    {
+                        JobApplicationResponse jobApplication = new JobApplicationResponse();
+                        jobApplication.jobDetails = GetJobInfo(item.JobId);
+                        jobApplication.applyDate = item.ApplyDate;
+                        var answers = context.JobAnswers.Where(x => x.JobId == item.JobId).ToList();
+                        if(answers != null)
+                        {
+                            if(answers.Count >= 1)
+                            {
+                                jobApplication.answerOne = answers[0].AnswerText;
+                            }
+                            if(answers.Count >= 2)
+                            {
+                                jobApplication.answerTwo = answers[1].AnswerText;
+                            }
+                            if(answers.Count == 3)
+                            {
+                                jobApplication.answerThree = answers[2].AnswerText;
+                            }
+                        }
+                        jobApplications.Add(jobApplication);
+                    }
+                    return jobApplications;
+                }
+                else
+                {
+                    return jobApplications;
+                }
+            }
+        }
+
+        public static List<StudentInfoModel> GetAppliedStudents(int jobId = 0, int internshipId = 0)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                List<StudentInfoModel> appliedStudents = new List<StudentInfoModel>();
+                if (jobId != 0)
+                {
+                    var appliedUserIds = context.JobApplications.Where(x => x.JobId == jobId).Select(x => x.UserId).ToList();
+                    foreach (var item in appliedUserIds)
+                    {
+                        if(context.Students.Any(x => x.UserId == item))
+                        {
+                            appliedStudents.Add(StudentBusiness.GetStudentInfo(item));
+                        }
+                    }
+                    return appliedStudents;
+                }
+                else if(internshipId != 0)
+                {
+                    var appliedUserIds = context.InternshipApplications.Where(x => x.InternshipId == internshipId).Select(x => x.UserId).ToList();
+                    foreach (var item in appliedUserIds)
+                    {
+                        if (context.Students.Any(x => x.UserId == item))
+                        {
+                            appliedStudents.Add(StudentBusiness.GetStudentInfo(item));
+                        }
+                    }
+                    return appliedStudents;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static List<EmployeeInfoModel> GetAppliedEmployees(int jobId = 0, int internshipId = 0)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                List<EmployeeInfoModel> appliedEmployees = new List<EmployeeInfoModel>();
+                if (jobId != 0)
+                {
+                    var appliedUserIds = context.JobApplications.Where(x => x.JobId == jobId).Select(x => x.UserId).ToList();
+                    foreach (var item in appliedUserIds)
+                    {
+                        if (context.Employees.Any(x => x.UserId == item))
+                        {
+                            appliedEmployees.Add(EmployeeBusiness.GetEmployeeInfo(item));
+                        }
+                    }
+                    return appliedEmployees;
+                }
+                else if (internshipId != 0)
+                {
+                    var appliedUserIds = context.InternshipApplications.Where(x => x.InternshipId == internshipId).Select(x => x.UserId).ToList();
+                    foreach (var item in appliedUserIds)
+                    {
+                        if (context.Employees.Any(x => x.UserId == item))
+                        {
+                            appliedEmployees.Add(EmployeeBusiness.GetEmployeeInfo(item));
+                        }
+                    }
+                    return appliedEmployees;
+                }
+                else
+                {
+                    return null;
                 }
             }
         }

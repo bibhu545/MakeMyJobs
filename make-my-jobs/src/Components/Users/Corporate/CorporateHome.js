@@ -227,12 +227,15 @@ export class CorporateHome extends Component {
                                                     <div className='job-desc-user'>
                                                         <div className='row'>
 
-                                                            <div className='col-xs-10'>
+                                                            <div className='col-xs-8'>
                                                                 <h4><a href='/jobs'>{item.jobTitle}</a></h4>
                                                                 <p>{item.company}</p>
                                                             </div>
 
-                                                            <div className='col-xs-2 right-content'>
+                                                            <div className='col-xs-4 right-content'>
+
+                                                                <a href={'view-applicants?jobId=' + item.jobId}><span className="label label-primary">{item.totalApplications} Applied</span></a>
+
                                                                 <a href="##" onClick={(e) => this.onOpenJobDeacriptionClicked(e, item.jobId)} data-toggle="modal" data-target="#jobDetailsModal">
                                                                     <span className="glyphicon glyphicon-share"></span>
                                                                 </a>

@@ -14,11 +14,11 @@ namespace MakeMyJobsAPI.Controllers
 {
     public class CorporateController : Controller
     {
-        public JsonResult GetJobs()
+        public JsonResult GetJobs(int userId = 0, int page = 0)
         {
             try
             {
-                var result = CorporateBusiness.GetJobs();
+                var result = CorporateBusiness.GetJobs(userId, page);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
@@ -160,11 +160,11 @@ namespace MakeMyJobsAPI.Controllers
             }
         }
 
-        public JsonResult GetJobInfo(int id)
+        public JsonResult GetJobInfo(int id, int userId = 0)
         {
             try
             {
-                var result = CorporateBusiness.GetJobInfo(id);
+                var result = CorporateBusiness.GetJobInfo(id, userId);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
@@ -236,6 +236,49 @@ namespace MakeMyJobsAPI.Controllers
             {
                 var result = CorporateBusiness.DeleteInternship(id);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public JsonResult ApplyJob(JobAnswerModel model)
+        {
+            try
+            {
+                var result = CorporateBusiness.ApplyJob(model);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public JsonResult GetAppliedJobs(int id)
+        {
+            try
+            {
+                var result = CorporateBusiness.GetAppliedJobs(id);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public JsonResult GetAppliedProfiles(int jobId = 0, int internshipId = 0)
+        {
+            try
+            {
+                var studentProfiles = CorporateBusiness.GetAppliedStudents(jobId, internshipId);
+                var employeeProfiles = CorporateBusiness.GetAppliedEmployees(jobId, internshipId);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { studentProfiles, employeeProfiles } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch (Exception ex)

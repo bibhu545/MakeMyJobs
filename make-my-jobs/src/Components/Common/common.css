@@ -33,6 +33,7 @@ hr{
     background: linear-gradient(45deg, lightgrey, white, white,lightgrey);
     min-height: 80vh;
     /* padding-top: 50px; */
+    padding-bottom: 30px;
 }
 .glyphicon{
     top: 5px;
@@ -45,4 +46,10 @@ small{
 }
 .justify{
     text-align: justify;
+}
+.pull-right{
+    margin-right: 10px;
+}
+.label{
+    margin: 0px 10px;
 }
