@@ -141,10 +141,10 @@ export class Jobs extends Component {
                                         </React.Fragment>
                                     )
                             }
-                            < ul className="pager">
+                            {/* < ul className="pager">
                                 <li className="previous"><a href="/jobs">Previous</a></li>
                                 <li className="next"><a href="/jobs">Next</a></li>
-                            </ul>
+                            </ul> */}
                         </div>
                     </div>
                 </div>

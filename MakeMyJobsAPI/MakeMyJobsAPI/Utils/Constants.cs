@@ -28,5 +28,17 @@ namespace MakeMyJobsAPI.Utils
             public const int Approved = 2;
             public const int Rejected = 3;
         }
+        public class StudentDocumentTypes
+        {
+            public const int Resume = 1;
+        }
+        public class EmployeeDocumentTypes
+        {
+            public const int Resume = 1;
+        }
+        public class CorporateDocumentTypes
+        {
+            public const int Logo = 1;
+        }
     }
 }

@@ -75,6 +75,7 @@ namespace MakeMyJobsAPI.Models
         public string companyName { get; set; }
         public string companyInfo { get; set; }
         public bool applied { get; set; }
+        public String message { get; set; }
         public int totalApplications { get; set; }
     }
 
@@ -148,5 +149,24 @@ namespace MakeMyJobsAPI.Models
         public String answerTwo { get; set; }
         public String answerThree { get; set; }
         public DateTime applyDate { get; set; }
+    }
+    public class StudentApplicationModel
+    {
+        public StudentInfoModel studentInfo { get; set; }
+        public JobApplicationModel applicationInfo { get; set; }
+    }
+    public class EmployeeApplicationModel
+    {
+        public EmployeeInfoModel employeeInfo { get; set; }
+        public JobApplicationModel applicationInfo { get; set; }
+    }
+    public class JobApplicationModel
+    {
+        public int jobApplicationId { get; set; }
+        public int userId { get; set; }
+        public int jobId { get; set; }
+        public int status { get; set; }
+        public DateTime applyDate { get; set; }
+        public string message { get; set; }
     }
 }

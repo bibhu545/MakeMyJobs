@@ -14,11 +14,11 @@ namespace MakeMyJobsAPI.Controllers
 {
     public class CorporateController : Controller
     {
-        public JsonResult GetJobs(int userId = 0, int page = 0)
+        public JsonResult GetJobs(int userId = 0)
         {
             try
             {
-                var result = CorporateBusiness.GetJobs(userId, page);
+                var result = CorporateBusiness.GetJobs(userId);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
@@ -146,11 +146,11 @@ namespace MakeMyJobsAPI.Controllers
             }
         }
 
-        public JsonResult GetJobsByUser(int id,int page = 0)
+        public JsonResult GetJobsByUser(int id)
         {
             try
             {
-                var result = CorporateBusiness.GetJobsByUser(id, page);
+                var result = CorporateBusiness.GetJobsByUser(id);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
@@ -279,6 +279,43 @@ namespace MakeMyJobsAPI.Controllers
                 var studentProfiles = CorporateBusiness.GetAppliedStudents(jobId, internshipId);
                 var employeeProfiles = CorporateBusiness.GetAppliedEmployees(jobId, internshipId);
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { studentProfiles, employeeProfiles } };
+                return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
+
+        public FileResult ViewResume(int studentId = 0, int employeeId = 0)
+        {
+            try
+            {
+                if(studentId != 0)
+                {
+                    var fileName = string.Empty;
+                    byte[] fileBytes = CorporateBusiness.GetStudentResumeDetails(studentId, ref fileName);
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+                else
+                {
+                    var fileName = string.Empty;
+                    byte[] fileBytes = CorporateBusiness.GetEmployeeResumeDetails(employeeId, ref fileName);
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public JsonResult SaveApplicantResponse(int forStudent, int forReject, int userId, int jobId)
+        {
+            try
+            {
+                var result = CorporateBusiness.SaveApplicantResponse(forStudent, forReject, userId, jobId);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch (Exception ex)

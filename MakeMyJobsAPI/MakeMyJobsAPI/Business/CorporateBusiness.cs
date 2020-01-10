@@ -1,7 +1,9 @@
 ﻿using MakeMyJobsAPI.EDMX;
 using MakeMyJobsAPI.Models;
+using MakeMyJobsAPI.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using static MakeMyJobsAPI.Utils.Constants;
@@ -10,7 +12,7 @@ namespace MakeMyJobsAPI.Business
 {
     public class CorporateBusiness
     {
-        public static List<JobResponseModel> GetJobs(int userId = 0, int page = 0)
+        public static List<JobResponseModel> GetJobs(int userId = 0)
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -30,15 +32,13 @@ namespace MakeMyJobsAPI.Business
                     postedOn = x.PostedOn
                 }).ToList();
 
-                jobs = jobs.Skip(page * 4).ToList();
-
                 var appliedJobIds = context.JobApplications.Where(x => x.UserId == userId).Select(x => x.JobId).ToList();
 
                 foreach (var item in jobs)
                 {
-                    if(appliedJobIds != null)
+                    if (appliedJobIds != null)
                     {
-                        if(appliedJobIds.IndexOf(item.jobId) >= 0)
+                        if (appliedJobIds.IndexOf(item.jobId) >= 0)
                         {
                             item.applied = true;
                         }
@@ -132,7 +132,7 @@ namespace MakeMyJobsAPI.Business
             }
         }
 
-        public static List<InternshipResponseModel> GetInternships(int page = 0)
+        public static List<InternshipResponseModel> GetInternships()
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -281,7 +281,7 @@ namespace MakeMyJobsAPI.Business
                         isActive = c.corporate.corporate.IsActive
                     }).FirstOrDefault(x => x.userId == id);
 
-                    corporateInfoModel.corporateJobs = CorporateBusiness.GetJobsByUser(corporateInfoModel.userId, 0, true);
+                    corporateInfoModel.corporateJobs = CorporateBusiness.GetJobsByUser(corporateInfoModel.userId, true);
                     corporateInfoModel.corporateInternships = CorporateBusiness.GetInternshipsByUser(corporateInfoModel.userId);
 
                     return corporateInfoModel;
@@ -747,7 +747,7 @@ namespace MakeMyJobsAPI.Business
             }
         }
 
-        public static List<JobResponseModel> GetJobsByUser(int id, int page = 0, bool requestFromHome = false)
+        public static List<JobResponseModel> GetJobsByUser(int id, bool requestFromHome = false)
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -767,15 +767,10 @@ namespace MakeMyJobsAPI.Business
                     postedOn = x.PostedOn
                 }).ToList();
 
-                if (page > 0)
-                {
-                    jobs = jobs.Skip(page * 4).ToList();
-                }
-
-                if (!requestFromHome)
-                {
-                    jobs = jobs.Take(4).ToList();
-                }
+                //if (!requestFromHome)
+                //{
+                //    jobs = jobs.Take(4).ToList();
+                //}
 
                 foreach (var item in jobs)
                 {
@@ -926,8 +921,10 @@ namespace MakeMyJobsAPI.Business
                 jobResponse.companyName = corporate.CompanyName;
                 jobResponse.companyInfo = corporate.CompanyInfo;
 
-                if(context.JobApplications.Any(x => x.UserId == userId && x.JobId == jobResponse.jobId))
+                var checkApplication = context.JobApplications.FirstOrDefault(x => x.UserId == userId && x.JobId == jobResponse.jobId);
+                if (checkApplication != null)
                 {
+                    jobResponse.message = checkApplication.Message;
                     jobResponse.applied = true;
                 }
 
@@ -1310,7 +1307,8 @@ namespace MakeMyJobsAPI.Business
             {
                 int saved = 0;
 
-                context.JobApplications.Add(new JobApplication() {
+                context.JobApplications.Add(new JobApplication()
+                {
                     ApplyDate = DateTime.Now,
                     JobId = model.jobId,
                     Status = ApplyStatus.Pending,
@@ -1326,7 +1324,8 @@ namespace MakeMyJobsAPI.Business
                     {
                         if (i == 0)
                         {
-                            context.JobAnswers.Add(new JobAnswer() {
+                            context.JobAnswers.Add(new JobAnswer()
+                            {
                                 AnswerText = model.answerOne,
                                 IsActive = 1,
                                 JobQuestionId = questions[i].JobQuestionId,
@@ -1336,7 +1335,8 @@ namespace MakeMyJobsAPI.Business
                         }
                         if (i == 1)
                         {
-                            context.JobAnswers.Add(new JobAnswer() {
+                            context.JobAnswers.Add(new JobAnswer()
+                            {
                                 AnswerText = model.answerTwo,
                                 IsActive = 1,
                                 JobQuestionId = questions[i].JobQuestionId,
@@ -1346,7 +1346,8 @@ namespace MakeMyJobsAPI.Business
                         }
                         if (i == 2)
                         {
-                            context.JobAnswers.Add(new JobAnswer() {
+                            context.JobAnswers.Add(new JobAnswer()
+                            {
                                 AnswerText = model.answerThree,
                                 IsActive = 1,
                                 JobQuestionId = questions[i].JobQuestionId,
@@ -1375,17 +1376,17 @@ namespace MakeMyJobsAPI.Business
                         jobApplication.jobDetails = GetJobInfo(item.JobId);
                         jobApplication.applyDate = item.ApplyDate;
                         var answers = context.JobAnswers.Where(x => x.JobId == item.JobId).ToList();
-                        if(answers != null)
+                        if (answers != null)
                         {
-                            if(answers.Count >= 1)
+                            if (answers.Count >= 1)
                             {
                                 jobApplication.answerOne = answers[0].AnswerText;
                             }
-                            if(answers.Count >= 2)
+                            if (answers.Count >= 2)
                             {
                                 jobApplication.answerTwo = answers[1].AnswerText;
                             }
-                            if(answers.Count == 3)
+                            if (answers.Count == 3)
                             {
                                 jobApplication.answerThree = answers[2].AnswerText;
                             }
@@ -1401,31 +1402,54 @@ namespace MakeMyJobsAPI.Business
             }
         }
 
-        public static List<StudentInfoModel> GetAppliedStudents(int jobId = 0, int internshipId = 0)
+        public static JobApplicationModel getApplicationInfo(int userId, int jobId)
         {
             using (var context = new MakeMyJobsEntities())
             {
-                List<StudentInfoModel> appliedStudents = new List<StudentInfoModel>();
+                JobApplication jobapplication = context.JobApplications.FirstOrDefault(x => x.UserId == userId && x.JobId == jobId);
+                return new JobApplicationModel()
+                {
+                    userId = userId,
+                    jobId = jobId,
+                    applyDate = jobapplication.ApplyDate,
+                    jobApplicationId = jobapplication.JobApplicationId,
+                    status = jobapplication.Status,
+                    message = jobapplication.Message
+                };
+            }
+        }
+
+        public static List<StudentApplicationModel> GetAppliedStudents(int jobId = 0, int internshipId = 0)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                List<StudentApplicationModel> appliedStudents = new List<StudentApplicationModel>();
                 if (jobId != 0)
                 {
                     var appliedUserIds = context.JobApplications.Where(x => x.JobId == jobId).Select(x => x.UserId).ToList();
                     foreach (var item in appliedUserIds)
                     {
-                        if(context.Students.Any(x => x.UserId == item))
+                        if (context.Students.Any(x => x.UserId == item))
                         {
-                            appliedStudents.Add(StudentBusiness.GetStudentInfo(item));
+                            StudentApplicationModel studentApplication = new StudentApplicationModel();
+                            studentApplication.studentInfo = StudentBusiness.GetStudentInfo(item);
+                            studentApplication.applicationInfo = getApplicationInfo(item, jobId);
+                            appliedStudents.Add(studentApplication);
                         }
                     }
                     return appliedStudents;
                 }
-                else if(internshipId != 0)
+                else if (internshipId != 0)
                 {
                     var appliedUserIds = context.InternshipApplications.Where(x => x.InternshipId == internshipId).Select(x => x.UserId).ToList();
                     foreach (var item in appliedUserIds)
                     {
                         if (context.Students.Any(x => x.UserId == item))
                         {
-                            appliedStudents.Add(StudentBusiness.GetStudentInfo(item));
+                            StudentApplicationModel studentApplication = new StudentApplicationModel();
+                            studentApplication.studentInfo = StudentBusiness.GetStudentInfo(item);
+                            studentApplication.applicationInfo = getApplicationInfo(item, jobId);
+                            appliedStudents.Add(studentApplication);
                         }
                     }
                     return appliedStudents;
@@ -1437,11 +1461,11 @@ namespace MakeMyJobsAPI.Business
             }
         }
 
-        public static List<EmployeeInfoModel> GetAppliedEmployees(int jobId = 0, int internshipId = 0)
+        public static List<EmployeeApplicationModel> GetAppliedEmployees(int jobId = 0, int internshipId = 0)
         {
             using (var context = new MakeMyJobsEntities())
             {
-                List<EmployeeInfoModel> appliedEmployees = new List<EmployeeInfoModel>();
+                List<EmployeeApplicationModel> appliedEmployees = new List<EmployeeApplicationModel>();
                 if (jobId != 0)
                 {
                     var appliedUserIds = context.JobApplications.Where(x => x.JobId == jobId).Select(x => x.UserId).ToList();
@@ -1449,7 +1473,10 @@ namespace MakeMyJobsAPI.Business
                     {
                         if (context.Employees.Any(x => x.UserId == item))
                         {
-                            appliedEmployees.Add(EmployeeBusiness.GetEmployeeInfo(item));
+                            EmployeeApplicationModel employeeApplication = new EmployeeApplicationModel();
+                            employeeApplication.employeeInfo = EmployeeBusiness.GetEmployeeInfo(item);
+                            employeeApplication.applicationInfo = getApplicationInfo(item, jobId);
+                            appliedEmployees.Add(employeeApplication);
                         }
                     }
                     return appliedEmployees;
@@ -1461,7 +1488,10 @@ namespace MakeMyJobsAPI.Business
                     {
                         if (context.Employees.Any(x => x.UserId == item))
                         {
-                            appliedEmployees.Add(EmployeeBusiness.GetEmployeeInfo(item));
+                            EmployeeApplicationModel employeeApplication = new EmployeeApplicationModel();
+                            employeeApplication.employeeInfo = EmployeeBusiness.GetEmployeeInfo(item);
+                            employeeApplication.applicationInfo = getApplicationInfo(item, jobId);
+                            appliedEmployees.Add(employeeApplication);
                         }
                     }
                     return appliedEmployees;
@@ -1470,6 +1500,61 @@ namespace MakeMyJobsAPI.Business
                 {
                     return null;
                 }
+            }
+        }
+
+        public static Byte[] GetStudentResumeDetails(int studentId, ref String fileName)
+        {
+            var folderPath = CommonFunctions.GetConfigValue("studentFilePath");
+            using (var context = new MakeMyJobsEntities())
+            {
+                var doc = context.StudentDocuments.FirstOrDefault(x => x.StudentId == studentId && x.DocumentType == StudentDocumentTypes.Resume);
+                if (doc != null && !string.IsNullOrWhiteSpace(doc.DocumentNameOnDisk) && !string.IsNullOrWhiteSpace(doc.DocumentName))
+                {
+                    var fullFilePath = folderPath + doc.DocumentNameOnDisk;
+                    if (File.Exists(fullFilePath))
+                    {
+                        fileName = doc.DocumentName;
+                        return File.ReadAllBytes(fullFilePath);
+                    }
+                }
+            };
+            return null;
+        }
+
+        public static Byte[] GetEmployeeResumeDetails(int employeeId, ref String fileName)
+        {
+            var folderPath = CommonFunctions.GetConfigValue("employeeResumePath");
+            using (var context = new MakeMyJobsEntities())
+            {
+                var doc = context.EmployeeDocuments.FirstOrDefault(x => x.EmployeeId == employeeId && x.DocumentType == EmployeeDocumentTypes.Resume);
+                if (doc != null && !string.IsNullOrWhiteSpace(doc.DocumentNameOnDisk) && !string.IsNullOrWhiteSpace(doc.DocumentName))
+                {
+                    var fullFilePath = folderPath + doc.DocumentNameOnDisk;
+                    if (File.Exists(fullFilePath))
+                    {
+                        fileName = doc.DocumentName;
+                        return File.ReadAllBytes(fullFilePath);
+                    }
+                }
+            };
+            return null;
+        }
+
+        public static int SaveApplicantResponse(int forStudent, int forReject, int id, int jobId)
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                var jobApplication = context.JobApplications.FirstOrDefault(x => x.UserId == id && x.JobId == jobId);
+                if (forReject == 1)
+                {
+                    jobApplication.Status = ApplyStatus.Rejected;
+                }
+                else
+                {
+                    jobApplication.Status = ApplyStatus.Approved;
+                }
+                return context.SaveChanges();
             }
         }
     }

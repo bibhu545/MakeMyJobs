@@ -27,6 +27,7 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+
         public JsonResult GetStudentInfoForEdit(int id)
         {
             try
@@ -62,6 +63,7 @@ namespace MakeMyJobsAPI.Controllers
                 return CommonBusiness.GetErrorResponse(ex.Message);
             }
         }
+
         public bool UploadStudentResume(int studentId)
         {
             var folderPath = CommonFunctions.GetConfigValue("studentFilePath");

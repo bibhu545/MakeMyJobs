@@ -139,6 +139,7 @@ export class AddInternship extends Component {
         return errorMessage;
     }
     render() {
+        console.log(this.state.cityOptions)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -163,7 +164,7 @@ export class AddInternship extends Component {
                                         isMulti
                                         name='locations'
                                         onChange={this.handleCityChange}
-                                        options={this.state.cityOpyions}
+                                        options={this.state.cityOptions}
                                         className="basic-multi-select"
                                         classNamePrefix="select"
                                         id='locations'

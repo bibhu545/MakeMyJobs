@@ -90,14 +90,14 @@ export class MyJobs extends Component {
                                                 </React.Fragment>
                                             )
                                         }
-                                        < ul className="pager">
+                                        {/* < ul className="pager">
                                             {
                                                 this.state.pageNo === 0 ?
                                                     null :
                                                     <li className="previous"><a href="/jobs">Previous</a></li>
                                             }
                                             <li className="next"><a href="/jobs">Next</a></li>
-                                        </ul>
+                                        </ul> */}
                                     </React.Fragment>
                             }
                         </div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using MakeMyJobsAPI.Models;
 using MakeMyJobsAPI.EDMX;
+using static MakeMyJobsAPI.Utils.Constants;
 
 namespace MakeMyJobsAPI.Business
 {
@@ -41,6 +42,12 @@ namespace MakeMyJobsAPI.Business
                         email = u.Email,
                         zipCode = s.student.student.ZipCode
                     }).FirstOrDefault(x => x.userId == id);
+
+                    if (context.StudentDocuments.Any(x => x.StudentId == studentInfoModel.studentId && x.DocumentType == StudentDocumentTypes.Resume))
+                    {
+                        studentInfoModel.resume = "1";
+                    }
+
                     return studentInfoModel;
                 }
                 else
@@ -109,14 +116,7 @@ namespace MakeMyJobsAPI.Business
                     student.ZipCode = model.zipCode;
                     updated += context.SaveChanges();
                 }
-                if (updated > 0)
-                {
-                    return GetUpdatedStudentInfo(user.UserId, student.StudentId);
-                }
-                else
-                {
-                    return null;
-                }
+                return GetUpdatedStudentInfo(user.UserId, student.StudentId);
             }
         }
 

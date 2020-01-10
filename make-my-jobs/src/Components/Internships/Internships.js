@@ -168,10 +168,10 @@ export class Internships extends Component {
                                     </React.Fragment>
                                 )
                             }
-                            <ul className="pager">
+                            {/* <ul className="pager">
                                 <li className="previous"><a href="/internships">Previous</a></li>
                                 <li className="next"><a href="/internships">Next</a></li>
-                            </ul>
+                            </ul> */}
                         </div>
                     </div>
                 </div>

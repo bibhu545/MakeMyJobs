@@ -203,6 +203,7 @@
           <Property Name="JobId" Type="int" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="ApplyDate" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="text" />
         </EntityType>
         <EntityType Name="JobCity">
           <Key>
@@ -1906,6 +1907,7 @@
           <Property Name="ApplyDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Job" Relationship="MakeMyJobsModel.FK_JobApplication_Jobs" FromRole="JobApplication" ToRole="Job" />
           <NavigationProperty Name="User" Relationship="MakeMyJobsModel.FK_JobApplication_User" FromRole="JobApplication" ToRole="User" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_InternshipApplication_Internships">
           <End Type="MakeMyJobsModel.Internship" Role="Internship" Multiplicity="1" />
@@ -2367,6 +2369,7 @@
           <EntitySetMapping Name="JobApplications">
             <EntityTypeMapping TypeName="MakeMyJobsModel.JobApplication">
               <MappingFragment StoreEntitySet="JobApplication">
+                <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="JobId" ColumnName="JobId" />

@@ -132,13 +132,16 @@ export class JobDescription extends Component {
 
                                     {
                                         this.utils.getUserTypeFromCookies() === '3' ? null :
-                                            <div className='center-content'>
-                                                <a href={'apply-job?id=' + jobDetails.jobId} className={'btn btn-primary ' + (jobDetails.applied ? 'disabled' : '')}>
-                                                    {
-                                                        jobDetails.applied ? "Applied" : "Apply Now"
-                                                    }
-                                                </a>
-                                            </div>
+                                            <React.Fragment>
+                                                <div className='center-content'>
+                                                    <a href={'apply-job?id=' + jobDetails.jobId} className={'btn btn-primary ' + (jobDetails.applied ? 'disabled' : '')}>
+                                                        {
+                                                            jobDetails.applied ? "Applied" : "Apply Now"
+                                                        }
+                                                    </a>
+                                                </div>
+                                                {jobDetails.applied ? <p>Response from Recruiter: {jobDetails.message == null ? "No messages" : jobDetails.message}</p> : null}
+                                            </React.Fragment>
                                     }
                                 </div>
                             </div>

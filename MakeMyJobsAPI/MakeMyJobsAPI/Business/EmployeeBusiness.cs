@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static MakeMyJobsAPI.Utils.Constants;
 
 namespace MakeMyJobsAPI.Business
 {
@@ -66,6 +67,11 @@ namespace MakeMyJobsAPI.Business
                         leftOn = x.LeftOn,
                         isActive = x.IsActive,
                     }).ToList();
+
+                    if (context.EmployeeDocuments.Any(x => x.EmployeeId == employeeInfoModel.employeeId && x.DocumentType == EmployeeDocumentTypes.Resume))
+                    {
+                        employeeInfoModel.resume = "1";
+                    }
 
                     return employeeInfoModel;
                 }

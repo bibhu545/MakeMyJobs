@@ -149,6 +149,11 @@ export class Utils {
         var supportedList = ["pdf", "doc", "docx"];
         return supportedList.indexOf(name.split(".")[name.split(".").length - 1]) >= 0;
     }
+
+    getResume = (e, studentId, employeeId) => {
+        e.preventDefault();
+        window.open('http://makemyjobs.me/Corporate/ViewResume?studentId=' + studentId + "&employeeId=" + employeeId);
+    }
 }
 
 export default Utils

@@ -81,30 +81,31 @@ export class ApplyJob extends Component {
                 return;
             }
         }
-        else {
-            var answerRequest = new AnswerModel();
-            answerRequest.userId = this.user.userId;
-            answerRequest.jobId = this.state.jobDetails.jobId;
-            answerRequest.answerOne = answerOne;
-            answerRequest.answerTwo = answerTwo;
-            answerRequest.answerThree = answerThree;
-            this.http.postData('http://makemyjobs.me/Corporate/ApplyJob', answerRequest).then(response => {
-                if (response.data != null) {
-                    if (response.data.results[0] > 0) {
-                        window.location = '/user-home';
-                    }
-                    else {
-                        this.utils.showErrorMessage("Some error occured. Please Apply again.");
-                    }
+
+        var answerRequest = new AnswerModel();
+        answerRequest.userId = this.user.userId;
+        answerRequest.jobId = this.state.jobDetails.jobId;
+        answerRequest.answerOne = answerOne;
+        answerRequest.answerTwo = answerTwo;
+        answerRequest.answerThree = answerThree;
+        this.http.postData('http://makemyjobs.me/Corporate/ApplyJob', answerRequest).then(response => {
+            console.log(response)
+            if (response.data != null) {
+                if (response.data.results[0] > 0) {
+                    window.location = '/user-home';
                 }
                 else {
-                    this.utils.showErrorMessage("Some error occured.");
+                    this.utils.showErrorMessage("Some error occured. Please Apply again.");
                 }
-            }).catch(error => {
-                console.log(error);
+            }
+            else {
                 this.utils.showErrorMessage("Some error occured.");
-            });
-        }
+            }
+        }).catch(error => {
+            console.log(error);
+            this.utils.showErrorMessage("Some error occured.");
+        });
+
     }
 
     render() {

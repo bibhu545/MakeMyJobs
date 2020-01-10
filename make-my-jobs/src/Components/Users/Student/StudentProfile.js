@@ -9,6 +9,7 @@ export class StudentProfile extends Component {
     constructor(props) {
         super(props)
         this.userInfoFromCookies = new Utils().getUserInfoFromCookies();
+        this.utils = new Utils()
         this.http = new HttpService();
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
@@ -161,7 +162,7 @@ export class StudentProfile extends Component {
                                                 {
                                                     this.state.user.resume == null ?
                                                         <span className='light-text'><i>Please add your resume.</i></span>
-                                                        : this.state.user.resume
+                                                        : <a href="##" onClick={(e) => this.utils.getResume(e, this.state.user.studentId, 0)}>View Resume</a>
                                                 }
                                             </p>
                                         </div>

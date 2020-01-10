@@ -19,6 +19,7 @@ namespace MakeMyJobsAPI.EDMX
         public int JobId { get; set; }
         public int Status { get; set; }
         public System.DateTime ApplyDate { get; set; }
+        public string Message { get; set; }
     
         public virtual Job Job { get; set; }
         public virtual User User { get; set; }

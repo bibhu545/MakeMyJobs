@@ -402,7 +402,7 @@ export class ProffesionalProfile extends Component {
                                                 {
                                                     this.state.user.resume == null ?
                                                         <span className='light-text'><i>Please add your resume.</i></span>
-                                                        : this.state.user.resume
+                                                        : <a href="##" onClick={(e) => this.utils.getResume(e, 0, this.state.user.employeeId)}>View Resume</a>
                                                 }
                                             </p>
                                         </div>
