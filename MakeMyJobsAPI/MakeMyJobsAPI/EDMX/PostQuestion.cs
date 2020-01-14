@@ -12,21 +12,20 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class InternshipQuestion
+    public partial class PostQuestion
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public InternshipQuestion()
+        public PostQuestion()
         {
-            this.InternshipAnswers = new HashSet<InternshipAnswer>();
+            this.PostAnswers = new HashSet<PostAnswer>();
         }
     
-        public int InternQuestionId { get; set; }
-        public int InternshipId { get; set; }
+        public int PostQuestionId { get; set; }
+        public int PostId { get; set; }
         public string Question { get; set; }
-        public int IsActive { get; set; }
     
-        public virtual Internship Internship { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InternshipAnswer> InternshipAnswers { get; set; }
+        public virtual ICollection<PostAnswer> PostAnswers { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

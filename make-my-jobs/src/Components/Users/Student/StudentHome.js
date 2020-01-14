@@ -14,23 +14,26 @@ export class StudentHome extends Component {
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new UserModel(),
-            appliedJobs: []
+            appliedJobs: [],
+            appliedInternships: []
         }
     }
 
     componentDidMount() {
         if (!this.utils.isLoggedIn()) {
+            this.utils.clearLoginDataFromCookies();
             window.location = '/login';
         }
         else {
-            this.http.postData('http://makemyjobs.me/Corporate/GetAppliedJobs?id=' + this.userInfoFromCookies.userId).then(
+            this.http.getData('http://makemyjobs.me/Corporate/GetApplications?id=' + this.userInfoFromCookies.userId).then(
                 response => {
                     if (response.data.results == null) {
                         window.location = '/login';
                     }
                     else {
                         this.setState({
-                            appliedJobs: response.data.results[0]
+                            appliedJobs: response.data.results[0],
+                            appliedInternships: response.data.results[1]
                         })
                     }
                 }).catch(error => {
@@ -40,7 +43,7 @@ export class StudentHome extends Component {
     }
 
     render() {
-        const { appliedJobs } = this.state;
+        const { appliedJobs, appliedInternships } = this.state;
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -57,7 +60,7 @@ export class StudentHome extends Component {
                             </div>
                             <h4>Jobs you have applied for:</h4>
                             {
-                                appliedJobs.length === 0 ? null :
+                                appliedJobs.length === 0 ? "You have not applied for any jobs." :
                                     appliedJobs.map((item, index) =>
                                         <React.Fragment key={index}>
                                             <a target='_blank' rel='noopener noreferrer' className='job-link' href={'/job-description?id=' + item.jobDetails.jobId}>
@@ -65,18 +68,18 @@ export class StudentHome extends Component {
                                                     <div className='row'>
                                                         <div className='col-xs-10'>
                                                             <h4>{item.jobDetails.jobTitle}</h4>
-                                                            <p>{item.jobDetails.company}</p>
+                                                            <p>{item.jobDetails.companyName}</p>
 
                                                             <p>
                                                                 <i className="fas fa-map-marked"></i>Locations:
-                                                        {item.jobDetails.locationNames == null ? <span>Not specified</span> : item.jobDetails.locationNames}
+                                                                {item.jobDetails.locationNames == null ? <span>Not specified</span> : item.jobDetails.locationNames}
                                                             </p>
                                                         </div>
                                                     </div>
                                                     <div className='row'>
                                                         <div className='col-sm-5'>
                                                             <i className="fas fa-suitcase"></i>Experience: {item.jobDetails.experience} yrs
-                                            </div>
+                                                        </div>
                                                         <div className='col-sm-7'>
                                                             <i className="fas fa-rupee-sign"></i>
                                                             Salary: {item.jobDetails.minSalary}
@@ -110,6 +113,73 @@ export class StudentHome extends Component {
                                                         <div className='col-sm-7'>
                                                             <i className="fas fa-calendar-week"></i>
                                                             Expiry date: {this.utils.GetDateFromServer(item.jobDetails.expiryDate)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </React.Fragment>
+                                    )
+                            }
+                            <h4>Internships you have applied for:</h4>
+                            {
+                                appliedInternships.length === 0 ? "You have not applied for any internships." :
+                                    appliedInternships.map((item, index) =>
+                                        <React.Fragment key={index}>
+                                            <a target='_blank' rel='noopener noreferrer' className='job-link' href={'/internship-description?id=' + item.internDetails.internshipId}>
+                                                <div className='job-desc-user job-desc'>
+                                                    <div className='row'>
+                                                        <div className='col-xs-10'>
+                                                            <h4>{item.internDetails.title}</h4>
+                                                            <p>{item.internDetails.companyName}</p>
+
+                                                            <p>
+                                                                <i className="fas fa-map-marked"></i>Locations:
+                                                            {item.internDetails.locationNames == null ? <span>Not specified</span> : item.internDetails.locationNames}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className='row'>
+                                                        <div className='col-sm-5'>
+                                                            <i className="fas fa-suitcase"></i>Starts from: {this.utils.GetDateFromServer(item.internDetails.startDate)}
+                                                        </div>
+                                                        <div className='col-sm-7'>
+                                                            <i className="fas fa-rupee-sign"></i>
+                                                            Stipend:
+                                                            {item.internDetails.minStipend}
+                                                            {
+                                                                item.internDetails.maxStipend === 0 ? null :
+                                                                    <span>- {item.internDetails.maxStipend}</span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className='row'>
+                                                        <div className='col-sm-5'>
+                                                            {
+                                                                item.internDetails.skillNames == null ? null :
+                                                                    <span>
+                                                                        <i className="fas fa-laptop-code"></i>
+                                                                        Skills: {item.internDetails.skillNames}
+                                                                    </span>
+                                                            }
+                                                        </div>
+                                                        <div className='col-sm-7'>
+                                                            {
+                                                                item.internDetails.tagNames == null ? null :
+                                                                    <span>
+                                                                        <i className="fas fa-tags"></i>
+                                                                        Tags: {item.internDetails.tagNames}
+                                                                    </span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className='row'>
+                                                        <div className='col-sm-5'>
+                                                            <i className="fas fa-calendar-week"></i>
+                                                            Posted on: {this.utils.GetDateFromServer(item.internDetails.postedOn)}
+                                                        </div>
+                                                        <div className='col-sm-7'>
+                                                            <i className="fas fa-calendar-week"></i>
+                                                            Expiry date: {this.utils.GetDateFromServer(item.internDetails.expiryDate)}
                                                         </div>
                                                     </div>
                                                 </div>

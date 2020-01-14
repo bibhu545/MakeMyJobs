@@ -12,15 +12,13 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class InternshipAnswer
+    public partial class PostSkill
     {
-        public int AnswerId { get; set; }
-        public int InternQuestionId { get; set; }
-        public int UserId { get; set; }
-        public string AnswerText { get; set; }
-        public int IsActive { get; set; }
+        public int PostSkillId { get; set; }
+        public int PostId { get; set; }
+        public int SkillId { get; set; }
     
-        public virtual InternshipQuestion InternshipQuestion { get; set; }
-        public virtual User User { get; set; }
+        public virtual Skill Skill { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

@@ -12,13 +12,13 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class JobTag
+    public partial class PostCity
     {
-        public int JobTagId { get; set; }
-        public int JobId { get; set; }
-        public int TagId { get; set; }
+        public int PostCityId { get; set; }
+        public int PostId { get; set; }
+        public int CityId { get; set; }
     
-        public virtual Job Job { get; set; }
-        public virtual Tag Tag { get; set; }
+        public virtual City City { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

@@ -35,24 +35,17 @@ namespace MakeMyJobsAPI.EDMX
         public virtual DbSet<EmployeeExperience> EmployeeExperiences { get; set; }
         public virtual DbSet<EmployeeEducation> EmployeeEducations { get; set; }
         public virtual DbSet<Corporate> Corporates { get; set; }
-        public virtual DbSet<City> Cities { get; set; }
-        public virtual DbSet<JobCity> JobCities { get; set; }
-        public virtual DbSet<Job> Jobs { get; set; }
-        public virtual DbSet<JobQuestion> JobQuestions { get; set; }
-        public virtual DbSet<InternshipCity> InternshipCities { get; set; }
-        public virtual DbSet<InternshipQuestion> InternshipQuestions { get; set; }
-        public virtual DbSet<Internship> Internships { get; set; }
-        public virtual DbSet<Skill> Skills { get; set; }
-        public virtual DbSet<Tag> Tags { get; set; }
-        public virtual DbSet<JobTag> JobTags { get; set; }
-        public virtual DbSet<JobSkill> JobSkills { get; set; }
-        public virtual DbSet<InternshipSkill> InternshipSkills { get; set; }
-        public virtual DbSet<InternshipTag> InternshipTags { get; set; }
         public virtual DbSet<CorporateDocument> CorporateDocuments { get; set; }
         public virtual DbSet<EmployeeDocument> EmployeeDocuments { get; set; }
-        public virtual DbSet<InternshipApplication> InternshipApplications { get; set; }
-        public virtual DbSet<JobApplication> JobApplications { get; set; }
-        public virtual DbSet<InternshipAnswer> InternshipAnswers { get; set; }
-        public virtual DbSet<JobAnswer> JobAnswers { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<PostAnswer> PostAnswers { get; set; }
+        public virtual DbSet<PostApplication> PostApplications { get; set; }
+        public virtual DbSet<PostCity> PostCities { get; set; }
+        public virtual DbSet<PostQuestion> PostQuestions { get; set; }
+        public virtual DbSet<PostSkill> PostSkills { get; set; }
+        public virtual DbSet<PostTag> PostTags { get; set; }
+        public virtual DbSet<Skill> Skills { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
     }
 }

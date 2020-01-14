@@ -17,16 +17,13 @@ namespace MakeMyJobsAPI.EDMX
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Skill()
         {
-            this.JobSkills = new HashSet<JobSkill>();
-            this.InternshipSkills = new HashSet<InternshipSkill>();
+            this.PostSkills = new HashSet<PostSkill>();
         }
     
         public int SkillId { get; set; }
         public string SkillName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JobSkill> JobSkills { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InternshipSkill> InternshipSkills { get; set; }
+        public virtual ICollection<PostSkill> PostSkills { get; set; }
     }
 }

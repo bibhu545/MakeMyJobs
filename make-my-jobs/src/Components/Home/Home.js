@@ -15,15 +15,15 @@ export class Home extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Corporate/GetJobs').then(response => {
-            this.setState({
-                jobs: response.data.results[0].filter((item, index) => index < 3)
-            })
-            console.log(this.state.jobs)
-        }).catch(error => {
-            console.log(error);
-            this.util.showErrorMessage("Some error occured.");
-        })
+        // this.http.getData('http://makemyjobs.me/Corporate/GetJobs').then(response => {
+        //     this.setState({
+        //         jobs: response.data.results[0].filter((item, index) => index < 3)
+        //     })
+        //     console.log(this.state.jobs)
+        // }).catch(error => {
+        //     console.log(error);
+        //     this.utils.showErrorMessage("Some error occured.");
+        // })
     }
 
     onContactFormSubmit = (e) => {

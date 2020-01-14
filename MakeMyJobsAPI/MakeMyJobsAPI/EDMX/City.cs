@@ -17,16 +17,13 @@ namespace MakeMyJobsAPI.EDMX
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public City()
         {
-            this.JobCities = new HashSet<JobCity>();
-            this.InternshipCities = new HashSet<InternshipCity>();
+            this.PostCities = new HashSet<PostCity>();
         }
     
         public int CityId { get; set; }
         public string CityName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JobCity> JobCities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InternshipCity> InternshipCities { get; set; }
+        public virtual ICollection<PostCity> PostCities { get; set; }
     }
 }

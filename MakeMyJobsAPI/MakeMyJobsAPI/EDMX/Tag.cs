@@ -17,16 +17,13 @@ namespace MakeMyJobsAPI.EDMX
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Tag()
         {
-            this.JobTags = new HashSet<JobTag>();
-            this.InternshipTags = new HashSet<InternshipTag>();
+            this.PostTags = new HashSet<PostTag>();
         }
     
         public int TagId { get; set; }
         public string TagName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JobTag> JobTags { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InternshipTag> InternshipTags { get; set; }
+        public virtual ICollection<PostTag> PostTags { get; set; }
     }
 }

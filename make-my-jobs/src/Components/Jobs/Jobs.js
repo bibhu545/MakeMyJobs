@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import HttpService from '../../Utils/HttpServices'
 import { Utils } from '../../Utils/Utils'
 import './jobs.css';
+import { PostFilterModel } from '../../Utils/Models';
 
 export class Jobs extends Component {
     constructor(props) {
@@ -14,9 +15,10 @@ export class Jobs extends Component {
     }
 
     componentDidMount() {
-        var userId = 0;
-        userId = this.utils.getUserInfoFromCookies().userId;
-        this.http.getData('http://makemyjobs.me/Corporate/GetJobs?userId=' + userId).then(response => {
+        var userId = this.utils.getUserInfoFromCookies().userId;
+        var filterModel = new PostFilterModel();
+        filterModel.userId = userId;
+        this.http.postData('http://makemyjobs.me/Corporate/GetJobs', filterModel).then(response => {
             this.setState({
                 jobs: response.data.results[0]
             })
@@ -94,7 +96,7 @@ export class Jobs extends Component {
                                                     <div className='row'>
                                                         <div className='col-sm-5'>
                                                             <i className="fas fa-suitcase"></i>Experience: {item.experience} yrs
-                                                    </div>
+                                                        </div>
                                                         <div className='col-sm-7'>
                                                             <i className="fas fa-rupee-sign"></i>
                                                             Salary: {item.minSalary}

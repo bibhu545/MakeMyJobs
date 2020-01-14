@@ -22,7 +22,7 @@ export class ProffesionalHome extends Component {
             window.location = '/login';
         }
         else {
-            this.http.postData('http://makemyjobs.me/Corporate/GetAppliedJobs?id=' + this.userInfoFromCookies.userId).then(
+            this.http.postData('http://makemyjobs.me/Corporate/GetApplications?id=' + this.userInfoFromCookies.userId).then(
                 response => {
                     if (response.data.results == null) {
                         window.location = '/login';

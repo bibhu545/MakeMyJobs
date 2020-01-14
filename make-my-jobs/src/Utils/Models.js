@@ -139,6 +139,15 @@ export class EmployeeExperienceModel {
     }
 }
 
+export class PostFilterModel {
+    constructor() {
+        this.userId = 0;
+    }
+}
+
+
+
+
 export class JobModel {
     constructor() {
         this.jobId = 0;

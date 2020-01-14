@@ -66,9 +66,9 @@ namespace MakeMyJobsAPI.Models
         public String questionTwo { get; set; }
         public String questionThree { get; set; }
         public Nullable<int> IsActive { get; set; }
-        public DateTime expiryDate { get; set; }
+        public DateTime? expiryDate { get; set; }
         public DateTime postedOn { get; set; }
-        public DateTime LastUpdatedOn { get; set; }
+        public DateTime? LastUpdatedOn { get; set; }
         public string locationNames { get; set; }
         public string tagNames { get; set; }
         public string skillNames { get; set; }
@@ -132,6 +132,9 @@ namespace MakeMyJobsAPI.Models
         public string skillNames { get; set; }
         public string companyName { get; set; }
         public string companyInfo { get; set; }
+        public bool applied { get; set; }
+        public String message { get; set; }
+        public int totalApplications { get; set; }
     }
 
     public class JobAnswerModel
@@ -142,6 +145,22 @@ namespace MakeMyJobsAPI.Models
         public String answerTwo { get; set; }
         public String answerThree { get; set; }
     }
+    public class InternshipAnswerModel
+    {
+        public int internshipId { get; set; }
+        public int userId { get; set; }
+        public String answerOne { get; set; }
+        public String answerTwo { get; set; }
+        public String answerThree { get; set; }
+    }
+    public class InternshipApplicationResponse
+    {
+        public InternshipResponseModel internDetails { get; set; }
+        public String answerOne { get; set; }
+        public String answerTwo { get; set; }
+        public String answerThree { get; set; }
+        public DateTime applyDate { get; set; }
+    }
     public class JobApplicationResponse
     {
         public JobResponseModel jobDetails { get; set; }
@@ -150,12 +169,12 @@ namespace MakeMyJobsAPI.Models
         public String answerThree { get; set; }
         public DateTime applyDate { get; set; }
     }
-    public class StudentApplicationModel
+    public class StudentJobApplicationModel
     {
         public StudentInfoModel studentInfo { get; set; }
         public JobApplicationModel applicationInfo { get; set; }
     }
-    public class EmployeeApplicationModel
+    public class EmployeeJobApplicationModel
     {
         public EmployeeInfoModel employeeInfo { get; set; }
         public JobApplicationModel applicationInfo { get; set; }
@@ -168,5 +187,9 @@ namespace MakeMyJobsAPI.Models
         public int status { get; set; }
         public DateTime applyDate { get; set; }
         public string message { get; set; }
+    }
+    public class PostFilterModel
+    {
+        public int userId { get; set; }
     }
 }

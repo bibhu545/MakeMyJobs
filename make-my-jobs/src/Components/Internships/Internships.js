@@ -113,7 +113,8 @@ export class Internships extends Component {
                                                         {item.minStipend}
                                                         {
                                                             item.maxStipend === 0 ? null :
-                                                                <span>- {item.maxStipend}</span>}
+                                                                <span>- {item.maxStipend}</span>
+                                                        }
                                                     </div>
                                                 </div>
                                                 <div className='row'>

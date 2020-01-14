@@ -19,34 +19,43 @@ export class InternshipDescription extends Component {
 
     componentDidMount() {
         this.internshipId = this.utils.getQueryStringValue("id");
-        if (!this.utils.isLoggedIn() || this.internshipId == null) {
+        if (!this.utils.isLoggedIn()) {
+            this.utils.clearLoginDataFromCookies();
             window.location = '/login';
         }
         else {
-            this.http.getData('http://makemyjobs.me/Corporate/GetInternshipInfo?id=' + this.internshipId).then(response => {
-                if (response.data != null) {
-                    if (response.data.results[0] != null) {
-                        this.setState({
-                            internDetails: response.data.results[0]
-                        })
+            if (this.internshipId == null) {
+                window.location = '/user-home';
+            }
+            else {
+                var url = 'http://makemyjobs.me/Corporate/GetInternshipInfo?id=' + this.internshipId + "&userId=" + this.userInfoFromCookies.userId;
+                console.log(url);
+                this.http.getData(url).then(response => {
+                    if (response.data != null) {
+                        if (response.data.results[0] != null) {
+                            this.setState({
+                                internDetails: response.data.results[0]
+                            })
+                        }
+                        else {
+                            this.utils.showErrorMessage("Some error occured.");
+                        }
                     }
                     else {
                         this.utils.showErrorMessage("Some error occured.");
                     }
-                }
-                else {
+                }).catch(error => {
+                    console.log(error);
                     this.utils.showErrorMessage("Some error occured.");
-                }
-            }).catch(error => {
-                console.log(error);
-                this.utils.showErrorMessage("Some error occured.");
-            });
+                });
+            }
         }
     }
 
 
     render() {
         const { internDetails } = this.state;
+        console.log(internDetails)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -128,9 +137,16 @@ export class InternshipDescription extends Component {
 
                                     {
                                         this.utils.getUserTypeFromCookies() === '3' ? null :
-                                            <div className='center-content'>
-                                                <button className='btn btn-primary'>Apply Now</button>
-                                            </div>
+                                            <React.Fragment>
+                                                <div className='center-content'>
+                                                    <a href={'apply-internship?id=' + internDetails.internshipId} className={'btn btn-primary ' + (internDetails.applied ? 'disabled' : '')}>
+                                                        {
+                                                            internDetails.applied ? "Applied" : "Apply Now"
+                                                        }
+                                                    </a>
+                                                </div>
+                                                {internDetails.applied ? <p>Response from Recruiter: {internDetails.message == null ? "No messages" : internDetails.message}</p> : null}
+                                            </React.Fragment>
                                     }
                                 </div>
                             </div>

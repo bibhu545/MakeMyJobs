@@ -12,36 +12,49 @@ namespace MakeMyJobsAPI.EDMX
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Post
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public Post()
         {
-            this.Students = new HashSet<Student>();
-            this.Employees = new HashSet<Employee>();
-            this.Corporates = new HashSet<Corporate>();
             this.PostAnswers = new HashSet<PostAnswer>();
             this.PostApplications = new HashSet<PostApplication>();
-            this.Posts = new HashSet<Post>();
+            this.PostCities = new HashSet<PostCity>();
+            this.PostQuestions = new HashSet<PostQuestion>();
+            this.PostSkills = new HashSet<PostSkill>();
+            this.PostTags = new HashSet<PostTag>();
         }
     
+        public int PostId { get; set; }
         public int UserId { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public int UserType { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> MinExperience { get; set; }
+        public Nullable<int> MinSalary { get; set; }
+        public Nullable<int> MaxSalary { get; set; }
+        public Nullable<int> PostsAvailable { get; set; }
+        public Nullable<System.DateTime> ExpiaryDate { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<int> IsWFHAvailable { get; set; }
+        public Nullable<int> JobOffer { get; set; }
+        public Nullable<int> IsPartTimeAvailable { get; set; }
+        public System.DateTime PostedOn { get; set; }
+        public Nullable<System.DateTime> LastUpdatedOn { get; set; }
+        public int PostType { get; set; }
         public int IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Employee> Employees { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Corporate> Corporates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostAnswer> PostAnswers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostApplication> PostApplications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<PostCity> PostCities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostQuestion> PostQuestions { get; set; }
+        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostSkill> PostSkills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PostTag> PostTags { get; set; }
     }
 }

@@ -194,48 +194,6 @@
     <Compile Include="EDMX\EmployeeExperience.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
-    <Compile Include="EDMX\Internship.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\InternshipAnswer.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\InternshipApplication.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\InternshipCity.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\InternshipQuestion.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\InternshipSkill.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\InternshipTag.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\Job.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\JobAnswer.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\JobApplication.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\JobCity.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\JobQuestion.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\JobSkill.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMX\JobTag.cs">
-      <DependentUpon>MakeMyJobs.tt</DependentUpon>
-    </Compile>
     <Compile Include="EDMX\Lookup.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
@@ -253,6 +211,27 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MakeMyJobs.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\Post.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\PostAnswer.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\PostApplication.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\PostCity.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\PostQuestion.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\PostSkill.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDMX\PostTag.cs">
+      <DependentUpon>MakeMyJobs.tt</DependentUpon>
     </Compile>
     <Compile Include="EDMX\Skill.cs">
       <DependentUpon>MakeMyJobs.tt</DependentUpon>

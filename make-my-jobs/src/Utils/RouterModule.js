@@ -24,6 +24,7 @@ import EditInternship from '../Components/Internships/EditInternship';
 import ApplyJob from '../Components/Jobs/ApplyJob';
 import ViewApplicants from '../Components/Users/Corporate/ViewApplicants';
 import DownloadResume from '../Components/Users/Corporate/DownloadResume';
+import ApplyInternship from '../Components/Internships/ApplyInternship';
 
 function RouterModule() {
     return (
@@ -39,6 +40,7 @@ function RouterModule() {
                     <Route path="/view-applicants" component={ViewApplicants}></Route>
                     <Route path="/download-resume" component={DownloadResume}></Route>
                     <Route path="/apply-job" component={ApplyJob}></Route>
+                    <Route path="/apply-internship" component={ApplyInternship}></Route>
                     <Route path="/add-internship" component={AddInternship}></Route>
                     <Route path="/edit-internship" component={EditInternship}></Route>
                     <Route path="/internship-description" component={InternshipDescription}></Route>
