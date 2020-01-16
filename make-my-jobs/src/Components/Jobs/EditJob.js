@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 import HttpService from '../../Utils/HttpServices';
 import { JobModel } from '../../Utils/Models';
 import Select from 'react-select';
@@ -25,7 +25,7 @@ export class EditJob extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetCommonDataForNewPost').then(response => {
+        this.http.getData(API_ENDPOINTS.GetCommonDataForNewPost).then(response => {
             if (response.data.results.length > 0) {
                 var citiesFromServer = response.data.results[0];
                 var tagsFromServer = response.data.results[2];
@@ -71,7 +71,7 @@ export class EditJob extends Component {
     }
 
     loadJobData = (jobId) => {
-        this.http.getData('http://makemyjobs.me/Corporate/GetJobInfo?id=' + jobId).then(response => {
+        this.http.getData(API_ENDPOINTS.GetJobInfo + '?id=' + jobId).then(response => {
             if (response.data != null) {
                 if (response.data.results[0] != null) {
                     var tempJob = response.data.results[0]
@@ -90,7 +90,7 @@ export class EditJob extends Component {
                     tempJob.tags.forEach(element => {
                         tempSelectedTag.push({ value: element.value, label: element.text })
                     });
-                    
+
                     tempJob.expiryDate = this.utils.formatDateToBind(tempJob.expiryDate);
                     if (tempJob.questionOne == null) {
                         tempJob.questionOne = '';
@@ -149,7 +149,7 @@ export class EditJob extends Component {
         tempJob.locations = cities;
         tempJob.tags = tempTags;
         tempJob.skills = tempSkills;
-        this.http.postData('http://makemyjobs.me/Corporate/UpdateJob', tempJob).then(response => {
+        this.http.postData(API_ENDPOINTS.UpdateJob, tempJob).then(response => {
             if (response.data != null) {
                 if (response.data.results[0] > 0) {
                     Swal.fire({

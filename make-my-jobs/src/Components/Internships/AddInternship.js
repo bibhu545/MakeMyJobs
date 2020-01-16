@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Select from 'react-select';
 import HttpService from '../../Utils/HttpServices';
-import Utils from '../../Utils/Utils';
-import { InternshipModel } from '../../Utils/Models';
+import Utils, { API_ENDPOINTS, PostType } from '../../Utils/Utils';
+import { PostModel } from '../../Utils/Models';
 
 export class AddInternship extends Component {
     constructor(props) {
@@ -18,41 +18,47 @@ export class AddInternship extends Component {
             selectedSkill: [],
             skillOptions: [],
             questions: [],
-            internship: new InternshipModel()
+            internship: new PostModel()
         }
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetCommonDataForNewPost').then(response => {
-            if (response.data.results.length > 0) {
-                var citiesFromServer = response.data.results[0];
-                var tagsFromServer = response.data.results[2];
-                var skillsFromServer = response.data.results[1];
-
-                var tempCities = [];
-                citiesFromServer.forEach(element => {
-                    tempCities.push({ value: element.value, label: element.text });
-                });
-
-                var tempTags = [];
-                tagsFromServer.forEach(element => {
-                    tempTags.push({ value: element.value, label: element.text });
-                });
-
-                var tempSkills = [];
-                skillsFromServer.forEach(element => {
-                    tempSkills.push({ value: element.value, label: element.text });
-                });
-
-                this.setState({
-                    cityOptions: tempCities,
-                    tagOptions: tempTags,
-                    skillOptions: tempSkills
-                })
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+        if(this.utils.isLoggedIn()){
+            this.http.getData(API_ENDPOINTS.GetCommonDataForNewPost).then(response => {
+                if (response.data.results.length > 0) {
+                    var citiesFromServer = response.data.results[0];
+                    var tagsFromServer = response.data.results[2];
+                    var skillsFromServer = response.data.results[1];
+    
+                    var tempCities = [];
+                    citiesFromServer.forEach(element => {
+                        tempCities.push({ value: element.value, label: element.text });
+                    });
+    
+                    var tempTags = [];
+                    tagsFromServer.forEach(element => {
+                        tempTags.push({ value: element.value, label: element.text });
+                    });
+    
+                    var tempSkills = [];
+                    skillsFromServer.forEach(element => {
+                        tempSkills.push({ value: element.value, label: element.text });
+                    });
+    
+                    this.setState({
+                        cityOptions: tempCities,
+                        tagOptions: tempTags,
+                        skillOptions: tempSkills
+                    })
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+        else{
+            this.utils.clearLoginDataFromCookies();
+            window.location = '/login';
+        }
     }
 
     handleInternshipFormChange = (e) => {
@@ -94,7 +100,8 @@ export class AddInternship extends Component {
             this.utils.showErrorMessage(validationMessage);
         }
         else {
-            this.http.postData('http://makemyjobs.me/Corporate/CreateInternship', tempInternship).then(response => {
+            tempInternship.postType = PostType.Internship;
+            this.http.postData(API_ENDPOINTS.CreatePost, tempInternship).then(response => {
                 if (response.data.results != null) {
                     if (response.data.results[0] > 1) {
                         window.location = '/user-home';
@@ -139,7 +146,6 @@ export class AddInternship extends Component {
         return errorMessage;
     }
     render() {
-        console.log(this.state.cityOptions)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>

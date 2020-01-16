@@ -27,6 +27,77 @@ namespace MakeMyJobsAPI.Models
         public List<JobResponseModel> corporateJobs { get; set; }
         public List<InternshipResponseModel> corporateInternships { get; set; }
     }
+
+    public class PostModel
+    {
+        public int postId { get; set; }
+        public int userId { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public int minExperience { get; set; }
+        public int minSalary { get; set; }
+        public int maxSalary { get; set; }
+        public int postsAvailable { get; set; }
+        public DateTime? expiryDate { get; set; }
+        public DateTime? startDate { get; set; }
+        public DateTime postedOn { get; set; }
+        public DateTime? lastUpdatedOn { get; set; }
+        public int postType { get; set; }
+        public int minStipend { get; set; }
+        public int? maxStipend { get; set; }
+        public bool isWFHAvailable { get; set; }
+        public bool isPartTimeAvailable { get; set; }
+        public bool jobOffer { get; set; }
+        public List<DropdownModel> locations { get; set; }
+        public List<DropdownModel> tags { get; set; }
+        public List<DropdownModel> skills { get; set; }
+        public String questionOne { get; set; }
+        public String questionTwo { get; set; }
+        public String questionThree { get; set; }
+        public int isActicve { get; set; }
+        public int totalApplications { get; set; }
+        public bool applied { get; set; }
+    }
+
+    public class PostResponseModel
+    {
+        public int postId { get; set; }
+        public int userId { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public int minExperience { get; set; }
+        public int minSalary { get; set; }
+        public int? maxSalary { get; set; }
+        public int? postsAvailable { get; set; }
+        public List<DropdownModel> locations { get; set; }
+        public List<DropdownModel> tags { get; set; }
+        public List<DropdownModel> skills { get; set; }
+        public String questionOne { get; set; }
+        public String questionTwo { get; set; }
+        public String questionThree { get; set; }
+        public Nullable<int> IsActive { get; set; }
+        public DateTime? expiryDate { get; set; }
+        public DateTime postedOn { get; set; }
+        public DateTime? LastUpdatedOn { get; set; }
+        public string locationNames { get; set; }
+        public string tagNames { get; set; }
+        public string skillNames { get; set; }
+        public string companyName { get; set; }
+        public string companyInfo { get; set; }
+        public bool applied { get; set; }
+        public String message { get; set; }
+        public int totalApplications { get; set; }
+        public int internshipId { get; set; }
+        public DateTime? startDate { get; set; }
+        public DateTime? lastUpdatedOn { get; set; }
+        public int minStipend { get; set; }
+        public int? maxStipend { get; set; }
+        public int isWFHAvailable { get; set; }
+        public int isPartTimeAvailable { get; set; }
+        public int jobOffer { get; set; }
+        public int isActicve { get; set; }
+    }
+
     public class JobModel
     {
         public int jobId { get; set; }
@@ -110,10 +181,10 @@ namespace MakeMyJobsAPI.Models
         public int userId { get; set; }
         public string title { get; set; }
         public string description { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime expiryDate { get; set; }
+        public DateTime? startDate { get; set; }
+        public DateTime? expiryDate { get; set; }
         public DateTime postedOn { get; set; }
-        public DateTime lastUpdatedOn { get; set; }
+        public DateTime? lastUpdatedOn { get; set; }
         public int minStipend { get; set; }
         public int? maxStipend { get; set; }
         public int? postsAvailable { get; set; }
@@ -191,5 +262,6 @@ namespace MakeMyJobsAPI.Models
     public class PostFilterModel
     {
         public int userId { get; set; }
+        public int postType { get; set; }
     }
 }

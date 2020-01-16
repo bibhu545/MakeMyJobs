@@ -14,6 +14,11 @@ namespace MakeMyJobsAPI.Utils
             public const int AuthenticationFailed = 3;
             public const int Duplicate = 4;
         }
+        public class PostType
+        {
+            public const int Job = 1;
+            public const int Internship = 2;
+        }
         public class UserTypes
         {
             public const int Admin = 0;

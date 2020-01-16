@@ -33,7 +33,7 @@ namespace MakeMyJobsAPI.EDMX
         public Nullable<int> MinSalary { get; set; }
         public Nullable<int> MaxSalary { get; set; }
         public Nullable<int> PostsAvailable { get; set; }
-        public Nullable<System.DateTime> ExpiaryDate { get; set; }
+        public Nullable<System.DateTime> ExpiryDate { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<int> IsWFHAvailable { get; set; }
         public Nullable<int> JobOffer { get; set; }

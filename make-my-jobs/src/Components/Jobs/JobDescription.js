@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import logo1 from '../../Assets/Uploads/logos/client-5.png'
-import Utils from '../../Utils/Utils'
+// import logo1 from '../../Assets/Uploads/logos/client-5.png'
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils'
 import HttpService from '../../Utils/HttpServices';
 import { JobModel } from '../../Utils/Models';
 import StudentSideBar from '../Users/Student/StudentSideBar';
@@ -23,7 +23,7 @@ export class JobDescription extends Component {
             window.location = '/login';
         }
         else {
-            this.http.getData('http://makemyjobs.me/Corporate/GetJobInfo?id=' + this.jobId + "&userId=" + this.userInfoFromCookies.userId).then(response => {
+            this.http.getData(API_ENDPOINTS.GetJobInfo + '?id=' + this.jobId + "&userId=" + this.userInfoFromCookies.userId).then(response => {
                 if (response.data != null) {
                     if (response.data.results[0] != null) {
                         this.setState({
@@ -46,7 +46,6 @@ export class JobDescription extends Component {
 
     render() {
         const { jobDetails } = this.state;
-        console.log(jobDetails)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -63,7 +62,7 @@ export class JobDescription extends Component {
                                             <p>Location(s): {jobDetails.locationNames}</p>
                                         </div>
                                         <div className='col-xs-3'>
-                                            <img src={logo1} alt='company logo' className='img img-logo' />
+                                            {/* <img src={logo1} alt='company logo' className='img img-logo' /> */}
                                         </div>
                                     </div>
                                     <div className='row'>

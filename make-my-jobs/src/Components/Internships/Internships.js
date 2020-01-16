@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import HttpService from '../../Utils/HttpServices';
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 import './internships.css';
+import { PostFilterModel } from '../../Utils/Models';
 
 export class Internships extends Component {
     constructor(props) {
@@ -14,17 +15,22 @@ export class Internships extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Corporate/GetInternships').then(response => {
+        var userId = this.utils.getUserInfoFromCookies().userId;
+        var filterModel = new PostFilterModel();
+        filterModel.userId = userId;
+        this.http.postData(API_ENDPOINTS.GetInternships, filterModel).then(response => {
             this.setState({
                 internships: response.data.results[0]
             })
         }).catch(error => {
             console.log(error);
-            this.util.showErrorMessage("Some error occured.");
+            this.utils.showErrorMessage("Some error occured.");
         })
     }
 
     render() {
+        const { internships } = this.state
+        console.log(internships)
         return (
             <React.Fragment>
                 <div className='container'>

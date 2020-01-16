@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import HttpService from '../../../Utils/HttpServices';
 import { CorporateModel, JobModel, InternshipModel } from '../../../Utils/Models';
-import Utils from '../../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils';
 import StudentSideBar from '../Student/StudentSideBar';
 import JobDescription from './JobDescription';
 import Swal from 'sweetalert2'
@@ -16,6 +16,8 @@ export class CorporateHome extends Component {
         this.state = {
             userType: new Utils().getUserTypeFromCookies(),
             user: new CorporateModel(),
+            jobs: [],
+            internships: [],
             jobViewOpened: 0,
             job: new JobModel(),
             internshipViewOpened: 0,
@@ -30,15 +32,17 @@ export class CorporateHome extends Component {
     }
 
     renderEmployeeData = () => {
-        this.http.postData('http://makemyjobs.me/Corporate/GetCorporateInfo?id=' + this.userInfoFromCookies.userId).then(
+        this.http.getData(API_ENDPOINTS.GetCorporateInfo + '?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results == null) {
-                    // window.location = '/login';
                     this.utils.showErrorMessage("Some error occured. Please refresh the page.");
                 }
                 else {
+                    var userData = response.data.results[0];
                     this.setState({
-                        user: response.data.results[0],
+                        user: userData,
+                        jobs: userData.corporateJobs == null ? [] : userData.corporateJobs,
+                        internships: userData.corporateInternships == null ? [] : userData.corporateInternships
                     })
                 }
             }).catch(error => {
@@ -57,7 +61,7 @@ export class CorporateHome extends Component {
         this.renderJobData(jobId, true);
     }
 
-    deleteJob = (e, jobId) => {
+    deletePost = (e, id) => {
         e.preventDefault();
         Swal.fire({
             title: 'Are you sure?',
@@ -69,7 +73,7 @@ export class CorporateHome extends Component {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.value) {
-                this.http.getData('http://makemyjobs.me/Corporate/DeleteJob?id=' + jobId).then(response => {
+                this.http.getData(API_ENDPOINTS.DeletePost + '?id=' + id).then(response => {
                     if (response.data.results != null) {
                         this.renderEmployeeData();
                         if (response.data.results[0]) {
@@ -119,7 +123,7 @@ export class CorporateHome extends Component {
     //for internship section
 
     renderInternshipData = (internshipId, forEdit = false) => {
-        this.http.getData('http://makemyjobs.me/Corporate/GetInternshipInfo?id=' + internshipId).then(response => {
+        this.http.getData(API_ENDPOINTS.GetInternshipInfo + '?id=' + internshipId).then(response => {
             if (response.data != null) {
                 if (response.data.results[0] != null) {
                     this.setState({
@@ -159,40 +163,8 @@ export class CorporateHome extends Component {
         this.renderInternshipData(internshipId, true);
     }
 
-    deleteInternship = (e, internshipId) => {
-        e.preventDefault();
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.value) {
-                this.http.getData('http://makemyjobs.me/Corporate/DeleteInternship?id=' + internshipId).then(response => {
-                    if (response.data.results != null) {
-                        this.renderEmployeeData();
-                        if (response.data.results[0]) {
-                            this.utils.showInlineDefaultMessage('Internship data deleted.');
-                        }
-                        else {
-                            this.utils.showInlineErrorMessage('Some error occured. Please try again.');
-                        }
-                    }
-                    else {
-                        this.utils.showInlineErrorMessage('Some error occured. Please try again.');
-                    }
-                }).catch(error => {
-                    console.log(error);
-                    this.utils.showInlineErrorMessage('Some error occured. Please try again.', error);
-                });
-            }
-        })
-    }
-
     render() {
+        const { jobs, internships } = this.state
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -201,7 +173,7 @@ export class CorporateHome extends Component {
                             <div className='center-content'>
                                 <h3>- My DashBoard -</h3>
                                 {
-                                    this.state.user.corporateJobs.length > 0 || this.state.user.corporateInternships.length > 0 ?
+                                    jobs.length > 0 || internships.length > 0 ?
                                         null :
                                         <h4>
                                             You have not posted any jobs
@@ -212,9 +184,9 @@ export class CorporateHome extends Component {
                             </div>
                             <br />
                             {
-                                this.state.user.corporateJobs.length === 0 ?
+                                jobs.length === 0 ?
                                     <div className='center-content'>
-                                        You have not posted any jobs yet. <a href='/add-jobs'>(Add now)</a>
+                                        You have not posted any jobs yet. <a href='/add-job'>(Add now)</a>
                                     </div> :
                                     <React.Fragment>
                                         <h4>Jobs posted by you:
@@ -222,13 +194,13 @@ export class CorporateHome extends Component {
                                         </h4>
                                         <br />
                                         {
-                                            this.state.user.corporateJobs.filter((item, index) => index < 4).map(item =>
+                                            jobs.filter((item, index) => index < 4).map(item =>
                                                 <React.Fragment key={item.jobId}>
                                                     <div className='job-desc-user'>
                                                         <div className='row'>
 
                                                             <div className='col-xs-8'>
-                                                                <h4><a href='/jobs'>{item.jobTitle}</a></h4>
+                                                                <h4><a href={'/job-description?id=' + item.jobId}>{item.jobTitle}</a></h4>
                                                                 <p>{item.company}</p>
                                                             </div>
 
@@ -246,7 +218,7 @@ export class CorporateHome extends Component {
                                                                 </a>
 
                                                                 &nbsp;
-                                                                <a href="##" onClick={(e) => this.deleteJob(e, item.jobId)} >
+                                                                <a href="##" onClick={(e) => this.deletePost(e, item.jobId)} >
                                                                     <span className="glyphicon glyphicon-trash"></span>
                                                                 </a>
                                                             </div>
@@ -279,7 +251,7 @@ export class CorporateHome extends Component {
                                             )
                                         }
                                         {
-                                            this.state.user.corporateJobs.length > 4 ?
+                                            jobs.length > 4 ?
                                                 <a href='/my-jobs' className='btn btn-default float-right'>View all</a> :
                                                 null
                                         }
@@ -289,7 +261,7 @@ export class CorporateHome extends Component {
                             <br />
                             <br />
                             {
-                                this.state.user.corporateInternships.length === 0 ?
+                                internships.length === 0 ?
                                     <div className='center-content'>
                                         You have not posted any internships yet. <a href='/add-internship'>(Add now)</a>
                                     </div> :
@@ -299,12 +271,12 @@ export class CorporateHome extends Component {
                                         </h4>
                                         <br />
                                         {
-                                            this.state.user.corporateInternships.map(item =>
+                                            internships.map(item =>
                                                 <React.Fragment key={item.internshipId}>
                                                     <div className='job-desc-user'>
                                                         <div className='row'>
                                                             <div className='col-xs-10'>
-                                                                <h4><a href='/jobs'>{item.title}</a></h4>
+                                                                <h4><a href={'/internship-description?id=' + item.internshipId}>{item.title}</a></h4>
                                                                 <p>{item.company}</p>
                                                             </div>
                                                             <div className='col-xs-2 right-content'>
@@ -318,7 +290,7 @@ export class CorporateHome extends Component {
                                                                 </a>
 
                                                                 &nbsp;
-                                                                <a href="##" onClick={(e) => this.deleteInternship(e, item.internshipId)} >
+                                                                <a href="##" onClick={(e) => this.deletePost(e, item.internshipId)} >
                                                                     <span className="glyphicon glyphicon-trash"></span>
                                                                 </a>
                                                             </div>
@@ -368,7 +340,7 @@ export class CorporateHome extends Component {
                                             )
                                         }
                                         {
-                                            this.state.user.corporateJobs.length > 5 ?
+                                            jobs.length > 5 ?
                                                 <a href='/my-internships' className='btn btn-default float-right'>View all</a> :
                                                 null
                                         }

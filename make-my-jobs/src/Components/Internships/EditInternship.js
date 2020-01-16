@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Select from 'react-select';
 import { InternshipModel } from '../../Utils/Models';
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 import HttpService from '../../Utils/HttpServices';
 import StudentSideBar from '../Users/Student/StudentSideBar';
 import Swal from 'sweetalert2'
@@ -25,7 +25,7 @@ export class EditInternship extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetCommonDataForNewPost').then(response => {
+        this.http.getData(API_ENDPOINTS.GetCommonDataForNewPost).then(response => {
             if (response.data.results.length > 0) {
                 var citiesFromServer = response.data.results[0];
                 var tagsFromServer = response.data.results[2];
@@ -72,7 +72,7 @@ export class EditInternship extends Component {
     }
 
     loadInternshipData = (internshipId) => {
-        this.http.getData('http://makemyjobs.me/Corporate/GetInternshipInfo?id=' + internshipId).then(response => {
+        this.http.getData(API_ENDPOINTS.GetInternshipInfo + '?id=' + internshipId).then(response => {
             if (response.data != null) {
                 if (response.data.results[0] != null) {
                     var tempInternship = response.data.results[0]
@@ -154,10 +154,9 @@ export class EditInternship extends Component {
         tempInternship.locations = cities;
         tempInternship.tags = tempTags;
         tempInternship.skills = tempSkills;
-        this.http.postData('http://makemyjobs.me/Corporate/UpdateInternship', tempInternship).then(response => {
+        this.http.postData(API_ENDPOINTS.UpdateInternship, tempInternship).then(response => {
             if (response.data != null) {
                 if (response.data.results[0] > 0) {
-                    // this.loadInternshipData(tempInternship.internshipId);
                     Swal.fire({
                         title: '<strong>Data updated</strong>',
                         icon: 'info',
@@ -203,7 +202,6 @@ export class EditInternship extends Component {
 
     render() {
         const { internship } = this.state
-        // console.log(internship)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -228,7 +226,7 @@ export class EditInternship extends Component {
                                         isMulti
                                         name='locations'
                                         onChange={this.handleCityChange}
-                                        options={this.state.cityOpyions}
+                                        options={this.state.cityOptions}
                                         className="basic-multi-select"
                                         classNamePrefix="select"
                                         id='locations'

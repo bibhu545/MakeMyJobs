@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import logo1 from '../../Assets/Uploads/logos/client-5.png'
+// import logo1 from '../../Assets/Uploads/logos/client-5.png'
 import { InternshipModel } from '../../Utils/Models';
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 import HttpService from '../../Utils/HttpServices';
 import StudentSideBar from '../Users/Student/StudentSideBar';
 
@@ -28,9 +28,7 @@ export class InternshipDescription extends Component {
                 window.location = '/user-home';
             }
             else {
-                var url = 'http://makemyjobs.me/Corporate/GetInternshipInfo?id=' + this.internshipId + "&userId=" + this.userInfoFromCookies.userId;
-                console.log(url);
-                this.http.getData(url).then(response => {
+                this.http.getData(API_ENDPOINTS.GetInternshipInfo + '?id=' + this.internshipId + "&userId=" + this.userInfoFromCookies.userId).then(response => {
                     if (response.data != null) {
                         if (response.data.results[0] != null) {
                             this.setState({
@@ -55,7 +53,6 @@ export class InternshipDescription extends Component {
 
     render() {
         const { internDetails } = this.state;
-        console.log(internDetails)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -72,7 +69,7 @@ export class InternshipDescription extends Component {
                                             <p>Location(s): {internDetails.locationNames}</p>
                                         </div>
                                         <div className='col-xs-3'>
-                                            <img src={logo1} alt='company logo' className='img img-logo' />
+                                            {/* <img src={logo1} alt='company logo' className='img img-logo' /> */}
                                         </div>
                                     </div>
                                     <div className='row'>

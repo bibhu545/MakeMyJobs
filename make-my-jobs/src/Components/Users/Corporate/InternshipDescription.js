@@ -21,9 +21,9 @@ export class InternshipDescription extends Component {
                         <h4>{this.internship.title}</h4>
                         <p>Location(s): {this.internship.locationNames}</p>
                         <div className='col-md-3'>
-                            <strong>Experience:</strong>
+                            <strong>Starts from:</strong>
                             <br />
-                            {this.internship.experience} yrs
+                            {this.internship.startDate == null ? "Immediately" : this.utils.GetDateFromServer(this.internship.startDate)}
                         </div>
                         <div className='col-md-3'>
                             <strong>Stipends:</strong>

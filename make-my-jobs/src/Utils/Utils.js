@@ -2,6 +2,27 @@ import cookie from 'react-cookies';
 import { UserCookieInfoModel } from './Models';
 import Swal from 'sweetalert2'
 
+export const BaseUrl = "http://makemyjobs.me";
+export const API_ENDPOINTS = {
+    BaseApiUrl: BaseUrl,
+    GetCommonDataForNewPost: BaseUrl + "/Common/GetCommonDataForNewPost",
+    GetCorporateInfo: BaseUrl + '/Corporate/GetCorporateInfo',
+
+    GetJobInfo: BaseUrl + "/Corporate/GetJobInfo",
+    UpdateJob: BaseUrl + "/Corporate/UpdateJob",
+    
+    GetInternships: BaseUrl + '/Corporate/GetInternships',
+    GetInternshipInfo: BaseUrl + '/Corporate/GetInternshipInfo',
+    UpdateInternship: BaseUrl + '/Corporate/UpdateInternship',
+    
+    CreatePost: BaseUrl + "/Corporate/CreatePost",
+    DeletePost: BaseUrl + "/Corporate/DeletePost",
+};
+
+export const PostType = {
+    Job: 1,
+    Internship: 2
+}
 
 export class Utils {
     siteName = '<span class="red-text">M</span>ake<span class="red-text">M</span>yJobs';

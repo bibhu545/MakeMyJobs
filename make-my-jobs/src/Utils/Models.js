@@ -142,11 +142,43 @@ export class EmployeeExperienceModel {
 export class PostFilterModel {
     constructor() {
         this.userId = 0;
+        this.postType = 0;
     }
 }
 
-
-
+export class PostModel {
+    constructor() {
+        this.postId = 0;
+        this.userId = 0;
+        this.title = '';
+        this.description = '';
+        this.companyName = '';
+        this.companyInfo = '';
+        this.locations = [];
+        this.tags = [];
+        this.skills = [];
+        this.startDate = '';
+        this.expiryDate = '';
+        this.postedOn = '';
+        this.lastUpdatedOn = '';
+        this.locationNames = '';
+        this.tagNames = '';
+        this.skillNames = '';
+        this.minSalary = 0;
+        this.maxSalary = 0;
+        this.postsAvailable = 0;
+        this.isWFHAvailable = false;
+        this.isPartTimeAvailable = false;
+        this.jobOffer = false;
+        this.isActicve = 0;
+        this.questionOne = '';
+        this.questionTwo = '';
+        this.questionThree = '';
+        this.postType = 0;
+        this.applied = false;
+        this.totalApplications = 0;
+    }
+}
 
 export class JobModel {
     constructor() {
@@ -205,6 +237,7 @@ export class InternshipModel {
         this.questionOne = '';
         this.questionTwo = '';
         this.questionThree = '';
+        this.postType = 0;
     }
 }
 

@@ -169,7 +169,7 @@
           <Property Name="MinSalary" Type="int" />
           <Property Name="MaxSalary" Type="int" />
           <Property Name="PostsAvailable" Type="int" />
-          <Property Name="ExpiaryDate" Type="datetime" />
+          <Property Name="ExpiryDate" Type="datetime" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="IsWFHAvailable" Type="int" />
           <Property Name="JobOffer" Type="int" />
@@ -1380,7 +1380,7 @@
           <Property Name="MinSalary" Type="Int32" />
           <Property Name="MaxSalary" Type="Int32" />
           <Property Name="PostsAvailable" Type="Int32" />
-          <Property Name="ExpiaryDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="IsWFHAvailable" Type="Int32" />
           <Property Name="JobOffer" Type="Int32" />
@@ -1750,7 +1750,7 @@
                 <ScalarProperty Name="JobOffer" ColumnName="JobOffer" />
                 <ScalarProperty Name="IsWFHAvailable" ColumnName="IsWFHAvailable" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="ExpiaryDate" ColumnName="ExpiaryDate" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
                 <ScalarProperty Name="PostsAvailable" ColumnName="PostsAvailable" />
                 <ScalarProperty Name="MaxSalary" ColumnName="MaxSalary" />
                 <ScalarProperty Name="MinSalary" ColumnName="MinSalary" />
