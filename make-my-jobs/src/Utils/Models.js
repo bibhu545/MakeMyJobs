@@ -244,7 +244,7 @@ export class InternshipModel {
 export class AnswerModel {
     constructor() {
         this.userId = 0;
-        this.jobId = 0;
+        this.postId = 0;
         this.answerOne = '';
         this.answerTwo = '';
         this.answerThree = '';

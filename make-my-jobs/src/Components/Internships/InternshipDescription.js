@@ -53,6 +53,7 @@ export class InternshipDescription extends Component {
 
     render() {
         const { internDetails } = this.state;
+        console.log(internDetails)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>

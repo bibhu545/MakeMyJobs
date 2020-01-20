@@ -30,7 +30,6 @@ export class Internships extends Component {
 
     render() {
         const { internships } = this.state
-        console.log(internships)
         return (
             <React.Fragment>
                 <div className='container'>
@@ -91,7 +90,7 @@ export class Internships extends Component {
                         </div>
                         <div className='col-md-9 col-sm-12 intern-wrapper'>
                             {
-                                this.state.internships.map(item =>
+                                internships.map(item =>
                                     <React.Fragment key={item.internshipId}>
                                         <a target='_blank' className='job-link' rel='noopener noreferrer' href={'/internship-description?id=' + item.internshipId}>
                                             <div className='job-desc-user job-desc'>

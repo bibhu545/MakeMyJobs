@@ -23,41 +23,27 @@ export class ViewApplicants extends Component {
     }
 
     getAppliedProfiles = () => {
-        var jobId = this.utils.getQueryStringValue("jobId");
-        this.jobId = jobId;
-        var internshipId = this.utils.getQueryStringValue("internshipId");
+        var postId = this.utils.getQueryStringValue("postId");
+        this.postId = postId;
         if (this.utils.isLoggedIn() && this.utils.getUserTypeFromCookies() === '3') {
-            if (jobId != null) {
-                if (internshipId != null) {
-                    window.location = '/user-home';
-                }
-                else {
-                    this.http.getData('http://makemyjobs.me/Corporate/GetAppliedProfiles?jobId=' + jobId + '&internshipId=0').then(response => {
-                        if (response.data.results != null) {
-                            this.setState({
-                                studentApplicants: response.data.results[0],
-                                employeeApplicants: response.data.results[1]
-                            })
-                        }
-                        else {
-                            this.utils.showErrorMessage("Some error occured. Please try refrehing the page.");
-                        }
-                    }).catch(error => {
-                        console.log(error);
-                        this.utils.showErrorMessage("Some error occured. Please try again.");
-                    });
-                }
+            if (postId != null) {
+                this.http.getData('http://makemyjobs.me/Corporate/GetAppliedProfiles?postId=' + postId).then(response => {
+                    if (response.data.results != null) {
+                        this.setState({
+                            studentApplicants: response.data.results[0],
+                            employeeApplicants: response.data.results[1]
+                        })
+                    }
+                    else {
+                        this.utils.showErrorMessage("Some error occured. Please try refrehing the page.");
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    this.utils.showErrorMessage("Some error occured. Please try again.");
+                });
             }
-            else if (internshipId != null) {
-                if (jobId != null) {
-                    window.location = '/user-home';
-                }
-                else {
-
-                }
-            }
-            else if (jobId == null && internshipId == null) {
-                window.location = '/user-home'
+            else {
+                window.location = '/user-home';
             }
         }
         else {
@@ -72,10 +58,10 @@ export class ViewApplicants extends Component {
         });
     }
 
-    onApplicantActionTaken = (e, forStudent = false, forReject = false, userId, jobId) => {
+    onApplicantActionTaken = (e, forStudent = false, forReject = false, userId, postId) => {
         var forRejectInt = forReject ? 1 : 0;
         var forStudentInt = forStudent ? 1 : 0;
-        var url = "http://makemyjobs.me/Corporate/SaveApplicantResponse?forStudent=" + forStudentInt + "&forReject=" + forRejectInt + "&userId=" + userId + "&jobId=" + jobId;
+        var url = "http://makemyjobs.me/Corporate/SaveApplicantResponse?forStudent=" + forStudentInt + "&forReject=" + forRejectInt + "&userId=" + userId + "&postId=" + postId;
 
         //Make methods for save response message 
 
@@ -98,9 +84,9 @@ export class ViewApplicants extends Component {
         switch (status) {
             case 0:
                 return <React.Fragment>
-                    <a href="##" onClick={(e) => this.onApplicantActionTaken(e, true, false, item.applicationInfo.userId, item.applicationInfo.jobId)} className='text-success'>Accept </a>
+                    <a href="##" onClick={(e) => this.onApplicantActionTaken(e, true, false, item.applicationInfo.userId, item.applicationInfo.postId)} className='text-success'>Accept </a>
                     /
-                    <a href="##" onClick={(e) => this.onApplicantActionTaken(e, true, true, item.applicationInfo.userId, item.applicationInfo.jobId)} className='text-danger'> Reject</a>
+                    <a href="##" onClick={(e) => this.onApplicantActionTaken(e, true, true, item.applicationInfo.userId, item.applicationInfo.postId)} className='text-danger'> Reject</a>
                 </React.Fragment>
             case 2:
                 return <span className='text-success'>Approved</span>
@@ -143,7 +129,7 @@ export class ViewApplicants extends Component {
                                 <tbody>
                                     {
                                         studentApplicants.map((item, index) =>
-                                            <tr key='index'>
+                                            <tr key={index}>
                                                 <td>{item.studentInfo.firstName + " " + item.studentInfo.lastName}</td>
                                                 <td>{item.studentInfo.email}</td>
                                                 <td>
@@ -182,7 +168,7 @@ export class ViewApplicants extends Component {
                                     </tr>
                                     {
                                         employeeApplicants.map((item, index) =>
-                                            <tr key='index'>
+                                            <tr key={index}>
                                                 <td>{item.employeeInfo.firstName + " " + item.employeeInfo.lastName}</td>
                                                 <td>{item.employeeInfo.email}</td>
                                                 <td>
@@ -233,7 +219,7 @@ export class ViewApplicants extends Component {
                                                                 Date of birth:
                                                             </div>
                                                             <div className='col-sm-8 col-xs-12'>
-                                                                {this.utils.GetDateFromServer(applicantDetails.dateOfBirth)}
+                                                                {applicantDetails.dateOfBirth == null ? "Not updated" : this.utils.GetDateFromServer(applicantDetails.dateOfBirth)}
                                                             </div>
                                                         </div>
                                                         {

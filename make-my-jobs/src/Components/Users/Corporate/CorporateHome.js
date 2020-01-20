@@ -206,7 +206,7 @@ export class CorporateHome extends Component {
 
                                                             <div className='col-xs-4 right-content'>
 
-                                                                <a href={'view-applicants?jobId=' + item.jobId}><span className="label label-primary">{item.totalApplications} Applied</span></a>
+                                                                <a href={'view-applicants?postId=' + item.jobId}><span className="label label-primary">{item.totalApplications} Applied</span></a>
 
                                                                 <a href="##" onClick={(e) => this.onOpenJobDeacriptionClicked(e, item.jobId)} data-toggle="modal" data-target="#jobDetailsModal">
                                                                     <span className="glyphicon glyphicon-share"></span>
@@ -280,6 +280,9 @@ export class CorporateHome extends Component {
                                                                 <p>{item.company}</p>
                                                             </div>
                                                             <div className='col-xs-2 right-content'>
+
+                                                                <a href={'view-applicants?postId=' + item.internshipId}><span className="label label-primary">{item.totalApplications} Applied</span></a>
+
                                                                 <a href="##" onClick={(e) => this.onOpenInternshipDeacriptionClicked(e, item.internshipId)} data-toggle="modal" data-target="#jobDetailsModal">
                                                                     <span className="glyphicon glyphicon-share"></span>
                                                                 </a>

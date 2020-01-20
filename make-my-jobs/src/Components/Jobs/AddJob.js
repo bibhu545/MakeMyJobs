@@ -25,36 +25,41 @@ export class AddJob extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetCommonDataForNewPost').then(response => {
-            if (response.data.results.length > 0) {
-                var citiesFromServer = response.data.results[0];
-                var tagsFromServer = response.data.results[2];
-                var skillsFromServer = response.data.results[1];
+        if (this.utils.isLoggedIn()) {
+            this.http.getData('http://makemyjobs.me/Common/GetCommonDataForNewPost').then(response => {
+                if (response.data.results.length > 0) {
+                    var citiesFromServer = response.data.results[0];
+                    var tagsFromServer = response.data.results[2];
+                    var skillsFromServer = response.data.results[1];
 
-                var tempCities = [];
-                citiesFromServer.forEach(element => {
-                    tempCities.push({ value: element.value, label: element.text });
-                });
+                    var tempCities = [];
+                    citiesFromServer.forEach(element => {
+                        tempCities.push({ value: element.value, label: element.text });
+                    });
 
-                var tempTags = [];
-                tagsFromServer.forEach(element => {
-                    tempTags.push({ value: element.value, label: element.text });
-                });
+                    var tempTags = [];
+                    tagsFromServer.forEach(element => {
+                        tempTags.push({ value: element.value, label: element.text });
+                    });
 
-                var tempSkills = [];
-                skillsFromServer.forEach(element => {
-                    tempSkills.push({ value: element.value, label: element.text });
-                });
+                    var tempSkills = [];
+                    skillsFromServer.forEach(element => {
+                        tempSkills.push({ value: element.value, label: element.text });
+                    });
 
-                this.setState({
-                    cityOptions: tempCities,
-                    tagOptions: tempTags,
-                    skillOptions: tempSkills
-                })
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+                    this.setState({
+                        cityOptions: tempCities,
+                        tagOptions: tempTags,
+                        skillOptions: tempSkills
+                    })
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        } else {
+            this.utils.clearLoginDataFromCookies();
+            window.location = '/login';
+        }
     }
 
     handleJobFormChange = (e) => {

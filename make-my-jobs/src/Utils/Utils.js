@@ -14,9 +14,12 @@ export const API_ENDPOINTS = {
     GetInternships: BaseUrl + '/Corporate/GetInternships',
     GetInternshipInfo: BaseUrl + '/Corporate/GetInternshipInfo',
     UpdateInternship: BaseUrl + '/Corporate/UpdateInternship',
-    
+
+    ApplyPost: BaseUrl + '/Corporate/ApplyPost',
     CreatePost: BaseUrl + "/Corporate/CreatePost",
     DeletePost: BaseUrl + "/Corporate/DeletePost",
+
+    GetApplications: BaseUrl +  'http://makemyjobs.me/Corporate/GetApplications',
 };
 
 export const PostType = {

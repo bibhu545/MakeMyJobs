@@ -3,6 +3,7 @@ import './home.css'
 import AboutImage from '../../Assets/Images/1.jpg'
 import HttpService from '../../Utils/HttpServices'
 import Utils from '../../Utils/Utils'
+import { PostFilterModel } from '../../Utils/Models'
 
 export class Home extends Component {
     constructor(props) {
@@ -15,15 +16,16 @@ export class Home extends Component {
     }
 
     componentDidMount() {
-        // this.http.getData('http://makemyjobs.me/Corporate/GetJobs').then(response => {
-        //     this.setState({
-        //         jobs: response.data.results[0].filter((item, index) => index < 3)
-        //     })
-        //     console.log(this.state.jobs)
-        // }).catch(error => {
-        //     console.log(error);
-        //     this.utils.showErrorMessage("Some error occured.");
-        // })
+        var filterModel = new PostFilterModel();
+        this.http.postData('http://makemyjobs.me/Corporate/GetJobs', filterModel).then(response => {
+            this.setState({
+                jobs: response.data.results[0].filter((item, index) => index < 3)
+            })
+            console.log(this.state.jobs)
+        }).catch(error => {
+            console.log(error);
+            this.utils.showErrorMessage("Some error occured.");
+        })
     }
 
     onContactFormSubmit = (e) => {
@@ -32,6 +34,7 @@ export class Home extends Component {
 
     render() {
         const { jobs } = this.state
+        console.log(jobs)
         return (
             <React.Fragment>
                 <div className='hero-section'>
@@ -118,7 +121,7 @@ export class Home extends Component {
                                                     <h4>
                                                         {
                                                             jobs.length === 0 ? null :
-                                                                <a href={'/job-description?id=' + jobs[1].jobId}>
+                                                                <a href={'/job-description?id=' + jobs[1].postId}>
                                                                     {jobs[1].jobTitle}
                                                                 </a>
                                                         }

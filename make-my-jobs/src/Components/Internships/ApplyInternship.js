@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Utils from '../../Utils/Utils'
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils'
 import HttpService from '../../Utils/HttpServices';
 import { InternshipModel, AnswerModel } from '../../Utils/Models';
 import StudentSideBar from '../Users/Student/StudentSideBar';
@@ -90,11 +90,11 @@ export class ApplyInternship extends Component {
 
         var answerRequest = new AnswerModel();
         answerRequest.userId = this.user.userId;
-        answerRequest.internshipId = this.state.internDetails.internshipId;
+        answerRequest.postId = this.state.internDetails.internshipId;
         answerRequest.answerOne = answerOne;
         answerRequest.answerTwo = answerTwo;
         answerRequest.answerThree = answerThree;
-        this.http.postData('http://makemyjobs.me/Corporate/ApplyInternship', answerRequest).then(response => {
+        this.http.postData(API_ENDPOINTS.ApplyPost, answerRequest).then(response => {
             console.log(response)
             if (response.data != null) {
                 if (response.data.results[0] > 0) {

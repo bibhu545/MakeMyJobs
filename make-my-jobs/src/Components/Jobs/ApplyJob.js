@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import StudentSideBar from '../Users/Student/StudentSideBar'
-import Utils from '../../Utils/Utils'
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils'
 import HttpService from '../../Utils/HttpServices';
 import { JobModel, AnswerModel } from '../../Utils/Models';
 
@@ -25,7 +25,7 @@ export class ApplyJob extends Component {
             window.location = '/login';
         }
         else {
-            this.http.getData('http://makemyjobs.me/Corporate/GetJobInfo?id=' + this.jobId).then(response => {
+            this.http.getData(API_ENDPOINTS.GetJobInfo + '?id=' + this.jobId).then(response => {
                 if (response.data != null) {
                     if (response.data.results[0] != null) {
                         var tempJob = response.data.results[0]
@@ -84,12 +84,11 @@ export class ApplyJob extends Component {
 
         var answerRequest = new AnswerModel();
         answerRequest.userId = this.user.userId;
-        answerRequest.jobId = this.state.jobDetails.jobId;
+        answerRequest.postId = this.state.jobDetails.jobId;
         answerRequest.answerOne = answerOne;
         answerRequest.answerTwo = answerTwo;
         answerRequest.answerThree = answerThree;
-        this.http.postData('http://makemyjobs.me/Corporate/ApplyJob', answerRequest).then(response => {
-            console.log(response)
+        this.http.postData(API_ENDPOINTS.ApplyPost, answerRequest).then(response => {
             if (response.data != null) {
                 if (response.data.results[0] > 0) {
                     window.location = '/user-home';
