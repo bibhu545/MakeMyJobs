@@ -322,7 +322,7 @@ export class EditInternship extends Component {
                                     </div>
                                 </div>
 
-                                <hr />
+                                {/* <hr />
                                 <div className='center-content'>
                                     <h4>Optional Content</h4>
                                     <p>These questions will be asked to applicant while applying for this internship.</p>
@@ -339,7 +339,7 @@ export class EditInternship extends Component {
                                 <div className='form-group'>
                                     <label htmlFor='questionThree'>Question 3:</label>
                                     <textarea rows='3' className='form-control' name='questionThree' id='questionThree' placeholder='E.g. Some other basic questions.' value={internship.questionThree} onChange={this.handleInternshipEditFormChange} />
-                                </div>
+                                </div> */}
                                 <div className='center-content'>
                                     <button type='submit' className='btn btn-primary'>Update Now</button>
                                     <a href='/user-home' className='btn btn-default'>Cancel</a>

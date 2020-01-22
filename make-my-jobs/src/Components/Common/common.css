@@ -57,3 +57,6 @@ small{
 .left-table{
     padding: 50px 10px;
 }
+.salary-filter-input{
+    padding-right: 0;
+}

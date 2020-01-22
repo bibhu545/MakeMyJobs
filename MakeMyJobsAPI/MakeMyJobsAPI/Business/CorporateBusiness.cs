@@ -130,7 +130,54 @@ namespace MakeMyJobsAPI.Business
                         }
                     }
                 }
-                return jobs;
+
+                if(model.skill != 0)
+                {
+                    jobs = jobs.Where(x => x.skills.Select(item => item.value).ToList().IndexOf(model.skill) > -1).ToList();
+                }
+                if (model.tag != 0)
+                {
+                    jobs = jobs.Where(x => x.tags.Select(item => item.value).ToList().IndexOf(model.tag) > -1).ToList();
+                }
+                if (model.city != 0)
+                {
+                    jobs = jobs.Where(x => x.locations.Select(item => item.value).ToList().IndexOf(model.city) > -1).ToList();
+                }
+                if (model.searchKeyword != null)
+                {
+                    model.searchKeyword = model.searchKeyword.Trim();
+                    jobs = jobs.Where(x => x.description.ToLower().Contains(model.searchKeyword.ToLower()) || x.jobTitle.ToLower().Contains(model.searchKeyword) || x.tagNames.ToLower().Contains(model.searchKeyword.ToLower())).ToList();
+                }
+
+                if(model.salaryOptions != null)
+                {
+                    List<JobResponseModel> filteredJobs = new List<JobResponseModel>();
+                    var allSalaryOptions = CommonBusiness.GetSalaryDivision();
+                    foreach (var item in model.salaryOptions)
+                    {
+                        int minBound = 0;
+                        int maxBound = Int32.MaxValue;
+                        var salaryName = allSalaryOptions.FirstOrDefault(x => x.value == item).text;
+                        if (salaryName.ToLower().Contains("Above".ToLower()))
+                        {
+                            int.TryParse(salaryName.Split(' ')[1], out minBound);
+                            minBound *= 100000;
+                        }
+                        else
+                        {
+                            int.TryParse(salaryName.Split(' ')[0], out minBound);
+                            int.TryParse(salaryName.Split(' ')[2], out maxBound);
+                            minBound *= 100000;
+                            maxBound *= 100000;
+                        }
+                        jobs = jobs.Where(x => x.minSalary >= minBound && x.minSalary <= maxBound && x.maxSalary <= maxBound).ToList();
+                    }
+                    return jobs;
+                }
+                else
+                {
+                    return jobs;
+                }
             }
         }
 
@@ -316,45 +363,45 @@ namespace MakeMyJobsAPI.Business
                         updated += context.SaveChanges();
                     }
 
-                    var questions = context.PostQuestions.Where(x => x.PostId == model.jobId).ToList();
-                    foreach (var item in questions)
-                    {
-                        context.Entry(item).State = System.Data.Entity.EntityState.Deleted;
-                    }
-                    updated += context.SaveChanges();
+                    //var questions = context.PostQuestions.Where(x => x.PostId == model.jobId).ToList();
+                    //foreach (var item in questions)
+                    //{
+                    //    context.Entry(item).State = System.Data.Entity.EntityState.Deleted;
+                    //}
+                    //updated += context.SaveChanges();
 
-                    bool hasQuestions = false;
-                    if (model.questionOne != null)
-                    {
-                        context.PostQuestions.Add(new PostQuestion()
-                        {
-                            Question = model.questionOne,
-                            PostId = job.PostId
-                        });
-                        hasQuestions = true;
-                    }
-                    if (model.questionTwo != null)
-                    {
-                        context.PostQuestions.Add(new PostQuestion()
-                        {
-                            Question = model.questionTwo,
-                            PostId = job.PostId
-                        });
-                        hasQuestions = true;
-                    }
-                    if (model.questionThree != null)
-                    {
-                        context.PostQuestions.Add(new PostQuestion()
-                        {
-                            Question = model.questionThree,
-                            PostId = job.PostId
-                        });
-                        hasQuestions = true;
-                    }
-                    if (hasQuestions)
-                    {
-                        updated += context.SaveChanges();
-                    }
+                    //bool hasQuestions = false;
+                    //if (model.questionOne != null)
+                    //{
+                    //    context.PostQuestions.Add(new PostQuestion()
+                    //    {
+                    //        Question = model.questionOne,
+                    //        PostId = job.PostId
+                    //    });
+                    //    hasQuestions = true;
+                    //}
+                    //if (model.questionTwo != null)
+                    //{
+                    //    context.PostQuestions.Add(new PostQuestion()
+                    //    {
+                    //        Question = model.questionTwo,
+                    //        PostId = job.PostId
+                    //    });
+                    //    hasQuestions = true;
+                    //}
+                    //if (model.questionThree != null)
+                    //{
+                    //    context.PostQuestions.Add(new PostQuestion()
+                    //    {
+                    //        Question = model.questionThree,
+                    //        PostId = job.PostId
+                    //    });
+                    //    hasQuestions = true;
+                    //}
+                    //if (hasQuestions)
+                    //{
+                    //    updated += context.SaveChanges();
+                    //}
                     return updated;
                 }
             }
@@ -674,6 +721,45 @@ namespace MakeMyJobsAPI.Business
                         }
                     }
                 }
+
+                if (model.skill != 0)
+                {
+                    internships = internships.Where(x => x.skills.Select(item => item.value).ToList().IndexOf(model.skill) > -1).ToList();
+                }
+                if (model.tag != 0)
+                {
+                    internships = internships.Where(x => x.tags.Select(item => item.value).ToList().IndexOf(model.tag) > -1).ToList();
+                }
+                if (model.city != 0)
+                {
+                    internships = internships.Where(x => x.locations.Select(item => item.value).ToList().IndexOf(model.city) > -1).ToList();
+                }
+                if (model.isWFHAvailable)
+                {
+                    internships = internships.Where(x => x.isWFHAvailable == 1).ToList();
+                }
+                if (model.isPartTimeAvailable)
+                {
+                    internships = internships.Where(x => x.isPartTimeAvailable == 1).ToList();
+                }
+                if (model.jobOffer)
+                {
+                    internships = internships.Where(x => x.jobOffer == 1).ToList();
+                }
+                if(model.minStipend != 0)
+                {
+                    internships = internships.Where(x => x.minStipend >= model.minStipend).ToList();
+                }
+                if(model.startDate != null)
+                {
+                    internships = internships.Where(x => x.startDate >= model.startDate).ToList();
+                }
+                if(model.searchKeyword != null)
+                {
+                    model.searchKeyword = model.searchKeyword.Trim();
+                    internships = internships.Where(x => x.description.ToLower().Contains(model.searchKeyword.ToLower()) || x.title.ToLower().Contains(model.searchKeyword) || x.tagNames.ToLower().Contains(model.searchKeyword.ToLower())).ToList();
+                }
+
                 return internships;
             }
         }
@@ -887,45 +973,45 @@ namespace MakeMyJobsAPI.Business
                         updated += context.SaveChanges();
                     }
 
-                    var questions = context.PostQuestions.Where(x => x.PostId == model.internshipId).ToList();
-                    foreach (var item in questions)
-                    {
-                        context.Entry(item).State = System.Data.Entity.EntityState.Deleted;
-                    }
-                    updated += context.SaveChanges();
+                    //var questions = context.PostQuestions.Where(x => x.PostId == model.internshipId).ToList();
+                    //foreach (var item in questions)
+                    //{
+                    //    context.Entry(item).State = System.Data.Entity.EntityState.Deleted;
+                    //}
+                    //updated += context.SaveChanges();
 
-                    bool hasQuestions = false;
-                    if (model.questionOne != null)
-                    {
-                        context.PostQuestions.Add(new PostQuestion()
-                        {
-                            Question = model.questionOne,
-                            PostId = internship.PostId
-                        });
-                        hasQuestions = true;
-                    }
-                    if (model.questionTwo != null)
-                    {
-                        context.PostQuestions.Add(new PostQuestion()
-                        {
-                            Question = model.questionTwo,
-                            PostId = internship.PostId
-                        });
-                        hasQuestions = true;
-                    }
-                    if (model.questionThree != null)
-                    {
-                        context.PostQuestions.Add(new PostQuestion()
-                        {
-                            Question = model.questionThree,
-                            PostId = internship.PostId
-                        });
-                        hasQuestions = true;
-                    }
-                    if (hasQuestions)
-                    {
-                        updated += context.SaveChanges();
-                    }
+                    //bool hasQuestions = false;
+                    //if (model.questionOne != null)
+                    //{
+                    //    context.PostQuestions.Add(new PostQuestion()
+                    //    {
+                    //        Question = model.questionOne,
+                    //        PostId = internship.PostId
+                    //    });
+                    //    hasQuestions = true;
+                    //}
+                    //if (model.questionTwo != null)
+                    //{
+                    //    context.PostQuestions.Add(new PostQuestion()
+                    //    {
+                    //        Question = model.questionTwo,
+                    //        PostId = internship.PostId
+                    //    });
+                    //    hasQuestions = true;
+                    //}
+                    //if (model.questionThree != null)
+                    //{
+                    //    context.PostQuestions.Add(new PostQuestion()
+                    //    {
+                    //        Question = model.questionThree,
+                    //        PostId = internship.PostId
+                    //    });
+                    //    hasQuestions = true;
+                    //}
+                    //if (hasQuestions)
+                    //{
+                    //    updated += context.SaveChanges();
+                    //}
                     return updated;
                 }
             }

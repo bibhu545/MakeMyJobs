@@ -1,24 +1,80 @@
 import React, { Component } from 'react'
+import Select from 'react-select';
 import HttpService from '../../Utils/HttpServices'
-import { Utils } from '../../Utils/Utils'
+import { Utils, API_ENDPOINTS } from '../../Utils/Utils'
 import './jobs.css';
-import { PostFilterModel } from '../../Utils/Models';
+import { PostFilterModel, CheckBoxModel } from '../../Utils/Models';
 
 export class Jobs extends Component {
     constructor(props) {
         super(props)
         this.http = new HttpService();
         this.utils = new Utils();
+        this.filterModel = new PostFilterModel();
         this.state = {
-            jobs: []
+            jobs: [],
+            selectedCity: [],
+            cityOptions: [],
+            selectedTag: [],
+            tagOptions: [],
+            selectedSkill: [],
+            skillOptions: [],
+            salaryOptions: [],
         }
     }
 
     componentDidMount() {
-        var userId = this.utils.getUserInfoFromCookies().userId;
-        var filterModel = new PostFilterModel();
-        filterModel.userId = userId;
-        this.http.postData('http://makemyjobs.me/Corporate/GetJobs', filterModel).then(response => {
+        this.filterModel.userId = this.utils.getUserInfoFromCookies().userId;
+        this.getCommonData();
+        this.getFilteredData()
+    }
+
+    getCommonData = () => {
+        this.http.getData(API_ENDPOINTS.GetCommonDataForFilters).then(response => {
+            if (response.data.results.length > 0) {
+                var citiesFromServer = response.data.results[0];
+                var tagsFromServer = response.data.results[2];
+                var skillsFromServer = response.data.results[1];
+                var salaryOptionsFromServer = response.data.results[3];
+
+                var tempCities = [];
+                citiesFromServer.forEach(element => {
+                    tempCities.push({ value: element.value, label: element.text });
+                });
+
+                var tempTags = [];
+                tagsFromServer.forEach(element => {
+                    tempTags.push({ value: element.value, label: element.text });
+                });
+
+                var tempSkills = [];
+                skillsFromServer.forEach(element => {
+                    tempSkills.push({ value: element.value, label: element.text });
+                });
+
+                var tempSalaries = [];
+                salaryOptionsFromServer.forEach(element => {
+                    var tempSalaryOption = new CheckBoxModel();
+                    tempSalaryOption.cheked = false;
+                    tempSalaryOption.value = element.value;
+                    tempSalaryOption.text = element.text;
+                    tempSalaries.push(tempSalaryOption);
+                })
+
+                this.setState({
+                    cityOptions: tempCities,
+                    tagOptions: tempTags,
+                    skillOptions: tempSkills,
+                    salaryOptions: tempSalaries,
+                })
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    getFilteredData = () => {
+        this.http.postData(API_ENDPOINTS.GetJobs, this.filterModel).then(response => {
             this.setState({
                 jobs: response.data.results[0]
             })
@@ -28,7 +84,61 @@ export class Jobs extends Component {
         })
     }
 
+    addKeywordToFilter = (e) => {
+        e.preventDefault();
+        this.filterModel.searchKeyword = e.target.keyword.value;
+        this.getFilteredData();
+    }
+
+    handleCityChange = selectedCity => {
+        this.filterModel.city = selectedCity.value;
+        this.setState({
+            selectedCity
+        })
+        this.getFilteredData();
+    };
+
+    handleTagChange = selectedTag => {
+        this.filterModel.tag = selectedTag.value;
+        this.setState({
+            selectedTag
+        })
+        this.getFilteredData();
+    }
+
+    handleSkillChange = selectedSkill => {
+        this.filterModel.skill = selectedSkill.value;
+        this.setState({
+            selectedSkill
+        })
+        this.getFilteredData();
+    }
+
+    onSalaryFilterApplied = (id) => {
+        if (this.filterModel.salaryOptions.indexOf(id) > -1) {
+            this.filterModel.salaryOptions.splice(this.filterModel.salaryOptions.indexOf(id), 1)
+        }
+        else {
+            this.filterModel.salaryOptions.push(id);
+        }
+        this.getFilteredData();
+    }
+
+    resetFilter = (e) => {
+        e.preventDefault();
+        this.filterModel = new PostFilterModel();
+        this.filterModel.userId = this.utils.getUserInfoFromCookies().userId;
+        this.setState({
+            selectedCity: [],
+            selectedSkill: [],
+            selectedTag: [],
+        })
+        this.getCommonData();
+        this.getFilteredData();
+    }
+
     render() {
+        const { salaryOptions } = this.state
         return (
             <React.Fragment>
                 <div className='container gradient-container'>
@@ -37,42 +147,71 @@ export class Jobs extends Component {
                             <br /><br />
                             <h4 className='center-content'>Filters</h4>
                             <hr />
-                            <form>
-                                <div className='form-group'>
-                                    <label htmlFor='category'>Category:</label>
-                                    <input type='text' className='form-control' id='category' name='category' placeholder='E.g. Marketing' />
-                                </div>
-                                <div className='form-group'>
-                                    <label htmlFor='location'>Location:</label>
-                                    <input type='text' className='form-control' id='location' name='location' placeholder='E.g. Bhubaneswar' />
-                                </div>
-                                <div className='form-group'>
-                                    <label>Salary:</label>
-                                    <div className="checkbox">
-                                        <label><input type="checkbox" value="" />0 - 3 LPA</label>
-                                    </div>
-                                    <div className="checkbox">
-                                        <label><input type="checkbox" value="" />3 - 6 LPA</label>
-                                    </div>
-                                    <div className="checkbox">
-                                        <label><input type="checkbox" value="" />6 - 10 LPA</label>
-                                    </div>
-                                    <div className="checkbox">
-                                        <label><input type="checkbox" value="" />10 - 15 LPA</label>
-                                    </div>
-                                    <div className="checkbox">
-                                        <label><input type="checkbox" value="" />15 - 25 LPA</label>
-                                    </div>
-                                    <div className="checkbox">
-                                        <label><input type="checkbox" value="" />Above 25 LPA</label>
-                                    </div>
-                                </div>
-                                <hr />
+                            <a href="##" className='pull-right' onClick={this.resetFilter}>(Reset All)</a>
+                            <br />
+                            <div className='form-group'>
+                                <label htmlFor='skills'>Skills Required:</label>
+                                <Select
+                                    value={this.state.selectedSkill}
+                                    name='skills'
+                                    onChange={this.handleSkillChange}
+                                    options={this.state.skillOptions}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    id='skills'
+                                />
+                            </div>
+                            <div className='form-group'>
+                                <label htmlFor='locations'>Locations:</label>
+                                <Select
+                                    value={this.state.selectedCity}
+                                    name='locations'
+                                    onChange={this.handleCityChange}
+                                    options={this.state.cityOptions}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    id='locations'
+                                />
+                            </div>
+                            <div className='form-group'>
+                                <label htmlFor='tags'>Tags:</label>
+                                <Select
+                                    value={this.state.selectedTag}
+                                    name='tags'
+                                    onChange={this.handleTagChange}
+                                    options={this.state.tagOptions}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    id='tags'
+                                />
+                            </div>
+                            <div className='form-group'>
+                                <label>Salary:</label>
+                                {
+                                    salaryOptions.map((item, index) =>
+                                        <React.Fragment key={index}>
+                                            <div className="checkbox">
+                                                <label><input type="checkbox" checked={item.checked} onChange={(e) => this.onSalaryFilterApplied(item.value)} value={item.value} />{item.text}</label>
+                                            </div>
+                                        </React.Fragment>
+                                    )
+                                }
+                            </div>
+                            <hr />
+                            <form onSubmit={this.addKeywordToFilter}>
                                 <div className='form-group'>
                                     <label htmlFor='keyword'>Keyword:</label>
-                                    <input type='text' className='form-control' id='keyword' name='keyword' placeholder='Type keyword' />
+                                    <div className="input-group">
+                                        <input type='text' className='form-control' id='keyword' name='keyword' placeholder='Type keyword' />
+                                        <span className="input-group-btn">
+                                            <button type="submit" className='btn btn-default'>
+                                                <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </form>
+                            <br />
                         </div>
                         <div className='col-md-9 col-sm-12 jobs-wrapper'>
                             <h3 className='center-content'>25k+ Job options</h3>

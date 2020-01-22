@@ -6,10 +6,12 @@ export const BaseUrl = "http://makemyjobs.me";
 export const API_ENDPOINTS = {
     BaseApiUrl: BaseUrl,
     GetCommonDataForNewPost: BaseUrl + "/Common/GetCommonDataForNewPost",
+    GetCommonDataForFilters: BaseUrl + "/Common/GetCommonDataForFilters",
     GetCorporateInfo: BaseUrl + '/Corporate/GetCorporateInfo',
 
     GetJobInfo: BaseUrl + "/Corporate/GetJobInfo",
     UpdateJob: BaseUrl + "/Corporate/UpdateJob",
+    GetJobs: BaseUrl + "/Corporate/GetJobs",
     
     GetInternships: BaseUrl + '/Corporate/GetInternships',
     GetInternshipInfo: BaseUrl + '/Corporate/GetInternshipInfo',

@@ -259,5 +259,15 @@ namespace MakeMyJobsAPI.Models
     {
         public int userId { get; set; }
         public int postType { get; set; }
+        public String searchKeyword { get; set; }
+        public int tag { get; set; }
+        public int city { get; set; }
+        public int skill { get; set; }
+        public List<int> salaryOptions { get; set; }
+        public bool isWFHAvailable { get; set; }
+        public bool isPartTimeAvailable { get; set; }
+        public bool jobOffer { get; set; }
+        public int minStipend { get; set; }
+        public DateTime startDate { get; set; }
     }
 }

@@ -160,7 +160,6 @@ export class AddJob extends Component {
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='locations'>Locations*:</label>
-                                    {/* <input type='text' className='form-control' name='locations' id='locations' placeholder='Select at least one location' /> */}
                                     <Select
                                         value={this.state.selectedCity}
                                         isMulti
@@ -210,7 +209,6 @@ export class AddJob extends Component {
                                     <div className='col-md-6 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='tags'>Tags*:</label>
-                                            {/* <input type='text' className='form-control' name='tags' id='tags' placeholder='Select at least one location' /> */}
                                             <Select
                                                 value={this.state.selectedTag}
                                                 isMulti
@@ -226,7 +224,6 @@ export class AddJob extends Component {
                                     <div className='col-md-6 col-xs-12'>
                                         <div className='form-group'>
                                             <label htmlFor='skills'>Skills Required*:</label>
-                                            {/* <input type='text' className='form-control' name='skills' id='skills' placeholder='Select at least one location' /> */}
                                             <Select
                                                 value={this.state.selectedSkill}
                                                 isMulti

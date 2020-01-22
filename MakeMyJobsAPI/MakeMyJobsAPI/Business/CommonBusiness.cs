@@ -25,7 +25,8 @@ namespace MakeMyJobsAPI.Business
         {
             using (var context = new MakeMyJobsEntities())
             {
-                return context.States.Select(x => new DropdownModel() {
+                return context.States.Select(x => new DropdownModel()
+                {
                     value = x.StateId,
                     text = x.StateName
                 }).ToList();
@@ -72,6 +73,17 @@ namespace MakeMyJobsAPI.Business
                 {
                     value = x.TagId,
                     text = x.TagName
+                }).ToList();
+            }
+        }
+        public static List<DropdownModel> GetSalaryDivision()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.Lookups.Where(x => x.LookUpCategory == 3).Select(x => new DropdownModel()
+                {
+                    value = x.LookupId,
+                    text = x.Name
                 }).ToList();
             }
         }

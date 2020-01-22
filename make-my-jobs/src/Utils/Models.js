@@ -139,10 +139,27 @@ export class EmployeeExperienceModel {
     }
 }
 
+export class CheckBoxModel {
+    constructor() {
+        this.value = 0;
+        this.text = "";
+        this.cheked = false;
+    }
+}
 export class PostFilterModel {
     constructor() {
         this.userId = 0;
         this.postType = 0;
+        this.searchKeyword = null;
+        this.tag = 0;
+        this.city = 0;
+        this.skill = 0;
+        this.salaryOptions = [];
+        this.isWFHAvailable = false;
+        this.isPartTimeAvailable = false;
+        this.jobOffer = false;
+        this.minStipend = 0;
+        this.startDate = null;
     }
 }
 
