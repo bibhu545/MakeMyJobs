@@ -33,6 +33,10 @@ namespace MakeMyJobsAPI.Utils
             public const int Approved = 2;
             public const int Rejected = 3;
         }
+        public class FilterConstants
+        {
+            public const int RecordsPerPage = 3;
+        }
         public class StudentDocumentTypes
         {
             public const int Resume = 1;

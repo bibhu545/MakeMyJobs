@@ -87,5 +87,10 @@ namespace MakeMyJobsAPI.Business
                 }).ToList();
             }
         }
+        public static int GetPages(int count)
+        {
+            int recordsPerPage = FilterConstants.RecordsPerPage;
+            return count % recordsPerPage == 0 ? count / recordsPerPage - 1 : count / recordsPerPage;
+        }
     }
 }

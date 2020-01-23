@@ -160,6 +160,7 @@ export class PostFilterModel {
         this.jobOffer = false;
         this.minStipend = 0;
         this.startDate = null;
+        this.page = 0;
     }
 }
 

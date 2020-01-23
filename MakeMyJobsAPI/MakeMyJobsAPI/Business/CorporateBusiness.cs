@@ -12,7 +12,7 @@ namespace MakeMyJobsAPI.Business
 {
     public class CorporateBusiness
     {
-        public static List<JobResponseModel> GetJobs(PostFilterModel model)
+        public static List<JobResponseModel> GetJobs(PostFilterModel model,ref int count)
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -170,17 +170,45 @@ namespace MakeMyJobsAPI.Business
                             minBound *= 100000;
                             maxBound *= 100000;
                         }
-                        jobs = jobs.Where(x => x.minSalary >= minBound && x.minSalary <= maxBound && x.maxSalary <= maxBound).ToList();
+                        foreach (var job in jobs)
+                        {
+                            if(job.minSalary >= minBound && job.minSalary <= maxBound && job.maxSalary <= maxBound)
+                            {
+                                filteredJobs.Add(job);
+                            }
+                        }
+                        //jobs = jobs.Where(x => x.minSalary >= minBound && x.minSalary <= maxBound && x.maxSalary <= maxBound).ToList();
                     }
-                    return jobs;
+                    count = filteredJobs.Count;
+                    return AddPaginationToJob(filteredJobs, model);
                 }
                 else
                 {
-                    return jobs;
+                    count = jobs.Count;
+                    return AddPaginationToJob(jobs, model);
                 }
             }
         }
 
+        public static List<JobResponseModel> AddPaginationToJob(List<JobResponseModel> posts, PostFilterModel model)
+        {
+            int recordsPerPage = FilterConstants.RecordsPerPage, totalRecords = posts.Count;
+            int totalPages = totalRecords % recordsPerPage == 0 ? totalRecords / recordsPerPage - 1: totalRecords / recordsPerPage;
+            if(model.page < 0 || model.page > totalPages)
+            {
+                model.page = 0;
+            }
+            int startIndex = model.page * recordsPerPage;
+            List<JobResponseModel> filteredJobs = new List<JobResponseModel>();
+            for (int i = startIndex; i < startIndex + recordsPerPage; i++)
+            {
+                if (i < totalRecords)
+                {
+                    filteredJobs.Add(posts[i]);
+                }
+            }
+            return filteredJobs;
+        }
         public static int CreateJob(JobModel model)
         {
             using (var context = new MakeMyJobsEntities())
@@ -602,7 +630,7 @@ namespace MakeMyJobsAPI.Business
             }
         }
 
-        public static List<InternshipResponseModel> GetInternships(PostFilterModel model)
+        public static List<InternshipResponseModel> GetInternships(PostFilterModel model,ref int count)
         {
             using (var context = new MakeMyJobsEntities())
             {
@@ -760,8 +788,29 @@ namespace MakeMyJobsAPI.Business
                     internships = internships.Where(x => x.description.ToLower().Contains(model.searchKeyword.ToLower()) || x.title.ToLower().Contains(model.searchKeyword) || x.tagNames.ToLower().Contains(model.searchKeyword.ToLower())).ToList();
                 }
 
-                return internships;
+                count = internships.Count;
+                return AddPaginationToInternship(internships, model);
             }
+        }
+
+        public static List<InternshipResponseModel> AddPaginationToInternship(List<InternshipResponseModel> posts, PostFilterModel model)
+        {
+            int recordsPerPage = FilterConstants.RecordsPerPage, totalRecords = posts.Count;
+            int totalPages = totalRecords % recordsPerPage == 0 ? totalRecords / recordsPerPage - 1 : totalRecords / recordsPerPage;
+            if (model.page < 0 || model.page > totalPages)
+            {
+                model.page = 0;
+            }
+            int startIndex = model.page * recordsPerPage;
+            List<InternshipResponseModel> filteredPosts = new List<InternshipResponseModel>();
+            for (int i = startIndex; i < startIndex + recordsPerPage; i++)
+            {
+                if (i < totalRecords)
+                {
+                    filteredPosts.Add(posts[i]);
+                }
+            }
+            return filteredPosts;
         }
 
         public static InternshipResponseModel GetInternshipInfo(int id, int userId = 0)
@@ -1053,8 +1102,9 @@ namespace MakeMyJobsAPI.Business
                         isActive = c.corporate.corporate.IsActive
                     }).FirstOrDefault(x => x.userId == id);
 
-                    corporateInfoModel.corporateJobs = CorporateBusiness.GetJobs(new PostFilterModel() { userId = corporateInfoModel.userId });
-                    corporateInfoModel.corporateInternships = CorporateBusiness.GetInternships(new PostFilterModel() { userId = corporateInfoModel.userId });
+                    int count = 0;
+                    corporateInfoModel.corporateJobs = CorporateBusiness.GetJobs(new PostFilterModel() { userId = corporateInfoModel.userId }, ref count);
+                    corporateInfoModel.corporateInternships = CorporateBusiness.GetInternships(new PostFilterModel() { userId = corporateInfoModel.userId }, ref count);
 
                     return corporateInfoModel;
                 }

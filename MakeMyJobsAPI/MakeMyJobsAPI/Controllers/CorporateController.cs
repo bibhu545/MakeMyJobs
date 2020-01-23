@@ -18,8 +18,10 @@ namespace MakeMyJobsAPI.Controllers
         {
             try
             {
-                var result = CorporateBusiness.GetJobs(model);
-                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                int count = 0;
+                var result = CorporateBusiness.GetJobs(model, ref count);
+                var pages = CommonBusiness.GetPages(count);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result, pages } };
                 return new JsonResult { Data = response };
             }
             catch (Exception ex)
@@ -32,8 +34,10 @@ namespace MakeMyJobsAPI.Controllers
         {
             try
             {
-                var result = CorporateBusiness.GetInternships(model);
-                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result } };
+                int count = 0;
+                var result = CorporateBusiness.GetInternships(model, ref count);
+                var pages = CommonBusiness.GetPages(count);
+                var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { result, pages } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch (Exception ex)

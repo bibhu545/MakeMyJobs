@@ -11,6 +11,7 @@ export class Internships extends Component {
         this.http = new HttpService();
         this.utils = new Utils();
         this.filterModel = new PostFilterModel();
+        this.totalPages = 0;
         this.state = {
             internships: [],
             selectedCity: [],
@@ -18,7 +19,10 @@ export class Internships extends Component {
             selectedTag: [],
             tagOptions: [],
             selectedSkill: [],
-            skillOptions: []
+            skillOptions: [],
+            isWFHAvailable: false,
+            isPartTimeAvailable: false,
+            jobOffer: false
         }
     }
 
@@ -63,6 +67,7 @@ export class Internships extends Component {
 
     getFilteredData = () => {
         this.http.postData(API_ENDPOINTS.GetInternships, this.filterModel).then(response => {
+            this.totalPages = response.data.results[1]
             this.setState({
                 internships: response.data.results[0]
             })
@@ -103,20 +108,26 @@ export class Internships extends Component {
     }
 
     isWFHAvailableChanged = () => {
-        this.filterModel.isWFHAvailable = !this.filterModel.isWFHAvailable;
-        this.setState({})
+        this.filterModel.isWFHAvailable = !this.state.isWFHAvailable;
+        this.setState({
+            isWFHAvailable: !this.state.isWFHAvailable
+        })
         this.getFilteredData();
     }
 
     isPartTimeAvailableChanged = () => {
-        this.filterModel.isPartTimeAvailable = !this.filterModel.isPartTimeAvailable;
-        this.setState({});
+        this.filterModel.isPartTimeAvailable = !this.state.isPartTimeAvailable;
+        this.setState({
+            isPartTimeAvailable: !this.state.isPartTimeAvailable
+        });
         this.getFilteredData();
     }
 
     jobOfferChanged = () => {
-        this.filterModel.jobOffer = !this.filterModel.jobOffer;
-        this.setState({});
+        this.filterModel.jobOffer = !this.state.jobOffer
+        this.setState({
+            jobOffer: !this.state.jobOffer
+        });
         this.getFilteredData();
     }
 
@@ -131,14 +142,24 @@ export class Internships extends Component {
         this.getFilteredData();
     }
 
+    handlePager = (e, pagerAction) => {
+        e.preventDefault();
+        this.filterModel.page += pagerAction;
+        this.getFilteredData();
+    }
+
     resetFilter = (e) => {
         e.preventDefault();
         this.filterModel = new PostFilterModel();
         this.filterModel.userId = this.utils.getUserInfoFromCookies().userId;
+        this.filterModel.page = 0;
         this.setState({
             selectedCity: [],
             selectedSkill: [],
-            selectedTag: []
+            selectedTag: [],
+            isPartTimeAvailable: false,
+            isWFHAvailable: false,
+            jobOffer: false
         })
         this.filterModel.isPartTimeAvailable = this.filterModel.isWFHAvailable = this.jobOffer = false;
         document.getElementById("stipendForm").reset();
@@ -198,13 +219,13 @@ export class Internships extends Component {
                             <div className='form-group'>
                                 <label>Internship type:</label>
                                 <div className="checkbox">
-                                    <label><input type="checkbox" checked={this.filterModel.isWFHAvailable} onChange={this.isWFHAvailableChanged} />Work from home</label>
+                                    <label><input type="checkbox" checked={this.state.isWFHAvailable} onChange={this.isWFHAvailableChanged} />Work from home</label>
                                 </div>
                                 <div className="checkbox">
-                                    <label><input type="checkbox" checked={this.filterModel.isPartTimeAvailable} onChange={this.isPartTimeAvailableChanged} />Part time</label>
+                                    <label><input type="checkbox" checked={this.state.isPartTimeAvailable} onChange={this.isPartTimeAvailableChanged} />Part time</label>
                                 </div>
                                 <div className="checkbox">
-                                    <label><input type="checkbox" checked={this.jobOffer} onChange={this.jobOfferChanged} />Job offer on completion</label>
+                                    <label><input type="checkbox" checked={this.state.jobOffer} onChange={this.jobOfferChanged} />Job offer on completion</label>
                                 </div>
                             </div>
 
@@ -333,10 +354,21 @@ export class Internships extends Component {
                                     </React.Fragment>
                                 )
                             }
-                            {/* <ul className="pager">
-                                <li className="previous"><a href="/internships">Previous</a></li>
-                                <li className="next"><a href="/internships">Next</a></li>
-                            </ul> */}
+                            <ul className="pager">
+                                {
+                                    this.filterModel.page <= 0 ? null :
+                                        <li>
+                                            <a href="##" onClick={(e) => this.handlePager(e, -1)}>&lt; Previous</a>
+                                        </li>
+                                }
+                                <li>Page: {this.filterModel.page + 1}</li>
+                                {
+                                    this.filterModel.page >= this.totalPages ? null :
+                                        <li>
+                                            <a href="##" onClick={(e) => this.handlePager(e, 1)}>Next &gt;</a>
+                                        </li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>

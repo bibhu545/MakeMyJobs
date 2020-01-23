@@ -11,6 +11,7 @@ export class Jobs extends Component {
         this.http = new HttpService();
         this.utils = new Utils();
         this.filterModel = new PostFilterModel();
+        this.totalPages = 0;
         this.state = {
             jobs: [],
             selectedCity: [],
@@ -36,6 +37,7 @@ export class Jobs extends Component {
                 var tagsFromServer = response.data.results[2];
                 var skillsFromServer = response.data.results[1];
                 var salaryOptionsFromServer = response.data.results[3];
+                // this.totalPages = response.data.results[4];
 
                 var tempCities = [];
                 citiesFromServer.forEach(element => {
@@ -55,7 +57,7 @@ export class Jobs extends Component {
                 var tempSalaries = [];
                 salaryOptionsFromServer.forEach(element => {
                     var tempSalaryOption = new CheckBoxModel();
-                    tempSalaryOption.cheked = false;
+                    tempSalaryOption.checked = false;
                     tempSalaryOption.value = element.value;
                     tempSalaryOption.text = element.text;
                     tempSalaries.push(tempSalaryOption);
@@ -75,6 +77,7 @@ export class Jobs extends Component {
 
     getFilteredData = () => {
         this.http.postData(API_ENDPOINTS.GetJobs, this.filterModel).then(response => {
+            this.totalPages = response.data.results[1]
             this.setState({
                 jobs: response.data.results[0]
             })
@@ -115,6 +118,15 @@ export class Jobs extends Component {
     }
 
     onSalaryFilterApplied = (id) => {
+
+        var salaryOptions = this.state.salaryOptions;
+        salaryOptions.forEach(element => {
+            if (element.value === id) {
+                element.checked = !element.checked;
+            }
+        });
+        this.setState({ salaryOptions: salaryOptions });
+
         if (this.filterModel.salaryOptions.indexOf(id) > -1) {
             this.filterModel.salaryOptions.splice(this.filterModel.salaryOptions.indexOf(id), 1)
         }
@@ -124,14 +136,26 @@ export class Jobs extends Component {
         this.getFilteredData();
     }
 
+    handlePager = (e, pagerAction) => {
+        e.preventDefault();
+        this.filterModel.page += pagerAction;
+        this.getFilteredData();
+    }
+
     resetFilter = (e) => {
         e.preventDefault();
         this.filterModel = new PostFilterModel();
         this.filterModel.userId = this.utils.getUserInfoFromCookies().userId;
+        var salaryOptions = this.state.salaryOptions;
+        salaryOptions.forEach(element => {
+            element.checked = false;
+        })
+        document.getElementById('keywordForm').reset();
         this.setState({
             selectedCity: [],
             selectedSkill: [],
             selectedTag: [],
+            salaryOptions: salaryOptions
         })
         this.getCommonData();
         this.getFilteredData();
@@ -191,14 +215,14 @@ export class Jobs extends Component {
                                     salaryOptions.map((item, index) =>
                                         <React.Fragment key={index}>
                                             <div className="checkbox">
-                                                <label><input type="checkbox" checked={item.checked} onChange={(e) => this.onSalaryFilterApplied(item.value)} value={item.value} />{item.text}</label>
+                                                <label><input type="checkbox" checked={item.checked} onChange={(e) => this.onSalaryFilterApplied(item.value)} />{item.text}</label>
                                             </div>
                                         </React.Fragment>
                                     )
                                 }
                             </div>
                             <hr />
-                            <form onSubmit={this.addKeywordToFilter}>
+                            <form onSubmit={this.addKeywordToFilter} id='keywordForm'>
                                 <div className='form-group'>
                                     <label htmlFor='keyword'>Keyword:</label>
                                     <div className="input-group">
@@ -282,10 +306,21 @@ export class Jobs extends Component {
                                         </React.Fragment>
                                     )
                             }
-                            {/* < ul className="pager">
-                                <li className="previous"><a href="/jobs">Previous</a></li>
-                                <li className="next"><a href="/jobs">Next</a></li>
-                            </ul> */}
+                            <ul className="pager">
+                                {
+                                    this.filterModel.page <= 0 ? null :
+                                        <li>
+                                            <a href="##" onClick={(e) => this.handlePager(e, -1)}>&lt; Previous</a>
+                                        </li>
+                                }
+                                <li>Page: {this.filterModel.page + 1}</li>
+                                {
+                                    this.filterModel.page >= this.totalPages ? null :
+                                        <li>
+                                            <a href="##" onClick={(e) => this.handlePager(e, 1)}>Next &gt;</a>
+                                        </li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>

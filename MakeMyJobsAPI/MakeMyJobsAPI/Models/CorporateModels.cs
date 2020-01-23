@@ -212,6 +212,7 @@ namespace MakeMyJobsAPI.Models
         public String answerTwo { get; set; }
         public String answerThree { get; set; }
     }
+
     public class InternshipAnswerModel
     {
         public int internshipId { get; set; }
@@ -220,6 +221,7 @@ namespace MakeMyJobsAPI.Models
         public String answerTwo { get; set; }
         public String answerThree { get; set; }
     }
+
     public class PostApplicationResponse
     {
         public PostResponseModel postDetails { get; set; }
@@ -228,6 +230,7 @@ namespace MakeMyJobsAPI.Models
         public String answerThree { get; set; }
         public DateTime applyDate { get; set; }
     }
+
     public class JobApplicationResponse
     {
         public JobResponseModel jobDetails { get; set; }
@@ -236,16 +239,19 @@ namespace MakeMyJobsAPI.Models
         public String answerThree { get; set; }
         public DateTime applyDate { get; set; }
     }
+
     public class StudentPostApplicationModel
     {
         public StudentInfoModel studentInfo { get; set; }
         public PostApplicationModel applicationInfo { get; set; }
     }
+
     public class EmployeePostApplicationModel
     {
         public EmployeeInfoModel employeeInfo { get; set; }
         public PostApplicationModel applicationInfo { get; set; }
     }
+
     public class PostApplicationModel
     {
         public int postApplicationId { get; set; }
@@ -255,6 +261,7 @@ namespace MakeMyJobsAPI.Models
         public DateTime applyDate { get; set; }
         public string message { get; set; }
     }
+
     public class PostFilterModel
     {
         public int userId { get; set; }
@@ -269,5 +276,6 @@ namespace MakeMyJobsAPI.Models
         public bool jobOffer { get; set; }
         public int minStipend { get; set; }
         public DateTime startDate { get; set; }
+        public int page { get; set; }
     }
 }

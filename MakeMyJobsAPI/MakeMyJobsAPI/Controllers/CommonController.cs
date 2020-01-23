@@ -69,6 +69,8 @@ namespace MakeMyJobsAPI.Controllers
                 var skills = CommonBusiness.GetSkills();
                 var tags = CommonBusiness.GetTags();
                 var salaryDivision = CommonBusiness.GetSalaryDivision();
+                //var totalJobPages = CommonBusiness.GetJobsPages();
+                //var totalInternshipPages = CommonBusiness.GetInternshipsPages();
                 var response = new ApiRespnoseWrapper { status = ApiRespnoseStatus.Success, results = new ArrayList() { cities, skills, tags, salaryDivision } };
                 return new JsonResult { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
