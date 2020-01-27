@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import StudentSideBar from '../Student/StudentSideBar'
 import HttpService from '../../../Utils/HttpServices';
-import Utils from '../../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils';
 import { ProffessionalModel } from '../../../Utils/Models';
 
 export class ProffesionalHome extends Component {
@@ -23,9 +23,8 @@ export class ProffesionalHome extends Component {
             window.location = '/login';
         }
         else {
-            this.http.getData('http://makemyjobs.me/Corporate/GetApplications?id=' + this.userInfoFromCookies.userId).then(
+            this.http.getData(API_ENDPOINTS.GetApplications + '?id=' + this.userInfoFromCookies.userId).then(
                 response => {
-                    console.log(response)
                     if (response.data.results == null) {
                         window.location = '/login';
                     }
@@ -44,8 +43,6 @@ export class ProffesionalHome extends Component {
 
     render() {
         const { appliedJobs, appliedInternships } = this.state;
-        console.log(appliedJobs)
-        console.log(appliedInternships)
         return (
             <React.Fragment>
                 <div className='container gradient-container'>

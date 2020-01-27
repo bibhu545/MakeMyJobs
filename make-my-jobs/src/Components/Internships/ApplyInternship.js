@@ -26,7 +26,7 @@ export class ApplyInternship extends Component {
                 window.location = '/home';
             }
             else {
-                this.http.getData('http://makemyjobs.me/Corporate/GetInternshipInfo?id=' + this.internshipId).then(response => {
+                this.http.getData(API_ENDPOINTS.GetInternshipInfo + '?id=' + this.internshipId).then(response => {
                     if (response.data != null) {
                         if (response.data.results[0] != null) {
                             var tempInternship = response.data.results[0]

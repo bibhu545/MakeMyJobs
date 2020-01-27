@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import StudentSideBar from '../Student/StudentSideBar'
-import Utils from '../../../Utils/Utils'
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils'
 import HttpService from '../../../Utils/HttpServices'
 
 
@@ -19,7 +19,13 @@ export class ViewApplicants extends Component {
     }
 
     componentDidMount() {
-        this.getAppliedProfiles();
+        if (this.utils.isLoggedIn()) {
+            this.getAppliedProfiles();
+        }
+        else {
+            this.utils.clearLoginDataFromCookies();
+            window.location = '/login';
+        }
     }
 
     getAppliedProfiles = () => {
@@ -27,7 +33,7 @@ export class ViewApplicants extends Component {
         this.postId = postId;
         if (this.utils.isLoggedIn() && this.utils.getUserTypeFromCookies() === '3') {
             if (postId != null) {
-                this.http.getData('http://makemyjobs.me/Corporate/GetAppliedProfiles?postId=' + postId).then(response => {
+                this.http.getData(API_ENDPOINTS.GetAppliedProfiles + '?postId=' + postId).then(response => {
                     if (response.data.results != null) {
                         this.setState({
                             studentApplicants: response.data.results[0],

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import HttpService from '../../../Utils/HttpServices';
-import Utils from '../../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils';
 import { ProffessionalModel, LoginResponseModel } from '../../../Utils/Models';
 import StudentSideBar from '../Student/StudentSideBar';
 
@@ -20,7 +20,7 @@ export class ProffesionalEditProfile extends Component {
         }
     }
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetStateAndCountries').then(response => {
+        this.http.getData(API_ENDPOINTS.GetStateAndCountries).then(response => {
             if (response.data.results.length > 0) {
                 this.setState({
                     states: response.data.results[0],
@@ -30,7 +30,7 @@ export class ProffesionalEditProfile extends Component {
         }).catch(error => {
             console.log(error);
         });
-        this.http.getData('http://makemyjobs.me/Employee/GetEmployeeInfoForEdit?id=' + this.userInfoFromCookies.userId).then(
+        this.http.getData(API_ENDPOINTS.GetEmployeeInfoForEdit + '?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results[0] == null) {
                     this.utils.clearLoginDataFromCookies();

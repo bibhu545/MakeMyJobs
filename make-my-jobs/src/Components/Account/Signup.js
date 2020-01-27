@@ -3,7 +3,7 @@ import './account.css'
 import { SignpModel } from '../../Utils/Models'
 import HttpService from '../../Utils/HttpServices'
 import { withRouter, Redirect } from 'react-router-dom'
-import Utils from '../../Utils/Utils'
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils'
 
 export class Signup extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ export class Signup extends Component {
         this.user.password = e.target.password.value;
         this.user.userType = e.target.userType.value;
 
-        this.http.postData('http://makemyjobs.me/Account/Signup', this.user).then(response => {
+        this.http.postData(API_ENDPOINTS.Signup, this.user).then(response => {
             if(response.data.results[0] === -1){
                 new Utils().showErrorMessage("Email already registered.");
             }

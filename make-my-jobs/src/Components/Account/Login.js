@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { LoginModel, LoginResponseModel } from '../../Utils/Models';
 import HttpService from '../../Utils/HttpServices'
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 
 export class Login extends Component {
 
@@ -30,7 +30,7 @@ export class Login extends Component {
         e.preventDefault();
         this.user.email = e.target.email.value;
         this.user.password = e.target.password.value;
-        this.http.postData('http://makemyjobs.me/Account/Login', this.user).then(response => {
+        this.http.postData(API_ENDPOINTS.Login, this.user).then(response => {
             this.loginResponse = response.data.results[0];
             if (this.loginResponse.loggedIn === 0) {
                 new Utils().showErrorMessage('Invalid username or password.');

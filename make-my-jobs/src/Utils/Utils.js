@@ -6,9 +6,17 @@ export const BaseUrl = "http://makemyjobs.me";
 export const API_ENDPOINTS = {
     BaseApiUrl: BaseUrl,
     GetCommonDataForNewPost: BaseUrl + "/Common/GetCommonDataForNewPost",
+    GetStateAndCountries : BaseUrl + "/Common/GetStateAndCountries",
     GetCommonDataForFilters: BaseUrl + "/Common/GetCommonDataForFilters",
-    GetCorporateInfo: BaseUrl + '/Corporate/GetCorporateInfo',
+    Login: BaseUrl + 'Account/Login',
+    Signup: BaseUrl + 'Account/Signup',
+    ChangePassword: BaseUrl + "/Account/ChangePassword",
 
+    GetCorporateInfo: BaseUrl + '/Corporate/GetCorporateInfo',
+    ViewResume: BaseUrl + 'Corporate/ViewResume',
+    GetEmployeeInfoForEdit: BaseUrl + 'Employee/GetEmployeeInfoForEdit',
+
+    CreateJob: BaseUrl + '/Corporate/CreateJob',
     GetJobInfo: BaseUrl + "/Corporate/GetJobInfo",
     UpdateJob: BaseUrl + "/Corporate/UpdateJob",
     GetJobs: BaseUrl + "/Corporate/GetJobs",
@@ -20,8 +28,9 @@ export const API_ENDPOINTS = {
     ApplyPost: BaseUrl + '/Corporate/ApplyPost',
     CreatePost: BaseUrl + "/Corporate/CreatePost",
     DeletePost: BaseUrl + "/Corporate/DeletePost",
+    GetAppliedProfiles: BaseUrl + '/Corporate/GetAppliedProfiles',
 
-    GetApplications: BaseUrl +  'http://makemyjobs.me/Corporate/GetApplications',
+    GetApplications: BaseUrl +  '/Corporate/GetApplications',
 };
 
 export const PostType = {

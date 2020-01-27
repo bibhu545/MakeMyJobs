@@ -60,3 +60,20 @@ small{
 .salary-filter-input{
     padding-right: 0;
 }
+.error-page-image{
+    background: url(../../Assets/Images/bb8.gif) center center;
+    height: 40vh;
+    border: 1px solid maroon;
+    border-radius: 10px;
+}
+.error-page-info{
+    text-align: center;
+}
+.error-page-info h4{
+    color: maroon;
+    margin-top: 50px ;
+}
+.error-container{
+    height: 80vh;
+    padding: 100px;
+}

@@ -1,0 +1,5 @@
+1.Admin Dashboard
+2.Global Search
+3.Send contact message
+4.Profile picture upload
+5.Show employee schooling and experience to recruiter

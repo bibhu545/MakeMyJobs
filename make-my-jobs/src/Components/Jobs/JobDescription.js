@@ -110,12 +110,12 @@ export class JobDescription extends Component {
                                     </p>
 
 
-                                    <p>
+                                    {/* <p>
                                         <strong>Selection Procedure</strong>
                                     </p>
                                     <p>
                                         Application-based, followed by a telephonic interview
-                                    </p>
+                                    </p> */}
 
                                     <p>
                                         <strong># of posts available: </strong> {jobDetails.postsAvailable}

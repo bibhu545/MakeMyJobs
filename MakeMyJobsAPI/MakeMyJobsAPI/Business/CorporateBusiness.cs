@@ -131,6 +131,10 @@ namespace MakeMyJobsAPI.Business
                     }
                 }
 
+                if(model.postedBy != 0)
+                {
+                    jobs = jobs.Where(x => x.userId == model.postedBy).ToList();
+                }
                 if(model.skill != 0)
                 {
                     jobs = jobs.Where(x => x.skills.Select(item => item.value).ToList().IndexOf(model.skill) > -1).ToList();
@@ -209,6 +213,7 @@ namespace MakeMyJobsAPI.Business
             }
             return filteredJobs;
         }
+
         public static int CreateJob(JobModel model)
         {
             using (var context = new MakeMyJobsEntities())
@@ -750,6 +755,10 @@ namespace MakeMyJobsAPI.Business
                     }
                 }
 
+                if(model.postedBy != 0)
+                {
+                    internships = internships.Where(x => x.userId == model.postedBy).ToList();
+                }
                 if (model.skill != 0)
                 {
                     internships = internships.Where(x => x.skills.Select(item => item.value).ToList().IndexOf(model.skill) > -1).ToList();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import StudentSideBar from './Student/StudentSideBar'
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 import { UserModel, ChangePasswordModel } from '../../Utils/Models';
 import HttpService from '../../Utils/HttpServices';
 
@@ -26,7 +26,7 @@ export class ChangePassword extends Component {
             changePasswordModel.userId = new Utils().getUserInfoFromCookies().userId;
             changePasswordModel.currentPassword = e.target.currentPassword.value;
             changePasswordModel.updatedPassword = e.target.confirmUpdatedPassword.value;
-            this.http.postData('http://makemyjobs.me/Account/ChangePassword', changePasswordModel).then(response => {
+            this.http.postData(API_ENDPOINTS.ChangePassword, changePasswordModel).then(response => {
                 console.log(response);
                 if (response.data.results[0] === 0) {
                     new Utils().showErrorMessage('Incorect current password.');

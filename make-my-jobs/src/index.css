@@ -19,3 +19,25 @@ body{
 .left-content{
   text-align: left;
 }
+#apiProgress{
+  position: fixed;
+  z-index: 9998;
+  display: none;
+}
+.progressWrapper{
+  height: 100vh;
+  width: 100%;
+}
+#loading-img {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+}
+
+.loadingOverlay {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.5);
+  height: 100vh;
+  width: 100%;
+}

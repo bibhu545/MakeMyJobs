@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Utils from '../../../Utils/Utils'
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils'
 import { CorporateModel } from '../../../Utils/Models';
 import HttpService from '../../../Utils/HttpServices';
 import StudentSideBar from '../Student/StudentSideBar';
@@ -23,7 +23,7 @@ export class CorporateProfile extends Component {
     }
 
     renderCorporate = () => {
-        this.http.postData('http://makemyjobs.me/Corporate/GetCorporateInfo?id=' + this.userInfoFromCookies.userId).then(
+        this.http.postData(API_ENDPOINTS.GetCorporateInfo + '?id=' + this.userInfoFromCookies.userId).then(
             response => {
                 if (response.data.results == null) {
                     window.location = '/login';

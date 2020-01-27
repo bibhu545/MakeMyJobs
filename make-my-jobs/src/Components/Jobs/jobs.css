@@ -9,7 +9,7 @@
     border: 1px solid royalblue; 
     transform: scale(1.01);
 }
-.fas{
+.fas, .far{
     color: royalblue;
 }
 .job-link{

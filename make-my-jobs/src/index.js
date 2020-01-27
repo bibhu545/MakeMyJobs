@@ -9,9 +9,11 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import RouterModule from './Utils/RouterModule.js';
 import Navbar from './Components/Common/Navbar';
 import Footer from './Components/Common/Footer';
+import Preloader from './Utils/Preloader';
 
 ReactDOM.render(
     <React.Fragment>
+        <Preloader></Preloader>
         <Navbar></Navbar>
         <RouterModule />
         <Footer></Footer>

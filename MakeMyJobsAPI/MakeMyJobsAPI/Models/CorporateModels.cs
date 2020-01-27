@@ -261,13 +261,13 @@ namespace MakeMyJobsAPI.Models
         public DateTime applyDate { get; set; }
         public string message { get; set; }
     }
-
-    public class PostFilterModel
-    {
+    
+    public class PostFilterModel 
+    { 
         public int userId { get; set; }
-        public int postType { get; set; }
+        public int postType { get; set; } 
         public String searchKeyword { get; set; }
-        public int tag { get; set; }
+        public int tag { get; set; } 
         public int city { get; set; }
         public int skill { get; set; }
         public List<int> salaryOptions { get; set; }
@@ -277,5 +277,6 @@ namespace MakeMyJobsAPI.Models
         public int minStipend { get; set; }
         public DateTime startDate { get; set; }
         public int page { get; set; }
+        public int postedBy { get; set; }
     }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Select from 'react-select';
 import HttpService from '../../Utils/HttpServices';
 import { JobModel } from '../../Utils/Models';
-import Utils from '../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils';
 
 
 export class AddJob extends Component {
@@ -114,7 +114,7 @@ export class AddJob extends Component {
             this.utils.showErrorMessage(validationMessage);
         }
         else {
-            this.http.postData('http://makemyjobs.me/Corporate/CreateJob', tempJob).then(response => {
+            this.http.postData(API_ENDPOINTS.CreateJob, tempJob).then(response => {
                 if (response.data.results != null) {
                     if (response.data.results[0] > 1) {
                         window.location = '/user-home';

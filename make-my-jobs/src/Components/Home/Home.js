@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './home.css'
 import AboutImage from '../../Assets/Images/1.jpg'
 import HttpService from '../../Utils/HttpServices'
-import Utils from '../../Utils/Utils'
+import Utils, { API_ENDPOINTS } from '../../Utils/Utils'
 import { PostFilterModel } from '../../Utils/Models'
 
 export class Home extends Component {
@@ -17,9 +17,9 @@ export class Home extends Component {
 
     componentDidMount() {
         var filterModel = new PostFilterModel();
-        this.http.postData('http://makemyjobs.me/Corporate/GetJobs', filterModel).then(response => {
+        this.http.postData(API_ENDPOINTS.GetJobs, filterModel).then(response => {
             this.setState({
-                jobs: response.data.results[0].filter((item, index) => index < 3)
+                jobs: response.data.results[0]
             })
             console.log(this.state.jobs)
         }).catch(error => {
@@ -336,7 +336,7 @@ export class Home extends Component {
                                     </p>
                                     <div>
                                         <i className="fas fa-address-card"></i>
-                                        address
+                                        Address:
                                         <p className='contact-address'>
                                             Description, Address Line 1
                                             <br />

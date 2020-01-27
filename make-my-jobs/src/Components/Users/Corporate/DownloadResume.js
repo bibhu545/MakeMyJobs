@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Utils from '../../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils';
 import HttpService from '../../../Utils/HttpServices';
 
 export class DownloadResume extends Component {
@@ -30,7 +30,7 @@ export class DownloadResume extends Component {
     }
 
     getResume = (studentId, employeeId) => {
-        window.open('http://makemyjobs.me/Corporate/ViewResume?studentId=' + studentId + "&employeeId=" + employeeId);
+        window.open(API_ENDPOINTS.ViewResume + '?studentId=' + studentId + "&employeeId=" + employeeId);
     }
 
     render() {

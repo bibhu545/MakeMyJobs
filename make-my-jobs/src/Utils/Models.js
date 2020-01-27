@@ -161,6 +161,7 @@ export class PostFilterModel {
         this.minStipend = 0;
         this.startDate = null;
         this.page = 0;
+        this.postedBy = 0;
     }
 }
 
