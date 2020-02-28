@@ -25,3 +25,51 @@
 /MakeMyJobsAPI/.vs
 /MakeMyJobsAPI/MakeMyJobsAPI/bin
 /MakeMyJobsAPI/MakeMyJobsAPI/obj
+
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/NgMakeMyJobs/dist
+/NgMakeMyJobs/tmp
+/NgMakeMyJobs/out-tsc
+# Only exists if Bazel was run
+/NgMakeMyJobs/bazel-out
+
+# dependencies
+/NgMakeMyJobs/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/NgMakeMyJobs/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/NgMakeMyJobs/.sass-cache
+/NgMakeMyJobs/connect.lock
+/NgMakeMyJobs/coverage
+/NgMakeMyJobs/libpeerconnection.log
+/NgMakeMyJobs/npm-debug.log
+/NgMakeMyJobs/yarn-error.log
+/NgMakeMyJobs/testem.log
+/NgMakeMyJobs/typings
+
+# System Files
+/NgMakeMyJobs/.DS_Store
+/NgMakeMyJobs/Thumbs.db

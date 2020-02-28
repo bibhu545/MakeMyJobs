@@ -12,6 +12,27 @@ namespace MakeMyJobsAPI.Business
 {
     public class CorporateBusiness
     {
+        public static List<JobResponseModel> GetPosts()
+        {
+            using (var context = new MakeMyJobsEntities())
+            {
+                return context.Posts.Where(x => x.IsActive == 1 && x.PostType == PostType.Job).Select(x => new JobResponseModel()
+                {
+                    jobId = x.PostId,
+                    jobTitle = x.Title,
+                    description = x.Description,
+                    experience = x.MinExperience ?? 0,
+                    IsActive = x.IsActive,
+                    minSalary = x.MinSalary ?? 0,
+                    maxSalary = x.MaxSalary,
+                    postsAvailable = x.PostsAvailable,
+                    userId = x.UserId,
+                    expiryDate = x.ExpiryDate,
+                    LastUpdatedOn = x.LastUpdatedOn,
+                    postedOn = x.PostedOn
+                }).ToList();
+            }
+        }
         public static List<JobResponseModel> GetJobs(PostFilterModel model,ref int count)
         {
             using (var context = new MakeMyJobsEntities())

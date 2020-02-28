@@ -8,13 +8,13 @@ export const API_ENDPOINTS = {
     GetCommonDataForNewPost: BaseUrl + "/Common/GetCommonDataForNewPost",
     GetStateAndCountries : BaseUrl + "/Common/GetStateAndCountries",
     GetCommonDataForFilters: BaseUrl + "/Common/GetCommonDataForFilters",
-    Login: BaseUrl + 'Account/Login',
-    Signup: BaseUrl + 'Account/Signup',
+    Login: BaseUrl + '/Account/Login',
+    Signup: BaseUrl + '/Account/Signup',
     ChangePassword: BaseUrl + "/Account/ChangePassword",
 
     GetCorporateInfo: BaseUrl + '/Corporate/GetCorporateInfo',
     ViewResume: BaseUrl + 'Corporate/ViewResume',
-    GetEmployeeInfoForEdit: BaseUrl + 'Employee/GetEmployeeInfoForEdit',
+    GetEmployeeInfoForEdit: BaseUrl + '/Employee/GetEmployeeInfoForEdit',
 
     CreateJob: BaseUrl + '/Corporate/CreateJob',
     GetJobInfo: BaseUrl + "/Corporate/GetJobInfo",
@@ -49,7 +49,7 @@ export class Utils {
 
     isCorporate = () => {
         if (cookie.load('loggedUser') != null) {
-            if (this.getUserTypeFromCookies() === 3) {
+            if (this.getUserTypeFromCookies() === '3') {
                 return true;
             }
         }

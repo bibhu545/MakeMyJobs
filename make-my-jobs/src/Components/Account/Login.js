@@ -40,7 +40,7 @@ export class Login extends Component {
                 window.location = "/user-home";
             }
         }).catch(error => {
-            new Utils().showErrorMessage(error);
+            new Utils().showInlineErrorMessage(error);
         });
     }
 

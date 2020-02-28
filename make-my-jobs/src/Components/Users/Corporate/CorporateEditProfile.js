@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import HttpService from '../../../Utils/HttpServices';
 import { CorporateModel, LoginResponseModel } from '../../../Utils/Models';
-import Utils from '../../../Utils/Utils';
+import Utils, { API_ENDPOINTS } from '../../../Utils/Utils';
 import StudentSideBar from '../Student/StudentSideBar';
 
 export class CorporateEditProfile extends Component {
@@ -21,7 +21,7 @@ export class CorporateEditProfile extends Component {
     }
 
     componentDidMount() {
-        this.http.getData('http://makemyjobs.me/Common/GetStateAndCountries').then(response => {
+        this.http.getData(API_ENDPOINTS.GetStateAndCountries).then(response => {
             if (response.data.results.length > 0) {
                 this.setState({
                     states: response.data.results[0],

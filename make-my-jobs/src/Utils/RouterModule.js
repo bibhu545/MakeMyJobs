@@ -25,6 +25,7 @@ import ApplyJob from '../Components/Jobs/ApplyJob';
 import ViewApplicants from '../Components/Users/Corporate/ViewApplicants';
 import DownloadResume from '../Components/Users/Corporate/DownloadResume';
 import ApplyInternship from '../Components/Internships/ApplyInternship';
+import CorporateHome2 from '../Components/Users/Corporate/CorporateHome2';
 
 function RouterModule() {
     return (
@@ -47,6 +48,7 @@ function RouterModule() {
                     <Route path="/signup" component={Signup}></Route>
                     <Route path="/login" component={Login}></Route>
                     <Route path="/user-home" component={UserHome}></Route>
+                    <Route path="/home2" component={CorporateHome2}></Route>
                     <Route path="/my-profile" component={UserProfile}></Route>
                     <Route path="/edit-profile" component={UserEditProfile}></Route>
                     <Route path="/my-jobs" component={MyJobs}></Route>

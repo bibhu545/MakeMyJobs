@@ -14,6 +14,18 @@ namespace MakeMyJobsAPI.Controllers
 {
     public class CorporateController : Controller
     {
+        public JsonResult GetPosts()
+        {
+            try
+            {
+                var result = CorporateBusiness.GetPosts();
+                return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch (Exception ex)
+            {
+                return CommonBusiness.GetErrorResponse(ex.Message);
+            }
+        }
         public JsonResult GetJobs(PostFilterModel model)
         {
             try
