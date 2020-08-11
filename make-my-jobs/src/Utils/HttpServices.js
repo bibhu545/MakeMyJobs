@@ -4,13 +4,17 @@ export default class HttpService {
     async postData(url, data) {
         this.showLoader();
         var result = await axios.post(url, data);
-        this.hideLoader();
+        setTimeout(() => {
+            this.hideLoader();
+        }, 750);
         return result;
     }
     async getData(url) {
         this.showLoader();
         var result = await axios.get(url);
-        this.hideLoader();
+        setTimeout(() => {
+            this.hideLoader();
+        }, 750);
         return result;
     }
 

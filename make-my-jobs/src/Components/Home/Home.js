@@ -47,7 +47,7 @@ export class Home extends Component {
                                     <div className="input-group hero-search">
                                         <input type="search" className="form-control" placeholder='Ex. MBA, Design, Android etc.' />
                                         <span className="input-group-btn">
-                                            <button className="btn btn-primary hearo-search-btn" type="button">
+                                            <button className="btn btn-primary hearo-search-btn" type="button" onClick={this.props.searchTerm}>
                                                 <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
                                                 Search!
                                             </button>
@@ -126,28 +126,10 @@ export class Home extends Component {
                                                                 </a>
                                                         }
                                                     </h4>
-                                                    <p>
-                                                        {
-                                                            jobs.length === 0 ? null : jobs[1].locationNames
-                                                        }
-                                                    </p>
-                                                    <p>
-                                                        Experience: &nbsp;
-                                                        {
-                                                            jobs.length === 0 ? null : jobs[1].experience
-                                                        } yrs
-                                                    </p>
-                                                    <p>
-                                                        INR &nbsp;
-                                                        {
-                                                            jobs.length === 0 ? null : jobs[1].minSalary
-                                                        }
-                                                    </p>
-                                                    <p>Posted on: &nbsp;
-                                                        {
-                                                            jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[1].postedOn)
-                                                        }
-                                                    </p>
+                                                    <p>{jobs.length === 0 ? null : jobs[1].locationNames}</p>
+                                                    <p>Experience: &nbsp; {jobs.length === 0 ? null : jobs[1].experience} yrs</p>
+                                                    <p>INR &nbsp; {jobs.length === 0 ? null : jobs[1].minSalary}</p>
+                                                    <p>Posted on: &nbsp; {jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[1].postedOn)}</p>
                                                     <p>
                                                         {
                                                             jobs.length === 0 ? null :
@@ -169,28 +151,10 @@ export class Home extends Component {
                                                                 </a>
                                                         }
                                                     </h4>
-                                                    <p>
-                                                        {
-                                                            jobs.length === 0 ? null : jobs[2].locationNames
-                                                        }
-                                                    </p>
-                                                    <p>
-                                                        Experience: &nbsp;
-                                                        {
-                                                            jobs.length === 0 ? null : jobs[2].experience
-                                                        } yrs
-                                                    </p>
-                                                    <p>
-                                                        INR &nbsp;
-                                                        {
-                                                            jobs.length === 0 ? null : jobs[2].minSalary
-                                                        }
-                                                    </p>
-                                                    <p>Posted on: &nbsp;
-                                                        {
-                                                            jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[2].postedOn)
-                                                        }
-                                                    </p>
+                                                    <p>{jobs.length === 0 ? null : jobs[2].locationNames}</p>
+                                                    <p>Experience: &nbsp;{jobs.length === 0 ? null : jobs[2].experience} yrs</p>
+                                                    <p>INR &nbsp;{jobs.length === 0 ? null : jobs[2].minSalary}</p>
+                                                    <p>Posted on: &nbsp;{jobs.length === 0 ? null : this.utils.GetDateFromServer(jobs[2].postedOn)}</p>
                                                     <p>
                                                         {
                                                             jobs.length === 0 ? null :
